@@ -32,16 +32,16 @@ export const InitRound = (sequelize: Sequelize) => {
   Round.init(
     {
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
       userId: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       projectId: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       publicData: {
@@ -64,8 +64,6 @@ export const InitRound = (sequelize: Sequelize) => {
       sequelize
     }
   );
-
-  Round.belongsTo(Project);
 
   return Round;
 }

@@ -15,8 +15,6 @@ import {
 import { Role } from './role';
 import { Project } from './project';
 
-const sequelize = new Sequelize("mysql://root:asd123@localhost:3306/mydb");
-
 // Some attributes are optional in `User.build` and `User.create` calls
 interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 
@@ -58,7 +56,7 @@ export const InitUser = (sequelize: Sequelize) => {
   User.init(
     {
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
@@ -79,7 +77,7 @@ export const InitUser = (sequelize: Sequelize) => {
         allowNull: false,
       },
       ypUserId: {
-        type: new DataTypes.NUMBER,
+        type: new DataTypes.INTEGER,
         allowNull: true,
       },
       createdAt: {
@@ -99,17 +97,6 @@ export const InitUser = (sequelize: Sequelize) => {
     }
   );
 
-  User.hasMany(Project, {
-    sourceKey: "id",
-    foreignKey: "userId",
-    as: "projects"
-  });
-
-
-  User.hasMany(Role, {
-    sourceKey: "id",
-    foreignKey: "userId",
-    as: "roles"
-  });
+  return User;
 }
 

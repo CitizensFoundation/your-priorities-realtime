@@ -53,7 +53,6 @@ export class App {
 
   private initializeControllers(controllers: Array<any>) {
     controllers.forEach((controller) => {
-      controller.setEsClient(this.esClient);
       this.app.use('/', controller.router);
     });
   }

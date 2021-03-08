@@ -50,7 +50,7 @@ export const InitProject = (sequelize: Sequelize) => {
   Project.init(
     {
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
@@ -63,7 +63,7 @@ export const InitProject = (sequelize: Sequelize) => {
         allowNull: true,
       },
       userId: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       publicData: {
@@ -86,14 +86,6 @@ export const InitProject = (sequelize: Sequelize) => {
       sequelize,
     }
   );
-
-  Project.belongsTo(User);
-
-  Project.hasMany(Round, {
-    sourceKey: "id",
-    foreignKey: "projectId",
-    as: "rounds",
-  });
 
   return Project
 };

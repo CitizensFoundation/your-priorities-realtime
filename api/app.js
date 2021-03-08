@@ -70,7 +70,6 @@ class App {
     }
     initializeControllers(controllers) {
         controllers.forEach((controller) => {
-            controller.setEsClient(this.esClient);
             this.app.use('/', controller.router);
         });
     }

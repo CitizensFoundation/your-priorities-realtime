@@ -1,3 +1,4 @@
+const { models } = require('./models');
 import { App } from './app';
 import { TrendsController } from './controllers/trendsController';
 
