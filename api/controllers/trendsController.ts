@@ -27,17 +27,16 @@ export class TrendsController {
         id: 1
       }
     }).then( projects => {
-      console.log(projects);
-      response.send(projects);
-    }).catch( error => {
-      console.error(error);
-      response.sendStatus(500);
+      models.User.create({
+        name: "Robert",
+        email: "robert@citizens.is",
+        encrypedPassword: "dksaodksaodskos",
+        ypUserId: 1
+      }).then( user => {
+        response.send(user)
+      }).catch( error => {
+        response.send(error);
+      })
     });
-  };
-
-  createAPost = (request: express.Request, response: express.Response) => {
-    //    const post: Post = request.body;
-    //    this.posts.push(post);
-    //    response.send(post);
-  };
+  }
 }

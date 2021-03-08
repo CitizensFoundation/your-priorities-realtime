@@ -24,13 +24,13 @@ export class User
   public id!: number;
   public name!: string;
   public email!: string;
-  public language!: string;
+  public language?: string | null;
   public encrypedPassword!: string | null;
   public ypUserId!: number | null;
 
   // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public readonly createdAt?: Date;
+  public readonly updatedAt?: Date;
 
   // Since TS cannot determine model association at compile time
   // we have to declare them here purely virtually
@@ -67,6 +67,7 @@ export const InitUser = (sequelize: Sequelize) => {
       email: {
         type: new DataTypes.STRING(256),
         allowNull: false,
+        unique: true
       },
       language: {
         type: new DataTypes.STRING(10),

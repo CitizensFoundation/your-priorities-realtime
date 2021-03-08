@@ -46,7 +46,6 @@ models.User.hasMany(models.Role, {
   as: "roles"
 });
 
-
 models.Round.belongsTo(models.Project,  { as: 'Project', foreignKey: 'projectId' });
 
 sequelize.sync({force: true});

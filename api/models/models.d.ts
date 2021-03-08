@@ -2,11 +2,11 @@ interface UserAttributes {
   id: number;
   name: string;
   email: string;
-  language: string | null;
+  language?: string | null;
   encrypedPassword: string | null;
   ypUserId: number | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface RoleAttributes {

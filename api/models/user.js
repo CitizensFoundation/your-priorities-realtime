@@ -19,6 +19,7 @@ const InitUser = (sequelize) => {
         email: {
             type: new sequelize_1.DataTypes.STRING(256),
             allowNull: false,
+            unique: true
         },
         language: {
             type: new sequelize_1.DataTypes.STRING(10),
