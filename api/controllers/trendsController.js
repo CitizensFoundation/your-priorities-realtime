@@ -20,12 +20,18 @@ class TrendsController {
             }).then(projects => {
                 models_1.models.User.create({
                     name: "Robert",
-                    language: "en",
                     email: "robert@citizens.is",
+                    language: "en",
                     encrypedPassword: "dksaodksaodskos",
                     ypUserId: 1
                 }).then(user => {
-                    response.send(user);
+                    models_1.models.Role.create({
+                        translationNameToken: "community",
+                    }).then(role => {
+                        user.addRole(role).then(userWithRole => {
+                            response.send(userWithRole);
+                        });
+                    });
                 }).catch(error => {
                     response.send(error);
                 });

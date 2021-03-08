@@ -39,6 +39,9 @@ models.User.hasMany(models.Project, {
   as: "projects"
 });
 
+models.User.belongsToMany(models.Role, {
+  through: 'UserRoles'
+});
 
 models.User.hasMany(models.Role, {
   sourceKey: "id",

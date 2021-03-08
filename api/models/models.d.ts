@@ -4,7 +4,7 @@ interface UserAttributes {
   email: string;
   language?: string | null;
   encrypedPassword: string | null;
-  ypUserId: number | null;
+  ypUserId?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -12,8 +12,8 @@ interface UserAttributes {
 interface RoleAttributes {
   id: number;
   translationNameToken: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface ProjectPublicDataAttributes {

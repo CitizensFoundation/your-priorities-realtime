@@ -24,8 +24,8 @@ export class Role
   public translationNameToken!: string;
 
   // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public readonly createdAt?: Date;
+  public readonly updatedAt?: Date;
 
   public static associations: {
     roles: Association<User, Role>;

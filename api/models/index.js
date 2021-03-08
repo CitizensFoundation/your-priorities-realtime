@@ -29,6 +29,9 @@ exports.models.User.hasMany(exports.models.Project, {
     foreignKey: "userId",
     as: "projects"
 });
+exports.models.User.belongsToMany(exports.models.Role, {
+    through: 'UserRoles'
+});
 exports.models.User.hasMany(exports.models.Role, {
     sourceKey: "id",
     foreignKey: "userId",

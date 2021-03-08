@@ -7,6 +7,7 @@ import {
   HasManyAddAssociationMixin,
   HasManyHasAssociationMixin,
   Association,
+  BelongsToManyAddAssociationMixin,
   HasManyCountAssociationsMixin,
   HasManyCreateAssociationMixin,
   Optional,
@@ -26,7 +27,7 @@ export class User
   public email!: string;
   public language?: string | null;
   public encrypedPassword!: string | null;
-  public ypUserId!: number | null;
+  public ypUserId?: number;
 
   // timestamps!
   public readonly createdAt?: Date;
@@ -35,9 +36,8 @@ export class User
   // Since TS cannot determine model association at compile time
   // we have to declare them here purely virtually
   // these will not exist until `Model.init` was called.
-  public getRole!: HasManyGetAssociationsMixin<Role>; // Note the null assertions!
-  public addRole!: HasManyAddAssociationMixin<Role, number>;
-  public hasRole!: HasManyHasAssociationMixin<Role, number>;
+  public addRole!: BelongsToManyAddAssociationMixin<Role, number>;
+  public hasRole!: BelongsToManyAddAssociationMixin<Role, number>;
 
   public getProject!: HasManyGetAssociationsMixin<Project>; // Note the null assertions!
   public addProject!: HasManyAddAssociationMixin<Project, number>;
