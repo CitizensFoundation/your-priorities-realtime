@@ -1,10 +1,12 @@
 const { models } = require('./models');
 import { App } from './app';
-import { TrendsController } from './controllers/trendsController';
+import { RoundsController } from './controllers/roundsController';
+import { ProjectsController } from './controllers/projectsController';
 
 const app = new App(
   [
-    new TrendsController(),
+    new RoundsController(),
+    new ProjectsController()
   ],
   8000,
 );

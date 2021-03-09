@@ -44,14 +44,14 @@ exports.models = {
 exports.models.Project.hasMany(exports.models.Round, {
     sourceKey: "id",
     foreignKey: "projectId",
-    as: "rounds",
+    as: "Rounds",
 });
 exports.models.Project.belongsTo(exports.models.User, { as: 'User', foreignKey: 'userId' });
 // User
 exports.models.User.hasMany(exports.models.Project, {
     sourceKey: "id",
     foreignKey: "userId",
-    as: "projects"
+    as: "Projects"
 });
 exports.models.User.belongsToMany(exports.models.Role, {
     through: 'UserRoles'
@@ -62,19 +62,19 @@ exports.models.User.belongsToMany(exports.models.Project, {
 exports.models.User.hasMany(exports.models.Role, {
     sourceKey: "id",
     foreignKey: "userId",
-    as: "roles"
+    as: "UserRoles"
 });
 // Round
 exports.models.Round.belongsTo(exports.models.Project, { as: 'Project', foreignKey: 'projectId' });
 exports.models.Round.hasMany(exports.models.Stage, {
     sourceKey: "id",
     foreignKey: "roundId",
-    as: "stages"
+    as: "Stages"
 });
 exports.models.Round.hasMany(exports.models.Issue, {
     sourceKey: "id",
     foreignKey: "roundId",
-    as: "issues"
+    as: "Issues"
 });
 // Stage
 exports.models.Stage.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 'roundId' });
@@ -92,7 +92,7 @@ exports.models.Meeting.belongsTo(exports.models.Stage, { as: 'Project', foreignK
 exports.models.EmailCampaign.hasMany(exports.models.SentEmail, {
     sourceKey: "id",
     foreignKey: "emailCampaignId",
-    as: "sentEmails"
+    as: "SentEmails"
 });
 // SentEmail
 exports.models.SentEmail.belongsTo(exports.models.EmailCampaign, { as: 'EmailCampaign', foreignKey: 'emailCampaignId' });
@@ -105,7 +105,7 @@ exports.models.Issue.belongsToMany(exports.models.ScoreCard, {
 exports.models.ActionPlan.hasMany(exports.models.Action, {
     sourceKey: "id",
     foreignKey: "actionPlanId",
-    as: "actions"
+    as: "Actions"
 });
 // Action
 exports.models.Action.belongsTo(exports.models.ActionPlan, { as: 'ActionPlan', foreignKey: 'actionPlanId' });

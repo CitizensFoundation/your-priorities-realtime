@@ -1,8 +1,8 @@
 import express from "express";
 import { models } from "../models";
 
-export class TrendsController {
-  public path = "/api/rounds";
+export class ProjectsController {
+  public path = "/api/projects";
   public router = express.Router();
 
   constructor() {
@@ -11,7 +11,7 @@ export class TrendsController {
 
   public intializeRoutes() {
     this.router.post(this.path, this.createProject);
-    this.router.get(this.path+"/:id", this.createProject);
+    this.router.get(this.path+"/:id", this.getProject);
   }
 
   createProject = async (
@@ -27,14 +27,20 @@ export class TrendsController {
     })
   }
 
-  getProjects = async (
+  getProject = async (
     req: express.Request,
     res: express.Response
   ) => {
     models.Project.findAll({
       where: {
         id: req.params.id
-      }
+      },
+      include: [
+        {
+          model: (models.Round as any),
+          as: "Rounds"
+        }
+      ]
     }).then( project => {
       res.send(project);
     }).catch( error => {

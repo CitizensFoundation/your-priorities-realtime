@@ -41,7 +41,7 @@ interface RoundAttributes {
   id: number;
   userId: number;
   projectId: number;
-  publicData: RoundPublicDataAttributes | null;
+  publicData?: RoundPublicDataAttributes | null;
   createdAt?: Date;
   updatedAt?: Date;
   startedAt?: Date;

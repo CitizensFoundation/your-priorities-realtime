@@ -53,7 +53,7 @@ export const models = {
 models.Project.hasMany(models.Round, {
   sourceKey: "id",
   foreignKey: "projectId",
-  as: "rounds",
+  as: "Rounds",
 });
 
 models.Project.belongsTo(models.User,  { as: 'User', foreignKey: 'userId' });
@@ -62,7 +62,7 @@ models.Project.belongsTo(models.User,  { as: 'User', foreignKey: 'userId' });
 models.User.hasMany(models.Project, {
   sourceKey: "id",
   foreignKey: "userId",
-  as: "projects"
+  as: "Projects"
 });
 
 models.User.belongsToMany(models.Role, {
@@ -76,7 +76,7 @@ models.User.belongsToMany(models.Project, {
 models.User.hasMany(models.Role, {
   sourceKey: "id",
   foreignKey: "userId",
-  as: "roles"
+  as: "UserRoles"
 });
 
 // Round
@@ -85,13 +85,13 @@ models.Round.belongsTo(models.Project,  { as: 'Project', foreignKey: 'projectId'
 models.Round.hasMany(models.Stage, {
   sourceKey: "id",
   foreignKey: "roundId",
-  as: "stages"
+  as: "Stages"
 });
 
 models.Round.hasMany(models.Issue, {
   sourceKey: "id",
   foreignKey: "roundId",
-  as: "issues"
+  as: "Issues"
 });
 
 // Stage
@@ -115,7 +115,7 @@ models.Meeting.belongsTo(models.Stage,  { as: 'Project', foreignKey: 'stageId' }
 models.EmailCampaign.hasMany(models.SentEmail, {
   sourceKey: "id",
   foreignKey: "emailCampaignId",
-  as: "sentEmails"
+  as: "SentEmails"
 });
 
 // SentEmail
@@ -132,7 +132,7 @@ models.Issue.belongsToMany(models.ScoreCard, {
 models.ActionPlan.hasMany(models.Action, {
   sourceKey: "id",
   foreignKey: "actionPlanId",
-  as: "actions"
+  as: "Actions"
 });
 
 // Action

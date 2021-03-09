@@ -1,10 +1,8 @@
 import express from "express";
-const { Client } = require("@elastic/elasticsearch");
-
 import { models } from "../models";
 
-export class TrendsController {
-  public path = "/api/trends";
+export class RoundsController {
+  public path = "/api/rounds";
   public router = express.Router();
 
   constructor() {
@@ -12,15 +10,15 @@ export class TrendsController {
   }
 
   public intializeRoutes() {
-    this.router.post(this.path, this.createProject);
-    this.router.get(this.path+"/:id", this.createProject);
+    this.router.post(this.path, this.createRound);
+    this.router.get(this.path+"/:id", this.getRound);
   }
 
-  createProject = async (
+  createRound = async (
     req: express.Request,
     res: express.Response
   ) => {
-    models.Project.create(
+    models.Round.create(
       req.body
     ).then( project => {
       res.send(project);
@@ -29,16 +27,23 @@ export class TrendsController {
     })
   }
 
-  getProjects = async (
+  getRound = async (
     req: express.Request,
     res: express.Response
   ) => {
-    models.Project.findAll({
+    models.Round.findAll({
       where: {
-        id: req.params.id
-      }
-    }).then( project => {
-      res.send(project);
+        id: req.params.id,
+      },
+      attributes: {exclude: ['privateData']},
+      include: [
+        {
+          model: (models.Stage as any),
+          as: "Stages"
+        }
+      ]
+    }).then( round => {
+      res.send(round);
     }).catch( error => {
       res.send(error);
     })
