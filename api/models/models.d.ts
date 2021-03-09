@@ -134,6 +134,30 @@ interface ActionPlanAttributes {
   id: number;
   createdAt?: Date;
   updatedAt?: Date;
+}
 
+interface ActionAttributes {
+  id: number;
+  description: string;
+  language?: string;
+  actionPlanId: number;
+  userId: number;
+  state: number;
+  completeBy: number;
+  completedPercent: number;
+  assignedToType?: number;
+  assignedToName?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  completedAt?: Date;
+}
+
+interface ScoreCardAttributes {
+  id: number;
+  roundId: number;
+  state: number;
+  type: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 

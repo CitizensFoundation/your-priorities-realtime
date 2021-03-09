@@ -9,6 +9,8 @@ import { InitEmailCampaign } from "./emailCampaign";
 import { InitSentEmail } from "./sentEmail";
 import { InitIssue } from "./issue";
 import { InitActionPlan } from "./actionPlan";
+import { InitAction } from "./action";
+import { InitScoreCard } from "./scoreCard";
 
 
 const Sequelize = require("sequelize");
@@ -36,7 +38,9 @@ export const models = {
   EmailCampaign: InitEmailCampaign(sequelize),
   SentEmail: InitSentEmail(sequelize),
   Issue: InitIssue(sequelize),
-  ActionPlan: InitActionPlan(sequelize)
+  ActionPlan: InitActionPlan(sequelize),
+  Action: InitAction(sequelize),
+  ScoreCard: InitScoreCard(sequelize)
 };
 
 // Associations
@@ -115,5 +119,22 @@ models.SentEmail.belongsTo(models.EmailCampaign,  { as: 'EmailCampaign', foreign
 
 // Issue
 models.Issue.belongsTo(models.Round,  { as: 'Round', foreignKey: 'roundId' });
+
+models.Issue.belongsToMany(models.ScoreCard, {
+  through: 'ScoreCardIssues'
+});
+
+// ActionPlan
+models.ActionPlan.hasMany(models.Action, {
+  sourceKey: "id",
+  foreignKey: "actionPlanId",
+  as: "actions"
+});
+
+// Action
+models.Action.belongsTo(models.ActionPlan,  { as: 'ActionPlan', foreignKey: 'actionPlanId' });
+
+// ScoreCard
+
 
 sequelize.sync({force: true});
