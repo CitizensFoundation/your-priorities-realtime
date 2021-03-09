@@ -6,6 +6,12 @@ const project_1 = require("./project");
 const role_1 = require("./role");
 const round_1 = require("./round");
 const stage_1 = require("./stage");
+const story_1 = require("./story");
+const meeting_1 = require("./meeting");
+const emailCampaign_1 = require("./emailCampaign");
+const sentEmail_1 = require("./sentEmail");
+const issue_1 = require("./issue");
+const actionPlan_1 = require("./actionPlan");
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 const config = require(`${__dirname}/../../config/config.json`)[env];
@@ -17,7 +23,13 @@ exports.models = {
     Project: project_1.InitProject(sequelize),
     User: user_1.InitUser(sequelize),
     Round: round_1.InitRound(sequelize),
-    Stage: stage_1.InitStage(sequelize)
+    Stage: stage_1.InitStage(sequelize),
+    Story: story_1.InitStory(sequelize),
+    Meeting: meeting_1.InitMeeting(sequelize),
+    EmailCampaign: emailCampaign_1.InitEmailCampaign(sequelize),
+    SentEmail: sentEmail_1.InitSentEmail(sequelize),
+    Issue: issue_1.InitIssue(sequelize),
+    ActionPlan: actionPlan_1.InitActionPlan(sequelize)
 };
 // Associations
 // Project
@@ -37,7 +49,7 @@ exports.models.User.belongsToMany(exports.models.Role, {
     through: 'UserRoles'
 });
 exports.models.User.belongsToMany(exports.models.Project, {
-    through: 'UserProjects'
+    through: 'ProjectUsers'
 });
 exports.models.User.hasMany(exports.models.Role, {
     sourceKey: "id",
@@ -51,6 +63,31 @@ exports.models.Round.hasMany(exports.models.Stage, {
     foreignKey: "roundId",
     as: "stages"
 });
+exports.models.Round.hasMany(exports.models.Issue, {
+    sourceKey: "id",
+    foreignKey: "roundId",
+    as: "issues"
+});
 // Stage
 exports.models.Stage.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 'roundId' });
+// Story
+exports.models.Stage.belongsTo(exports.models.Project, { as: 'Project', foreignKey: 'projectId' });
+exports.models.Story.belongsToMany(exports.models.EmailCampaign, {
+    through: 'EmailCampaignStories'
+});
+exports.models.Story.belongsToMany(exports.models.Stage, {
+    through: 'StageStories'
+});
+// Meeting
+exports.models.Meeting.belongsTo(exports.models.Stage, { as: 'Project', foreignKey: 'stageId' });
+// EmailCampaign
+exports.models.EmailCampaign.hasMany(exports.models.SentEmail, {
+    sourceKey: "id",
+    foreignKey: "emailCampaignId",
+    as: "sentEmails"
+});
+// SentEmail
+exports.models.SentEmail.belongsTo(exports.models.EmailCampaign, { as: 'EmailCampaign', foreignKey: 'emailCampaignId' });
+// Issue
+exports.models.Issue.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 'roundId' });
 sequelize.sync({ force: true });

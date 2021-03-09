@@ -12,33 +12,26 @@ import {
   Optional,
 } from "sequelize";
 
-import { User } from "./user";
-
 // Some attributes are optional in `User.build` and `User.create` calls
-interface RoleCreationAttributes extends Optional<RoleAttributes, "id"> {}
+interface ActionPlanCreationAttributes extends Optional<ActionPlanAttributes, "id"> {}
 
-export class Role
-  extends Model<RoleAttributes, RoleCreationAttributes>
-  implements RoleAttributes {
+export class ActionPlan
+  extends Model<ActionPlanAttributes, ActionPlanCreationAttributes>
+  implements ActionPlanAttributes {
   public id!: number;
-  public nameToken!: string;
 
   // timestamps!
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
 }
 
-export const InitRole = (sequelize: Sequelize) => {
-  Role.init(
+export const InitActionPlan = (sequelize: Sequelize) => {
+  ActionPlan.init(
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-      },
-      nameToken: {
-        type: new DataTypes.STRING(256),
-        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -52,10 +45,10 @@ export const InitRole = (sequelize: Sequelize) => {
     {
       timestamps: true,
       paranoid: true,
-      tableName: "roles",
+      tableName: "action_plans",
       sequelize,
     }
   );
 
-  return Role;
+  return ActionPlan;
 };

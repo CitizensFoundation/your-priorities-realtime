@@ -48,6 +48,22 @@ interface RoundAttributes {
   completedAt?: Date;
 }
 
+
+interface StoryPublicDataAttributes {
+  data: string;
+}
+
+interface StoryAttributes {
+  id: number;
+  userId: number;
+  projectId: number;
+  publicData: StoryPublicDataAttributes | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  startedAt?: Date;
+  completedAt?: Date;
+}
+
 interface StageAttributes {
   id: number;
   roundId: number;
@@ -60,3 +76,64 @@ interface StageAttributes {
   startedAt?: Date;
   completedAt?: Date;
 }
+
+interface MeetingAttributes {
+  id: number;
+  stageId: number;
+  userId: number;
+  type: number;
+  state: number;
+  subState: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  startedAt?: Date;
+  completedAt?: Date;
+}
+
+interface EmailCampaignAttributes {
+  id: number;
+  stageId: number;
+  userId: number;
+  language: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  sentAt?: Date;
+}
+
+interface SentEmailAttributes {
+  id: number;
+  emailCampaignId: number;
+  userId: number;
+  loginCode: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  clickedAt?: Date;
+  clickCount?: number;
+}
+
+interface IssuePublicDataAttributes {
+  data: string;
+}
+
+interface IssueAttributes {
+  id: number;
+  description: string;
+  language?: string;
+  roundId: number;
+  userId: number;
+  type: number;
+  state: number;
+  counterUpVotes: number;
+  counterDownVotes: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  publicData: IssuePublicDataAttributes | null;
+}
+
+interface ActionPlanAttributes {
+  id: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+
+}
+
