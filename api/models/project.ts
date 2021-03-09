@@ -37,12 +37,17 @@ export class Project
   public getRound!: HasManyGetAssociationsMixin<Round>; // Note the null assertions!
   public addRound!: HasManyAddAssociationMixin<Round, number>;
 
+  public getUser!: HasManyGetAssociationsMixin<User>; // Note the null assertions!
+  public addUser!: HasManyAddAssociationMixin<User, number>;
+
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
   public readonly rounds?: Round[]; // Note this is optional since it's only populated when explicitly requested in code
+  public readonly users?: User[]; // Note this is optional since it's only populated when explicitly requested in code
 
   public static associations: {
-    rounds: Association<Project, Round>;
+    rounds: Association<Project, Round>,
+    users: Association<Project, User>
   };
 }
 

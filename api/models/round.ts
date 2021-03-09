@@ -13,6 +13,7 @@ import {
 } from "sequelize";
 
 import { Project } from './project';
+import { Stage } from './stage';
 
 interface RoundCreationAttributes extends Optional<RoundAttributes, "id"> {}
 
@@ -28,6 +29,15 @@ export class Round
   public readonly updatedAt?: Date;
   public readonly staredAt?: Date;
   public readonly completedAt?: Date;
+
+  public getStage!: HasManyGetAssociationsMixin<Stage>; // Note the null assertions!
+  public addStage!: HasManyAddAssociationMixin<Stage, number>;
+
+  public readonly stages?: Stage[];
+
+  public static associations: {
+    stages: Association<Round, Stage>
+  };
 }
 
 export const InitRound = (sequelize: Sequelize) => {

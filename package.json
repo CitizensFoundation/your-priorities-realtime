@@ -4,7 +4,8 @@
   "main": "api/ts-out/server.js",
   "license": "GPL",
   "scripts": {
-    "start": "nodemon api/out-ts/server.js",
+    "start": "nodemon -e ts api/out-ts/server.js",
+    "watch-start": "tsc --project ./api/ --outDir ./api/ts-out -w & nodemon -q api/out-ts/server.js",
     "dev": "nodemon --config nodemon.json api/out-ts/server.js",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk server.ts",
     "build": "tsc --project ./api/ --outDir ./api/ts-out"
