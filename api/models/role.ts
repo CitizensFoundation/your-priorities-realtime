@@ -21,7 +21,7 @@ export class Role
   extends Model<RoleAttributes, RoleCreationAttributes>
   implements RoleAttributes {
   public id!: number;
-  public translationNameToken!: string;
+  public nameToken!: string;
 
   // timestamps!
   public readonly createdAt?: Date;
@@ -40,7 +40,7 @@ export const InitRole = (sequelize: Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      translationNameToken: {
+      nameToken: {
         type: new DataTypes.STRING(256),
         allowNull: false,
       },

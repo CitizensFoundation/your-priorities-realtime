@@ -1,28 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitRound = exports.Round = void 0;
+exports.InitStage = exports.Stage = void 0;
 const sequelize_1 = require("sequelize");
-class Round extends sequelize_1.Model {
+class Stage extends sequelize_1.Model {
 }
-exports.Round = Round;
-const InitRound = (sequelize) => {
-    Round.init({
+exports.Stage = Stage;
+const InitStage = (sequelize) => {
+    Stage.init({
         id: {
             type: sequelize_1.DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },
-        userId: {
+        roundId: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
-        projectId: {
+        nameToken: {
+            type: new sequelize_1.DataTypes.STRING(256),
+            allowNull: false,
+        },
+        type: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
-        publicData: {
-            type: sequelize_1.DataTypes.JSONB,
-            allowNull: true,
+        audience: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: false,
+        },
+        status: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: false,
         },
         createdAt: {
             type: sequelize_1.DataTypes.DATE,
@@ -34,18 +42,18 @@ const InitRound = (sequelize) => {
         },
         startedAt: {
             type: sequelize_1.DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
         },
         completedAt: {
             type: sequelize_1.DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
         }
     }, {
         timestamps: true,
         paranoid: true,
-        tableName: "rounds",
+        tableName: "stages",
         sequelize
     });
-    return Round;
+    return Stage;
 };
-exports.InitRound = InitRound;
+exports.InitStage = InitStage;

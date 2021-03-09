@@ -35,7 +35,7 @@ export class TrendsController {
         ypUserId: 1
       }).then( user => {
         models.Role.create({
-          translationNameToken: "community",
+          nameToken: "community",
         }).then( role => {
           user.addRole(role).then(userWithRole=> {
             response.send(userWithRole)

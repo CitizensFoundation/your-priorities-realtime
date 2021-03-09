@@ -11,7 +11,7 @@ interface UserAttributes {
 
 interface RoleAttributes {
   id: number;
-  translationNameToken: string;
+  nameToken: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -42,6 +42,21 @@ interface RoundAttributes {
   userId: number;
   projectId: number;
   publicData: RoundPublicDataAttributes | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  startedAt?: Date;
+  completedAt?: Date;
+}
+
+interface StageAttributes {
+  id: number;
+  roundId: number;
+  nameToken: string;
+  type: number;
+  audience: number;
+  status: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  startedAt?: Date;
+  completedAt?: Date;
 }

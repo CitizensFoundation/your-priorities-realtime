@@ -1,4 +1,4 @@
 {
 	"extends": "@tsconfig/node14/tsconfig.json",
-	"outDir": "./ts-out"
+	"outDir": "api/ts-out/"
 }

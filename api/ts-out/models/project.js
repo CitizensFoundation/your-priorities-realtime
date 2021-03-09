@@ -1,22 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitRound = exports.Round = void 0;
+exports.InitProject = exports.Project = void 0;
 const sequelize_1 = require("sequelize");
-class Round extends sequelize_1.Model {
+class Project extends sequelize_1.Model {
 }
-exports.Round = Round;
-const InitRound = (sequelize) => {
-    Round.init({
+exports.Project = Project;
+const InitProject = (sequelize) => {
+    Project.init({
         id: {
             type: sequelize_1.DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },
-        userId: {
-            type: sequelize_1.DataTypes.INTEGER,
+        name: {
+            type: new sequelize_1.DataTypes.STRING(256),
             allowNull: false,
         },
-        projectId: {
+        language: {
+            type: new sequelize_1.DataTypes.STRING(10),
+            allowNull: true,
+        },
+        userId: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
@@ -32,20 +36,12 @@ const InitRound = (sequelize) => {
             type: sequelize_1.DataTypes.DATE,
             allowNull: false,
         },
-        startedAt: {
-            type: sequelize_1.DataTypes.DATE,
-            allowNull: false,
-        },
-        completedAt: {
-            type: sequelize_1.DataTypes.DATE,
-            allowNull: false,
-        }
     }, {
         timestamps: true,
         paranoid: true,
-        tableName: "rounds",
-        sequelize
+        tableName: "projects",
+        sequelize,
     });
-    return Round;
+    return Project;
 };
-exports.InitRound = InitRound;
+exports.InitProject = InitProject;

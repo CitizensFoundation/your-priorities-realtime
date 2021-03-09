@@ -12,17 +12,19 @@ import {
   Optional,
 } from "sequelize";
 
-import { Project } from './project';
+import { Round } from './round';
 
-interface RoundCreationAttributes extends Optional<RoundAttributes, "id"> {}
+interface StageCreationAttributes extends Optional<StageAttributes, "id"> {}
 
-export class Round
-  extends Model<RoundAttributes, RoundCreationAttributes>
-  implements RoundAttributes {
+export class Stage
+  extends Model<StageAttributes, StageCreationAttributes>
+  implements StageAttributes {
   public id!: number;
-  public userId!: number;
-  public projectId!: number;
-  public publicData!: RoundPublicDataAttributes | null;
+  public roundId!: number;
+  public nameToken!: string;
+  public type!: number;
+  public audience!: number;
+  public status!: number;
 
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
@@ -30,25 +32,33 @@ export class Round
   public readonly completedAt?: Date;
 }
 
-export const InitRound = (sequelize: Sequelize) => {
-  Round.init(
+export const InitStage = (sequelize: Sequelize) => {
+  Stage.init(
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      userId: {
+      roundId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      projectId: {
+      nameToken: {
+        type: new DataTypes.STRING(256),
+        allowNull: false,
+      },
+      type: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      publicData: {
-        type: DataTypes.JSONB,
-        allowNull: true,
+      audience: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -60,20 +70,20 @@ export const InitRound = (sequelize: Sequelize) => {
       },
       startedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       completedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       }
     },
     {
       timestamps: true,
       paranoid: true,
-      tableName: "rounds",
+      tableName: "stages",
       sequelize
     }
   );
 
-  return Round;
+  return Stage;
 }

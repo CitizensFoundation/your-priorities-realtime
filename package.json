@@ -1,13 +1,13 @@
 {
   "name": "pace-website",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "api/ts-out/server.js",
   "license": "GPL",
   "scripts": {
-    "start": "nodemon api/server.ts",
-    "dev": "nodemon --config nodemon.json api/server.ts",
+    "start": "nodemon api/out-ts/server.js",
+    "dev": "nodemon --config nodemon.json api/out-ts/server.js",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk server.ts",
-    "build": "tsc --project ./api/"
+    "build": "tsc --project ./api/ --outDir ./api/ts-out"
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.0",
