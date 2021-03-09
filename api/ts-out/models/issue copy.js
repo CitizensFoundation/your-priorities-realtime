@@ -46,10 +46,6 @@ const InitIssue = (sequelize) => {
             type: sequelize_1.DataTypes.JSONB,
             allowNull: true,
         },
-        privateData: {
-            type: sequelize_1.DataTypes.JSONB,
-            allowNull: true,
-        },
         state: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,

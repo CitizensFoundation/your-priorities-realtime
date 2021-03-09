@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitIssue = exports.Issue = void 0;
+exports.InitAction = exports.Action = void 0;
 const sequelize_1 = require("sequelize");
-class Issue extends sequelize_1.Model {
+class Action extends sequelize_1.Model {
 }
-exports.Issue = Issue;
-const InitIssue = (sequelize) => {
-    Issue.init({
+exports.Action = Action;
+const InitAction = (sequelize) => {
+    Action.init({
         id: {
             type: sequelize_1.DataTypes.INTEGER,
             autoIncrement: true,
@@ -16,7 +16,7 @@ const InitIssue = (sequelize) => {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
-        roundId: {
+        actionPlanId: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
@@ -24,16 +24,15 @@ const InitIssue = (sequelize) => {
             type: new sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
-        type: {
+        state: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
-        counterUpVotes: {
+        completeBy: {
             type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0
+            allowNull: true
         },
-        counterDownVotes: {
+        completedPercent: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
@@ -41,18 +40,6 @@ const InitIssue = (sequelize) => {
         language: {
             type: new sequelize_1.DataTypes.STRING(10),
             allowNull: true,
-        },
-        publicData: {
-            type: sequelize_1.DataTypes.JSONB,
-            allowNull: true,
-        },
-        privateData: {
-            type: sequelize_1.DataTypes.JSONB,
-            allowNull: true,
-        },
-        state: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
         },
         createdAt: {
             type: sequelize_1.DataTypes.DATE,
@@ -65,9 +52,9 @@ const InitIssue = (sequelize) => {
     }, {
         timestamps: true,
         paranoid: true,
-        tableName: "issues",
+        tableName: "actions",
         sequelize
     });
-    return Issue;
+    return Action;
 };
-exports.InitIssue = InitIssue;
+exports.InitAction = InitAction;

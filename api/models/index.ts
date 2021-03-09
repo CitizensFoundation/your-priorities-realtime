@@ -11,6 +11,8 @@ import { InitIssue } from "./issue";
 import { InitActionPlan } from "./actionPlan";
 import { InitAction } from "./action";
 import { InitScoreCard } from "./scoreCard";
+import { InitComment } from "./comment";
+import { InitProgressReport } from "./progressReport";
 
 
 const Sequelize = require("sequelize");
@@ -40,7 +42,9 @@ export const models = {
   Issue: InitIssue(sequelize),
   ActionPlan: InitActionPlan(sequelize),
   Action: InitAction(sequelize),
-  ScoreCard: InitScoreCard(sequelize)
+  ScoreCard: InitScoreCard(sequelize),
+  Comment: InitComment(sequelize),
+  ProgressReport: InitProgressReport(sequelize)
 };
 
 // Associations
@@ -136,5 +140,16 @@ models.Action.belongsTo(models.ActionPlan,  { as: 'ActionPlan', foreignKey: 'act
 
 // ScoreCard
 
+// Comment
+models.Comment.belongsToMany(models.Issue, {
+  through: 'IssueComments'
+});
+
+models.Comment.belongsToMany(models.Action, {
+  through: 'ActionComments'
+});
+
+// ProgressReport
+models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });
 
 sequelize.sync({force: true});

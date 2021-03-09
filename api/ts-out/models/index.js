@@ -12,6 +12,10 @@ const emailCampaign_1 = require("./emailCampaign");
 const sentEmail_1 = require("./sentEmail");
 const issue_1 = require("./issue");
 const actionPlan_1 = require("./actionPlan");
+const action_1 = require("./action");
+const scoreCard_1 = require("./scoreCard");
+const comment_1 = require("./comment");
+const progressReport_1 = require("./progressReport");
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 const config = require(`${__dirname}/../../config/config.json`)[env];
@@ -29,7 +33,11 @@ exports.models = {
     EmailCampaign: emailCampaign_1.InitEmailCampaign(sequelize),
     SentEmail: sentEmail_1.InitSentEmail(sequelize),
     Issue: issue_1.InitIssue(sequelize),
-    ActionPlan: actionPlan_1.InitActionPlan(sequelize)
+    ActionPlan: actionPlan_1.InitActionPlan(sequelize),
+    Action: action_1.InitAction(sequelize),
+    ScoreCard: scoreCard_1.InitScoreCard(sequelize),
+    Comment: comment_1.InitComment(sequelize),
+    ProgressReport: progressReport_1.InitProgressReport(sequelize)
 };
 // Associations
 // Project
@@ -90,4 +98,25 @@ exports.models.EmailCampaign.hasMany(exports.models.SentEmail, {
 exports.models.SentEmail.belongsTo(exports.models.EmailCampaign, { as: 'EmailCampaign', foreignKey: 'emailCampaignId' });
 // Issue
 exports.models.Issue.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 'roundId' });
+exports.models.Issue.belongsToMany(exports.models.ScoreCard, {
+    through: 'ScoreCardIssues'
+});
+// ActionPlan
+exports.models.ActionPlan.hasMany(exports.models.Action, {
+    sourceKey: "id",
+    foreignKey: "actionPlanId",
+    as: "actions"
+});
+// Action
+exports.models.Action.belongsTo(exports.models.ActionPlan, { as: 'ActionPlan', foreignKey: 'actionPlanId' });
+// ScoreCard
+// Comment
+exports.models.Comment.belongsToMany(exports.models.Issue, {
+    through: 'IssueComments'
+});
+exports.models.Comment.belongsToMany(exports.models.Action, {
+    through: 'ActionComments'
+});
+// ProgressReport
+exports.models.ProgressReport.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
 sequelize.sync({ force: true });

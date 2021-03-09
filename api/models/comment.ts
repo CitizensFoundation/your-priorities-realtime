@@ -14,22 +14,22 @@ import {
 
 import { Round } from './round';
 
-interface IssueCreationAttributes extends Optional<IssueAttributes, "id"> {}
+interface CommentCreationAttributes extends Optional<CommentAttributes, "id"> {}
 
-export class Issue
-  extends Model<IssueAttributes, IssueCreationAttributes>
-  implements IssueAttributes {
+export class Comment
+  extends Model<CommentAttributes, CommentCreationAttributes>
+  implements CommentAttributes {
   public id!: number;
   public roundId!: number;
   public userId!: number;
-  public description!: string;
+  public content!: string;
   public language!: string;
   public type!: number;
-  public state!: number;
+  public status!: number;
   public counterUpVotes!: number;
   public counterDownVotes!: number;
-  public publicData!: IssuePublicDataAttributes | null;
-  public privateData!: IssuePrivateDataAttributes | null;
+  public publicData!: CommentPublicDataAttributes | null;
+  public privateData!: CommentPrivateDataAttributes | null;
 
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
@@ -37,8 +37,8 @@ export class Issue
   public readonly completedAt?: Date;
 }
 
-export const InitIssue = (sequelize: Sequelize) => {
-  Issue.init(
+export const InitComment = (sequelize: Sequelize) => {
+  Comment.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -53,11 +53,15 @@ export const InitIssue = (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      description: {
+      content: {
         type: new DataTypes.STRING,
         allowNull: false,
       },
       type: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      status: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -83,10 +87,6 @@ export const InitIssue = (sequelize: Sequelize) => {
         type: DataTypes.JSONB,
         allowNull: true,
       },
-      state: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -99,10 +99,10 @@ export const InitIssue = (sequelize: Sequelize) => {
     {
       timestamps: true,
       paranoid: true,
-      tableName: "issues",
+      tableName: "comments",
       sequelize
     }
   );
 
-  return Issue;
+  return Comment;
 }

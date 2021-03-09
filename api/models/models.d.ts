@@ -115,6 +115,10 @@ interface IssuePublicDataAttributes {
   data: string;
 }
 
+interface IssuePrivateDataAttributes {
+  data: string;
+}
+
 interface IssueAttributes {
   id: number;
   description: string;
@@ -128,6 +132,7 @@ interface IssueAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   publicData: IssuePublicDataAttributes | null;
+  privateData: IssuePublicDataAttributes | null;
 }
 
 interface ActionPlanAttributes {
@@ -157,6 +162,41 @@ interface ScoreCardAttributes {
   roundId: number;
   state: number;
   type: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+interface CommentPublicDataAttributes {
+  data: string;
+}
+
+interface CommentPrivateDataAttributes {
+  data: string;
+}
+
+interface CommentAttributes {
+  id: number;
+  content: string;
+  language?: string;
+  roundId: number;
+  userId: number;
+  type: number;
+  status: number;
+  counterUpVotes: number;
+  counterDownVotes: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  publicData: CommentPublicDataAttributes | null;
+  privateData: CommentPrivateDataAttributes | null;
+}
+
+interface ProgressReportAttributes {
+  id: number;
+  actionId: number;
+  userId: number;
+  content: string;
+  language?: string;
+  timeFrame: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

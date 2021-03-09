@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitIssue = exports.Issue = void 0;
+exports.InitComment = exports.Comment = void 0;
 const sequelize_1 = require("sequelize");
-class Issue extends sequelize_1.Model {
+class Comment extends sequelize_1.Model {
 }
-exports.Issue = Issue;
-const InitIssue = (sequelize) => {
-    Issue.init({
+exports.Comment = Comment;
+const InitComment = (sequelize) => {
+    Comment.init({
         id: {
             type: sequelize_1.DataTypes.INTEGER,
             autoIncrement: true,
@@ -20,11 +20,15 @@ const InitIssue = (sequelize) => {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
-        description: {
+        content: {
             type: new sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
         type: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: false,
+        },
+        status: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
@@ -50,10 +54,6 @@ const InitIssue = (sequelize) => {
             type: sequelize_1.DataTypes.JSONB,
             allowNull: true,
         },
-        state: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
-        },
         createdAt: {
             type: sequelize_1.DataTypes.DATE,
             allowNull: false,
@@ -65,9 +65,9 @@ const InitIssue = (sequelize) => {
     }, {
         timestamps: true,
         paranoid: true,
-        tableName: "issues",
+        tableName: "comments",
         sequelize
     });
-    return Issue;
+    return Comment;
 };
-exports.InitIssue = InitIssue;
+exports.InitComment = InitComment;
