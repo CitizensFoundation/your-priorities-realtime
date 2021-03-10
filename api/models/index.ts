@@ -153,3 +153,28 @@ models.Comment.belongsToMany(models.Action, {
 models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });
 
 sequelize.sync({force: true});
+
+models.User.create({
+  name: "Robert Bjarnason",
+  email: "robert@citizens.is",
+  encrypedPassword: "dsDSDJWD)dw9jdw9d92",
+  language:"en"
+}).then(user=>{
+  models.Project.create({
+    name: "Test Project",
+    description: "This is a test project",
+    userId: user.id,
+    language: "en",
+    publicData: {
+      service: "",
+      locations: "",
+      keyContacts: "123",
+      languages: "ru,en,ky"
+    }
+  })
+}).catch( error => {
+  console.error(error);
+})
+
+
+

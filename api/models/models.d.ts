@@ -7,6 +7,7 @@ interface UserAttributes {
   ypUserId?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  Roles?: Array<RoleAttributes>;
 }
 
 interface RoleAttributes {
@@ -27,10 +28,12 @@ interface ProjectAttributes {
   id: number;
   userId: number;
   name: string;
+  description: string;
   language: string | null;
   publicData: ProjectPublicDataAttributes | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  Rounds?: Array<RoundAttributes>;
 }
 
 interface RoundPublicDataAttributes {
@@ -125,6 +128,7 @@ interface IssueAttributes {
   language?: string;
   roundId: number;
   userId: number;
+  projectId: number;
   type: number;
   state: number;
   counterUpVotes: number;

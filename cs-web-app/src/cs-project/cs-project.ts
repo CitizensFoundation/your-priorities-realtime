@@ -12,15 +12,23 @@ import '@material/mwc-button';
 
 import Chart from 'chart.js';
 
-import { YpServerApi } from '../@yrpri/YpServerApi.js';
+import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { YpFormattingHelpers } from '../@yrpri/YpFormattingHelpers.js';
 
 export const ProjectTabTypes: Record<string, number> = {
   Information: 0,
-  Analytics: 1,
-  Activities: 2
+  CoreIssues: 1,
+  participants: 2,
+  Analytics: 3,
+  Activities: 4,
+};
+
+export const IssueTypes: Record<string, number> = {
+  CoreIssue: 0,
+  UserIssue: 1,
+  ProviderIssue: 2,
 };
 
 @customElement('cs-project')
@@ -31,11 +39,11 @@ export class CsProject extends YpBaseElement {
   @property({ type: Boolean })
   tabsHidden = false;
 
-  @property({ type: Number })
-  domainId: number | undefined;
-
   @property({ type: Object })
-  community: YpCommunityData | undefined;
+  project: ProjectAttributes | undefined;
+
+  @property({ type: Number })
+  projectId: number | undefined;
 
   @property({ type: String })
   subRoute: string | undefined;
@@ -43,104 +51,25 @@ export class CsProject extends YpBaseElement {
   @property({ type: Number })
   selectedTab = ProjectTabTypes.Information;
 
-  @property({ type: Array })
-  projects: Array<CsProjectData> | undefined;
-
-  @property({ type: Boolean })
-  hideNewsfeed = false;
-
-  @property({ type: Boolean })
-  locationHidden = false;
-
-  @property({ type: Boolean })
-  hideCollection = false;
-
-  @property({ type: String })
-  createFabIcon: string | undefined;
-
-  @property({ type: String })
-  createFabLabel: string | undefined;
-
   @property({ type: Boolean })
   saved = false;
 
   @property({ type: Array })
-  rounds: Array<CsProjectRoundData> = [];
+  coreIssues: Array<IssueAttributes> | undefined;
 
   @property({ type: Array })
-  coreIssues: Array<CsIssueData> = [];
+  participants: Array<UserAttributes> | undefined;
 
   chart: Chart | undefined;
 
-  charts: Record<number, Chart> = {}
-
-  collectionType: string;
-  collectionItemType: string;
-
-  project: CsProjectData = {
-    id: 3,
-    user_id: 1,
-    name: '',
-    description: '',
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
-
-  archivedProjects: Array<CsProjectData> = [
-    {
-      id: 1,
-      user_id: 1,
-      name: 'Project 1',
-      description: 'Project 1 description',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-    {
-      id: 2,
-      user_id: 1,
-      name: 'Project 2',
-      description: 'Project 2 description',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  ];
+  charts: Record<number, Chart> = {};
 
   constructor() {
     super();
-    this.collectionType = 'community';
-    this.collectionItemType = 'project';
 
     //TODO: Fix this as it causes loadMoreData to be called twice on post lists at least
     // this.addGlobalListener('yp-logged-in', this._getCollection.bind(this));
-    this.addGlobalListener('yp-got-admin-rights', this.refresh.bind(this));
-
-    this.community = {
-      id: 1,
-      name: 'ARIS',
-      description: '',
-      hostname: '',
-      domain_id: 1,
-      only_admins_can_create_groups: true,
-      configuration: {
-        disableDomainUpLink: false,
-        forceSecureSamlLogin: false,
-      },
-      counter_communities: 0,
-      counter_points: 0,
-      counter_posts: 0,
-      counter_users: 0,
-      Domain: {
-        id: 1,
-        name: '',
-        domain_name: '',
-        only_admins_can_create_communities: false,
-        Communities: [],
-        counter_points: 0,
-        counter_posts: 0,
-        counter_users: 0,
-        configuration: {},
-      },
-    };
+    //this.addGlobalListener('yp-got-admin-rights', this.refresh.bind(this));
   }
 
   connectedCallback() {
@@ -159,52 +88,53 @@ export class CsProject extends YpBaseElement {
 
   refresh(): void {
     console.error('REFRESH');
-    if (this.community) {
-      if (this.community.default_locale != null) {
-        window.appGlobals.changeLocaleIfNeeded(this.community.default_locale);
+    if (this.project) {
+      /*if (this.project.default_locale != null) {
+        window.appGlobals.changeLocaleIfNeeded(this.project.default_locale);
       }
 
-      if (this.community.theme_id !== undefined) {
-        window.appGlobals.theme.setTheme(this.community.theme_id);
+      if (this.project.theme_id !== undefined) {
+        window.appGlobals.theme.setTheme(this.project.theme_id);
       }
 
       this.fire('yp-set-home-link', {
         type: this.collectionType,
-        id: this.community.id,
-        name: this.community.name,
-      });
+        id: this.project.id,
+        name: this.project.name,
+      });*/
 
       this.fire('yp-change-header', {
         headerTitle: null,
-        documentTitle: this.community.name,
-        headerDescription:
-          this.community.description || this.community.objectives,
+        documentTitle: this.project.name,
+        headerDescription: this.project.description,
       });
-
-      if (this.community.configuration?.hideAllTabs) {
-        this.tabsHidden = true;
-      } else {
-        this.tabsHidden = false;
-      }
     }
   }
 
-  async _getCollection() {
-    if (this.domainId) {
-      this.community = undefined;
-      this.projects = undefined;
-      this.community = (await window.serverApi.getCollection(
-        this.collectionType,
-        this.domainId
-      )) as YpCommunityData | undefined;
-      this.refresh();
-    } else {
-      console.error('No community id for _getCollection');
-    }
+  async _getProject() {
+    this.project = undefined;
+    this.project = (await window.serverApi.getProject(this.projectId!)) as
+      | ProjectAttributes
+      | undefined;
+  }
+
+  async _getIssues() {
+    this.coreIssues = undefined;
+    this.coreIssues = (await window.serverApi.getIssues(
+      this.projectId!,
+      IssueTypes.CoreIssue
+    )) as Array<IssueAttributes> | undefined;
+  }
+
+  async _getParticipants() {
+    this.participants = undefined;
+    this.participants = (await window.serverApi.getParticipants(
+      this.projectId!
+    )) as Array<UserAttributes> | undefined;
   }
 
   async _getHelpPages() {
-    if (this.domainId) {
+    /*if (this.domainId) {
       const helpPages = (await window.serverApi.getHelpPages(
         this.collectionType,
         this.domainId
@@ -214,94 +144,103 @@ export class CsProject extends YpBaseElement {
       }
     } else {
       console.error('Collection id setup for get help pages');
-    }
+    }*/
   }
 
-  get collectionTabLabel(): string {
-    const translatedCollectionItems = this.t(
-      YpServerApi.transformCollectionTypeToApi(this.collectionItemType)
+  randomChartScalingFactor(): number {
+    return Math.trunc(Math.round(Math.random() * 5));
+  }
+
+  setupChart(number: number, title: string) {
+    const lineChartElement = this.shadowRoot!.getElementById(
+      `line-chart-${number}`
     );
-    return `${translatedCollectionItems} (${
-      this.projects ? this.projects.length : 0
-    })`;
-  }
-
-  randomScalingFactor(): number {
-    return Math.trunc((Math.round(Math.random() * 5)));
-  }
-
-  setupChart (number: number, title: string) {
-    const lineChartElement = this.shadowRoot!.getElementById(`line-chart-${number}`);
     const config = {
-			type: 'line',
-			data: {
-				labels: ['Round 1', 'Round 2', 'Round 3', 'Round 4', 'Round 5', 'Round 6', 'Round 7'],
-				datasets: [{
-					label: this.t('communityScore'),
-					backgroundColor: "#FFF",
-          borderColor: "#000",
-          beginAtZero: true,
-					data: [
-						this.randomScalingFactor(),
-						this.randomScalingFactor(),
-						this.randomScalingFactor(),
-						this.randomScalingFactor(),
-						this.randomScalingFactor(),
-						this.randomScalingFactor(),
-						this.randomScalingFactor()
-					],
-					fill: false,
-        }
-      ]
-			},
-			options: {
+      type: 'line',
+      data: {
+        labels: [
+          'Round 1',
+          'Round 2',
+          'Round 3',
+          'Round 4',
+          'Round 5',
+          'Round 6',
+          'Round 7',
+        ],
+        datasets: [
+          {
+            label: this.t('projectScore'),
+            backgroundColor: '#FFF',
+            borderColor: '#000',
+            beginAtZero: true,
+            data: [
+              this.randomChartScalingFactor(),
+              this.randomChartScalingFactor(),
+              this.randomChartScalingFactor(),
+              this.randomChartScalingFactor(),
+              this.randomChartScalingFactor(),
+              this.randomChartScalingFactor(),
+              this.randomChartScalingFactor(),
+            ],
+            fill: false,
+          },
+        ],
+      },
+      options: {
         responsive: false,
         elements: {
           line: {
-              tension: 0.1
-          }
+            tension: 0.1,
+          },
         },
-				title: {
-					display: true,
+        title: {
+          display: true,
           text: title,
-          fontSize: 20
-				},
-				tooltips: {
-					mode: 'index',
-					intersect: false,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
-				scales: {
-					xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: false,
-							labelString: 'Rounds'
-						},
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Score'
+          fontSize: 20,
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true,
+        },
+        scales: {
+          xAxes: [
+            {
+              display: true,
+              scaleLabel: {
+                display: false,
+                labelString: 'Rounds',
+              },
             },
-            ticks: {
-              beginAtZero: true,
-              stepSize: 1,
-          }
-					}]
-				}
-			}
+          ],
+          yAxes: [
+            {
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Score',
+              },
+              ticks: {
+                beginAtZero: true,
+                stepSize: 1,
+              },
+            },
+          ],
+        },
+      },
     };
 
     if (this.charts[number]) {
-//      this.charts.destroy();
+      //      this.charts.destroy();
     }
 
-    this.charts[number] = new Chart(lineChartElement as HTMLCanvasElement, config as any);
+    this.charts[number] = new Chart(
+      lineChartElement as HTMLCanvasElement,
+      config as any
+    );
   }
 
   // UI
@@ -346,7 +285,8 @@ export class CsProject extends YpBaseElement {
           margin-top: 16px;
         }
 
-        .issues, .rounds {
+        .issues,
+        .rounds {
           font-size: var(--mdc-typography-body-font-size);
           font-weight: var(--mdc-typography-body-font-weight);
           max-width: 450px;
@@ -402,28 +342,33 @@ export class CsProject extends YpBaseElement {
     ];
   }
 
-  addIssue() {
-    this.coreIssues = [
-      ...this.coreIssues,
-      {
-        id: 5,
-        user_id: 1,
-        type: 'core',
-        counter_flags: 0,
-        counter_endorsements_down: 0,
-        counter_points: 0,
-        counter_endorsements_up: 0,
-        created_at: new Date(),
-        updated_at: new Date(),
-        content: (this.$$('#coreIssueInput') as HTMLInputElement).value,
-      },
-    ];
+  async addIssue() {
+
+    const issue = {
+      description: (this.$$('#coreIssueInput') as HTMLInputElement).value,
+    } as IssueAttributes;
+
+    await window.serverApi.postIssue(
+      this.projectId!,
+      issue
+    );
+
+    this._getIssues();
 
     (this.$$('#coreIssueInput') as HTMLInputElement).value = '';
   }
 
+  async addParticipants() {
+    await window.serverApi.postParticipants(
+      this.projectId!,
+      { participants: (this.$$('#addParticipantsInput') as HTMLInputElement).value }
+    );
+    this._getParticipants();
+    (this.$$('#addParticipantsInput') as HTMLInputElement).value = '';
+  }
+
   addRound() {
-    this.rounds = [
+    /*this.rounds = [
       ...this.rounds,
       {
         id: 5,
@@ -434,44 +379,78 @@ export class CsProject extends YpBaseElement {
         starts_at: new Date(),
         ends_at: new Date(),
       },
-    ];
+    ];*/
+  }
+
+  _getRoles(user: UserAttributes) {
+    return user.Roles?.map(role => {
+      return `${this.t(role.nameToken)}`
+    })
   }
 
   renderTabs() {
-    if (!this.tabsHidden) {
-      return html`
-        <div class="layout vertical center-center">
-          <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
-            <mwc-tab
-              .label="${this.t('information')}"
-              icon="groups"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('analytics')}"
-              icon="equalizer"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('activities')}"
-              icon="rss_feed"
-              stacked
-            ></mwc-tab>
-          </mwc-tab-bar>
-        </div>
-      `;
-    } else {
-      return nothing;
-    }
-  }
-
-  renderIssues() {
     return html`
       <div class="layout vertical center-center">
+        <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
+          <mwc-tab
+            .label="${this.t('information')}"
+            icon="info_outlined"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            .label="${this.t('coreIssues')}"
+            icon="list"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            .label="${this.t('participants')}"
+            icon="emoji_people"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            .label="${this.t('analytics')}"
+            icon="equalizer"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            .label="${this.t('activities')}"
+            icon="rss_feed"
+            stacked
+          ></mwc-tab>
+        </mwc-tab-bar>
+      </div>
+    `;
+  }
+
+  renderCoreIssues() {
+    return html`
+      <div class="layout horizontal center-center coreIssuesTitle">
+        ${this.t('coreIssues')}
+      </div>
+      <div class="layout vertical">
+        <mwc-textarea
+          ?hidden="${this.saved}"
+          charCounter
+          maxLength="200"
+          id="coreIssueInput"
+          .label="${this.t('coreIssue')}"
+        ></mwc-textarea>
+        <div class="layout horizontal center-center">
+          <mwc-button
+            raised
+            class="layout addNewIssueButton"
+            @click="${this.addIssue}"
+            .label="${this.t('addCoreIssue')}"
+          ></mwc-button>
+        </div>
+      </div>
+      <div class="layout vertical center-center">
         <div class="issues ">
-          ${this.coreIssues.map(
-            (issue: CsIssueData, index: number) => html`
-              <div class="issue  shadow-elevation-2dp shadow-transition">${index + 1}. ${issue.content}</div>
+          ${this.coreIssues?.map(
+            (issue, index: number) => html`
+              <div class="issue shadow-elevation-2dp shadow-transition">
+                ${index + 1}. ${issue.description}
+              </div>
             `
           )}
         </div>
@@ -479,7 +458,42 @@ export class CsProject extends YpBaseElement {
     `;
   }
 
-  renderEdit() {
+  renderParticipants() {
+    return html`
+      <div class="layout horizontal center-center coreIssuesTitle">
+        ${this.t('participants')}
+      </div>
+      <div class="layout vertical">
+        <mwc-textarea
+          maxLength="20000"
+          id="addParticipantsInput"
+          .label="${this.t('coreIssue')}"
+        ></mwc-textarea>
+        <div class="layout horizontal center-center">
+          <div class="layout vertical">
+
+          </div>
+          <mwc-button
+            raised
+            class="layout addParticipantsButton"
+            @click="${this.addParticipants}"
+            .label="${this.t('addParticipants')}"
+          ></mwc-button>
+        </div>
+      </div>
+      <div class="layout vertical center-center">
+        <div class="participants shadow-elevation-2dp shadow-transition">
+          ${this.participants?.map(
+            (participant, index: number) => html`
+              ${participant.email} ${participant.language} ${this._getRoles(participants)}
+            `
+          )}
+        </div>
+      </div>
+    `;
+  }
+
+  renderEditLater() {
     return html`<div class="layout vertical center-center">
       <div class="layout vertical editBox">
         <div class="layout vertical center-center">
@@ -489,38 +503,15 @@ export class CsProject extends YpBaseElement {
               id="projectName"
               maxLength="60"
               .label="${this.t('projectName')}"
-              .value="${this.project.name}"
+              .value="${this.project?.name}"
             ></mwc-textfield>
             <mwc-textarea
               rows="3"
               charCounter
               maxLength="300"
               .label="${this.t('projectDescription')}"
-              .value="${this.project.description}"
+              .value="${this.project?.description}"
             ></mwc-textarea>
-          </div>
-          <div>
-            <div class="layout horizontal center-center coreIssuesTitle">
-              ${this.t('coreIssues')}
-            </div>
-            <div class="layout vertical">
-              <mwc-textarea
-                ?hidden="${this.saved}"
-                charCounter
-                maxLength="200"
-                id="coreIssueInput"
-                .label="${this.t('coreIssue')}"
-              ></mwc-textarea>
-              <div class="layout horizontal center-center">
-                <mwc-button raised
-                  ?hidden="${this.saved}"
-                  class="layout addNewIssueButton"
-                  @click="${this.addIssue}"
-                  .label="${this.t('addCoreIssue')}"
-                ></mwc-button>
-              </div>
-            </div>
-            ${this.renderIssues()}
           </div>
         </div>
         <div class="layout horizontal center-center">
@@ -540,17 +531,17 @@ export class CsProject extends YpBaseElement {
 
   renderAnalytics() {
     return html`
-    <div class="layout vertical center-center">
-      <canvas id="line-chart-1" width="800" height="400"></canvas>
-      <canvas id="line-chart-2" width="800" height="400"></canvas>
-      <canvas id="line-chart-3" width="800" height="400"></canvas>
-      <canvas id="line-chart-4" width="800" height="400"></canvas>
-      <canvas id="line-chart-5" width="800" height="400"></canvas>
-      <canvas id="line-chart-6" width="800" height="400"></canvas>
-      <canvas id="line-chart-7" width="800" height="400"></canvas>
-      <canvas id="line-chart-8" width="800" height="400"></canvas>
-      <canvas id="line-chart-9" width="800" height="400"></canvas>
-    </div>
+      <div class="layout vertical center-center">
+        <canvas id="line-chart-1" width="800" height="400"></canvas>
+        <canvas id="line-chart-2" width="800" height="400"></canvas>
+        <canvas id="line-chart-3" width="800" height="400"></canvas>
+        <canvas id="line-chart-4" width="800" height="400"></canvas>
+        <canvas id="line-chart-5" width="800" height="400"></canvas>
+        <canvas id="line-chart-6" width="800" height="400"></canvas>
+        <canvas id="line-chart-7" width="800" height="400"></canvas>
+        <canvas id="line-chart-8" width="800" height="400"></canvas>
+        <canvas id="line-chart-9" width="800" height="400"></canvas>
+      </div>
     `;
   }
 
@@ -561,7 +552,13 @@ export class CsProject extends YpBaseElement {
       case ProjectTabTypes.Information:
         page = this.renderInformation();
         break;
-      case ProjectTabTypes.Analytics:
+      case ProjectTabTypes.CoreIssues:
+        page = this.renderCoreIssues();
+        break;
+      case ProjectTabTypes.CoreIssues:
+        page = this.renderParticipants();
+        break;
+        case ProjectTabTypes.Analytics:
         page = this.renderAnalytics();
         break;
     }
@@ -584,9 +581,9 @@ export class CsProject extends YpBaseElement {
           ></mwc-button>
         </div>
         <div class="rounds layout vertical">
-          ${this.rounds.map(
-            (round: CsProjectRoundData, index: number) => html`
-              <a @click="${this.gotoRound}" href="/round/1"
+          ${this.project?.Rounds?.map(
+            (round: RoundAttributes, index: number) => html`
+              <a @click="${this.gotoRound}" href="/round/${round.id}"
                 ><div
                   class="layout vertical round shadow-elevation-2dp shadow-transition"
                 >
@@ -595,7 +592,9 @@ export class CsProject extends YpBaseElement {
                   </div>
                   <div class="">
                     ${this.t('round')} ${index + 1} -
-                    ${YpFormattingHelpers.formatDate(round.starts_at)}
+                    ${round.startedAt
+                      ? YpFormattingHelpers.formatDate(round.startedAt)
+                      : nothing}
                   </div>
                 </div></a
               >
@@ -607,13 +606,11 @@ export class CsProject extends YpBaseElement {
   }
 
   renderInformation() {
-    return html`${this.renderEdit()} ${this.saved ? this.renderProjectRounds() : nothing}`;
+    return html`${this.project ? this.renderProjectRounds() : nothing}`;
   }
 
   render() {
-    return html`
-      ${this.renderTabs()} ${this.renderCurrentTabPage()}
-    `;
+    return html` ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
   }
 
   createProject() {
@@ -627,13 +624,12 @@ export class CsProject extends YpBaseElement {
     YpNavHelpers.redirectTo('/round/1');
   }
 
-
   async updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
 
     if (changedProperties.has('subRoute') && this.subRoute) {
       const splitSubRoute = this.subRoute.split('/');
-      this.domainId = parseInt(splitSubRoute[1]);
+      this.projectId = parseInt(splitSubRoute[1]);
       if (splitSubRoute.length > 2) {
         this._setSelectedTabFromRoute(splitSubRoute[1]);
       } else {
@@ -641,24 +637,24 @@ export class CsProject extends YpBaseElement {
       }
     }
 
-    if (changedProperties.has('domainId') && this.domainId) {
-      //this._getCollection();
+    if (changedProperties.has('projectId') && this.projectId) {
+      this._getProject();
+      this._getIssues();
       //this._getHelpPages();
     }
 
-
     if (changedProperties.has('selectedTab')) {
-      if (this.selectedTab==ProjectTabTypes.Analytics) {
+      if (this.selectedTab == ProjectTabTypes.Analytics) {
         await this.requestUpdate();
-        this.setupChart(1,this.stockIssues[0]);
-        this.setupChart(2,this.stockIssues[1]);
-        this.setupChart(3,this.stockIssues[2]);
-        this.setupChart(4,this.stockIssues[3]);
-        this.setupChart(5,this.stockIssues[4]);
-        this.setupChart(6,this.stockIssues[5]);
-        this.setupChart(7,this.stockIssues[6]);
-        this.setupChart(8,this.stockIssues[7]);
-        this.setupChart(9,this.stockIssues[8]);
+        this.setupChart(1, this.stockIssues[0]);
+        this.setupChart(2, this.stockIssues[1]);
+        this.setupChart(3, this.stockIssues[2]);
+        this.setupChart(4, this.stockIssues[3]);
+        this.setupChart(5, this.stockIssues[4]);
+        this.setupChart(6, this.stockIssues[5]);
+        this.setupChart(7, this.stockIssues[6]);
+        this.setupChart(8, this.stockIssues[7]);
+        this.setupChart(9, this.stockIssues[8]);
       }
     }
   }
@@ -668,13 +664,12 @@ export class CsProject extends YpBaseElement {
     'Affordability of services',
     'Availability of medicine',
     'Distance to health centre',
-    'Equal access to the health services for all community members',
+    'Equal access to the health services for all project members',
     'Punctuality of staff',
     'Polite behavior',
     "Listening to patients' problems",
     'Honest and transparent staff (in terms of dealing with drugs, food, etc)',
   ];
-
 
   _selectTab(event: CustomEvent) {
     this.selectedTab = event.detail?.index as number;
@@ -696,10 +691,10 @@ export class CsProject extends YpBaseElement {
 
     if (tabNumber) {
       this.selectedTab = tabNumber;
-      window.appGlobals.activity(
+      /*window.appGlobals.activity(
         'open',
         this.collectionType + '_tab_' + routeTabName
-      );
+      );*/
     }
   }
 }

@@ -3,7 +3,7 @@ import i18next from 'i18next';
 //TODO: Fix moment
 //import moment from 'moment';
 
-import { YpServerApi } from '../@yrpri/YpServerApi.js';
+import { YpServerApi } from '../CsServerApi.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { YpCodeBase } from '../@yrpri/YpCodeBaseclass.js';
 import { YpRecommendations } from './YpRecommendations.js';

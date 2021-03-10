@@ -21,6 +21,7 @@ export class Issue
   implements IssueAttributes {
   public id!: number;
   public roundId!: number;
+  public projectId!: number;
   public userId!: number;
   public description!: string;
   public language!: string;
@@ -35,7 +36,10 @@ export class Issue
   public readonly updatedAt?: Date;
   public readonly staredAt?: Date;
   public readonly completedAt?: Date;
+
+  static CoreIssueType = 0;
 }
+
 
 export const InitIssue = (sequelize: Sequelize) => {
   Issue.init(
@@ -50,6 +54,10 @@ export const InitIssue = (sequelize: Sequelize) => {
         allowNull: false,
       },
       roundId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      projectId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

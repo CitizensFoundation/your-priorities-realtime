@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { YpServerApi } from '../@yrpri/YpServerApi.js';
+import { YpServerApi } from '../CsServerApi.js';
 import { YpCodeBase } from '../@yrpri/YpCodeBaseclass.js';
 import { YpAccessHelpers } from '../@yrpri/YpAccessHelpers.js';
 

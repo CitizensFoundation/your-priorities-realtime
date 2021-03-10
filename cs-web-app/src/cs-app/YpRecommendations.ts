@@ -1,5 +1,5 @@
 import { YpCodeBase } from '../@yrpri/YpCodeBaseclass.js'
-import { YpServerApi } from '../@yrpri/YpServerApi.js';
+import { YpServerApi } from '../CsServerApi.js';
 
 export class YpRecommendations extends YpCodeBase {
 

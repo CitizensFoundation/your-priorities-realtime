@@ -47,4 +47,27 @@ export class ProjectsController {
       res.send(error);
     })
   }
+
+  getIssues = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Issue.findAll({
+      where: {
+        projectId: req.params.id,
+        type: req.params.issueType
+      },
+      include: [
+        {
+          model: (models.Round as any),
+          as: "Rounds"
+        }
+      ]
+    }).then( project => {
+      res.send(project);
+    }).catch( error => {
+      res.send(error);
+    })
+  }
+
 }

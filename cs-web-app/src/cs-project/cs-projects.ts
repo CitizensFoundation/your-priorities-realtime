@@ -8,7 +8,7 @@ import { YpMediaHelpers } from '../@yrpri/YpMediaHelpers.js';
 
 import '@material/mwc-tab-bar';
 import '@material/mwc-fab';
-import { YpServerApi } from '../@yrpri/YpServerApi.js';
+import { YpServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 
@@ -41,7 +41,7 @@ export class CsProjects extends YpBaseElement {
   selectedTab = ProjectsTabTypes.Current;
 
   @property({ type: Array })
-  projects: Array<CsProjectData> | undefined;
+  projects: Array<ProjectAttributes> | undefined;
 
   @property({ type: Boolean })
   hideNewsfeed = false;
@@ -67,36 +67,67 @@ export class CsProjects extends YpBaseElement {
       name: 'Project 3',
       description:
         'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
-      created_at: new Date(),
-      updated_at: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      language: "en",
+      userId: 1,
+      publicData: {
+        service: "123",
+        locations: "123",
+        keyContacts: "123",
+        languages: "en,ky,ru"
+      },
     },
     {
       id: 4,
-      user_id: 1,
-      name: 'Project 4',
+      name: 'Project 3',
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-      created_at: new Date(),
-      updated_at: new Date(),
+        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      language: "en",
+      userId: 1,
+      publicData: {
+        service: "123",
+        locations: "123",
+        keyContacts: "123",
+        languages: "en,ky,ru"
+      },
     },
   ];
 
-  archivedProjects: Array<CsProjectData> = [
+  archivedProjects: Array<ProjectAttributes> = [
     {
       id: 1,
-      user_id: 1,
-      name: 'Project 1',
-      description: 'Project 1 description',
-      created_at: new Date(),
-      updated_at: new Date(),
+      name: 'Project 4',
+      description:
+        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      language: "en",
+      userId: 1,
+      publicData: {
+        service: "123",
+        locations: "123",
+        keyContacts: "123",
+        languages: "en,ky,ru"
+      },
     },
     {
       id: 2,
-      user_id: 1,
-      name: 'Project 2',
-      description: 'Project 2 description',
-      created_at: new Date(),
-      updated_at: new Date(),
+      name: 'Project 5',
+      description:
+        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      language: "en",
+      userId: 1,
+      publicData: {
+        service: "123",
+        locations: "123",
+        keyContacts: "123",
+        languages: "en,ky,ru"
+      },
     },
   ];
 

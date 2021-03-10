@@ -37,7 +37,7 @@ import { YpBaseElement } from '../@yrpri/yp-base-element.js';
 //import { YpAppStyles } from './YpAppStyles.js';
 import { YpAppGlobals } from './YpAppGlobals.js';
 import { YpAppUser } from './YpAppUser.js';
-import { YpServerApi } from '../@yrpri/YpServerApi.js';
+import { CsServerApi } from '../CsServerApi.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { YpAppDialogs } from './yp-app-dialogs.js';
 
@@ -63,7 +63,7 @@ declare global {
     appGlobals: YpAppGlobals;
     appUser: YpAppUser;
     appDialogs: YpAppDialogs;
-    serverApi: YpServerApi;
+    serverApi: CsServerApi;
     app: CsApp;
   }
 }
@@ -175,7 +175,7 @@ export class CsApp extends YpBaseElement {
   constructor() {
     super();
     window.app = this;
-    window.serverApi = new YpServerApi();
+    window.serverApi = new CsServerApi();
     window.appGlobals = new YpAppGlobals(window.serverApi);
     window.appUser = new YpAppUser(window.serverApi);
     this._setupTranslationSystem();

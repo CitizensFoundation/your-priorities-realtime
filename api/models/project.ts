@@ -24,6 +24,7 @@ export class Project
   public id!: number;
   public userId!: number;
   public name!: string;
+  public description!: string;
   public language!: string | null;
   public publicData!: ProjectPublicDataAttributes | null;
 
@@ -61,6 +62,10 @@ export const InitProject = (sequelize: Sequelize) => {
       },
       name: {
         type: new DataTypes.STRING(256),
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       language: {
