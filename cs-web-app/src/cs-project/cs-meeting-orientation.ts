@@ -75,7 +75,7 @@ export class CsMeetingOrientation extends CsMeetingBase {
     if (!this.isAdmin) {
       super._processState(state);
       if (state.storyPageIndex) {
-        (this.$$("story") as CsStory).setIndex(state.storyPageIndex);
+        (this.$$("#storyViewer") as CsStory).setIndex(state.storyPageIndex);
       }
       this.selectedTab = state.tabIndex;
     }
@@ -91,14 +91,14 @@ export class CsMeetingOrientation extends CsMeetingBase {
   renderStory() {
     return html`
       <div class="layout horizontal center-center">
-        <cs-story id="story" @cs-story-index="${this.setStoryIndex}"></cs-story>
+        <cs-story id="storyViewer" @cs-story-index="${this.setStoryIndex}"></cs-story>
       </div>
     `;
   }
 
   renderTabs() {
     return html`
-      <div class="layout vertical center-center">
+      <div class="layout vertical center-center" ?hidden="${!this.isAdmin}">
         <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
           <mwc-tab
             .label="${this.t('orientation')}"

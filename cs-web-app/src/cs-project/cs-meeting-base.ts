@@ -156,7 +156,8 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   renderHeader() {
-    return html`
+    if (this.isAdmin) {
+      return html`
       <div class="layout horizontal center-center">
         <div class="layout vertical">
           <mwc-formfield .label="${this.t('live')}">
@@ -174,6 +175,9 @@ export class CsMeetingBase extends YpBaseElement {
         <div class="layout vertical">${this.renderSendEmail()}</div>
       </div>
     `;
+    } else {
+      return nothing;
+    }
   }
 
   _selectTab(event: CustomEvent) {

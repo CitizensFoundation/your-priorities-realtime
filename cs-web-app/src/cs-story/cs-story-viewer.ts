@@ -43,6 +43,8 @@ export class CsStoryViewer extends YpBaseElement {
       deltaX > 0 ? this.previous() : this.next();
     }
 
+    this.fire('cs-story-index', this.index);
+
     const width = this.clientWidth;
     const minScale = 0.8;
     // We don't want the latent deltaX when releasing a pan.
@@ -72,8 +74,6 @@ export class CsStoryViewer extends YpBaseElement {
       0,
       Math.min(this.children.length - 1, this.index + 1)
     );
-
-    this.fire('cs-story-index', this.index);
 
     if (this.index === this.children.length - 1) {
       this.fire('cs-last-story-card')

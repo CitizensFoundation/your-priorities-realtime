@@ -21,7 +21,7 @@ export class CsStory extends YpBaseElement {
   number = 1
 
   setIndex(index: number) {
-    (this.$$("viewer") as CsStoryViewer).setIndex(index);
+    (this.$$("#viewer") as CsStoryViewer).setIndex(index);
   }
 
   renderStoryOne() {
