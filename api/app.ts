@@ -21,7 +21,7 @@ export class App {
 
     this.app.use('/project*', express.static(path.join(__dirname, '/../../cs-web-app/dist')));
     this.app.use('/round*', express.static(path.join(__dirname, '/../../cs-web-app/dist')));
-
+    this.app.use('/meeting*', express.static(path.join(__dirname, '/../../cs-web-app/dist')));
 
     if (process.env.NODE_ENV !== 'development' && !process.env.DISABLE_FORCE_HTTPS) {
       this.app.enable('trust proxy');

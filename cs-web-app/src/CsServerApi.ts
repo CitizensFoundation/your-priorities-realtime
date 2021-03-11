@@ -114,6 +114,12 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  getMeeting(meetingId: number) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/meetings/${meetingId}`
+    );
+  }
+
   getIssues(projectId: number, issueType: number | undefined) {
     return this.fetchWrapper(
       this.baseUrlPath + `/projects/${projectId}/issues/${issueType}`

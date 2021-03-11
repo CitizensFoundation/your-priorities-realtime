@@ -238,4 +238,4 @@ setTimeout(() => {
             console.error(error);
         }
     })();
-}, 2000);
+}, 700);
