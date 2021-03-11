@@ -56,22 +56,42 @@ class ProjectsController {
                 res.send(error);
             });
         };
-        this.getParticipants = async (req, res) => {
+        this.getParticipantsA = async (req, res) => {
             models_1.models.User.findAll({
                 attributes: { exclude: ['encryptedPassword'] },
                 include: [
                     {
                         model: models_1.models.Project,
-                        as: "ProjectUsers",
-                        attributes: ['id'],
-                        where: {
-                            ProjectId: req.params.id
-                        }
+                        as: "ProjectUsersA",
+                        attributes: ['id']
                     }
                 ]
             }).then(users => {
                 res.send(users);
             }).catch(error => {
+                console.error(error);
+                res.send(error);
+            });
+        };
+        this.getParticipants = async (req, res) => {
+            models_1.models.Project.findOne({
+                where: {
+                    id: req.params.id
+                },
+                include: [
+                    {
+                        model: models_1.models.User
+                    }
+                ]
+            }).then(project => {
+                if (project) {
+                    res.send(project.Users);
+                }
+                else {
+                    res.sendStatus(404);
+                }
+            }).catch(error => {
+                console.error(error);
                 res.send(error);
             });
         };
@@ -82,7 +102,7 @@ class ProjectsController {
         this.router.post(this.path + "/:id/addParticipants", this.addParticipants);
         this.router.post(this.path + "/:id/addIssue", this.addIssue);
         this.router.get(this.path + "/:id", this.getProject);
-        this.router.get(this.path + "/:id/getParticipants", this.getParticipants);
+        this.router.get(this.path + "/:id/participants", this.getParticipants);
         this.router.get(this.path + "/:id/issues/:issueType", this.getIssues);
     }
 }

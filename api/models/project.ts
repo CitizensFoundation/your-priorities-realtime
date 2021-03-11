@@ -6,10 +6,13 @@ import {
   HasManyGetAssociationsMixin,
   HasManyAddAssociationMixin,
   HasManyHasAssociationMixin,
+  BelongsToManyAddAssociationMixin,
   Association,
   HasManyCountAssociationsMixin,
   HasManyCreateAssociationMixin,
   Optional,
+  BelongsToManyGetAssociationsMixinOptions,
+  BelongsToManyGetAssociationsMixin,
 } from "sequelize";
 
 import express from "express";
@@ -41,17 +44,17 @@ export class Project
   public getRound!: HasManyGetAssociationsMixin<Round>; // Note the null assertions!
   public addRound!: HasManyAddAssociationMixin<Round, number>;
 
-  public getUser!: HasManyGetAssociationsMixin<User>; // Note the null assertions!
-  public addUser!: HasManyAddAssociationMixin<User, number>;
+  public getUser!: BelongsToManyGetAssociationsMixin<User>; // Note the null assertions!
+  public addUser!: BelongsToManyAddAssociationMixin<User, number>;
 
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
-  public readonly rounds?: Round[]; // Note this is optional since it's only populated when explicitly requested in code
-  public readonly users?: User[]; // Note this is optional since it's only populated when explicitly requested in code
+  public readonly Rounds?: Round[]; // Note this is optional since it's only populated when explicitly requested in code
+  public readonly Users?: User[]; // Note this is optional since it's only populated when explicitly requested in code
 
   public static associations: {
-    rounds: Association<Project, Round>,
-    users: Association<Project, User>
+    Rounds: Association<Project, Round>,
+    Users: Association<Project, User>
   };
 
   public static async addParticipants(body: ParticipantsUploadAttributes, res: express.Response) {
@@ -67,29 +70,33 @@ export class Project
         }
       })
       for (let i=0; i<lines.length;i++) {
-        const splitLine = lines[0].split(",")
-        const email = splitLine[0];
-        const name = splitLine[0];
-        const user = await models.User.create({
-          name,
-          email,
-          language,
-          encrypedPassword: "12345"
-        });
+        if (lines[i].length>10) {
+          const splitLine = lines[i].split(",")
+          const email = splitLine[0];
+          const name = splitLine[1];
+          const user = await models.User.create({
+            name,
+            email,
+            language,
+            encrypedPassword: "12345"
+          });
 
-        await user.addRole(role!);
+          await user.addRole(role!);
 
-        const project = await models.Project.findOne({
-          where: {
-            id: projectId
+          console.error("pr "+projectId);
+
+          const project = await models.Project.findOne({
+            where: {
+              id: projectId
+            }
+          })
+
+          if (!project) {
+            res.sendStatus(404);
+            break;
+          } else {
+            user.addProject(project);
           }
-        })
-
-        if (!project) {
-          res.sendStatus(404);
-          break;
-        } else {
-          project.addUser(user);
         }
       }
 

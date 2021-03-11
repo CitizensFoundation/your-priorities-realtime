@@ -51,6 +51,7 @@ export class CsServerApi extends YpServerApi {
         if (response.status===200 && response.statusText==="OK") {
           // Do nothing
         } else {
+          debugger;
           this.fireGlobal('yp-network-error', {
             response: response,
             jsonError: error,
@@ -60,6 +61,7 @@ export class CsServerApi extends YpServerApi {
       }
       return responseJson;
     } else {
+      debugger;
       this.fireGlobal('yp-network-error', {
         response: response,
         showUserError,

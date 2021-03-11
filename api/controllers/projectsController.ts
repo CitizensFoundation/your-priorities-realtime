@@ -14,7 +14,7 @@ export class ProjectsController {
     this.router.post(this.path+"/:id/addParticipants", this.addParticipants);
     this.router.post(this.path+"/:id/addIssue", this.addIssue);
     this.router.get(this.path+"/:id", this.getProject);
-    this.router.get(this.path+"/:id/getParticipants", this.getParticipants);
+    this.router.get(this.path+"/:id/participants", this.getParticipants);
     this.router.get(this.path+"/:id/issues/:issueType", this.getIssues);
   }
 
@@ -88,7 +88,7 @@ export class ProjectsController {
     })
   }
 
-  getParticipants = async (
+  getParticipantsA = async (
     req: express.Request,
     res: express.Response
   ) => {
@@ -97,16 +97,39 @@ export class ProjectsController {
       include: [
         {
           model: (models.Project as any),
-          as: "ProjectUsers",
-          attributes: ['id'],
-          where: {
-            ProjectId: req.params.id
-          }
+          as: "ProjectUsersA",
+          attributes: ['id']
         }
       ]
     }).then( users => {
       res.send(users);
     }).catch( error => {
+      console.error(error);
+      res.send(error);
+    })
+  }
+
+  getParticipants = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Project.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [
+        {
+          model: (models.User as any)
+        }
+      ]
+    }).then( project => {
+      if (project) {
+        res.send( project.Users! );
+      } else {
+        res.sendStatus(404);
+      }
+    }).catch( error => {
+      console.error(error);
       res.send(error);
     })
   }

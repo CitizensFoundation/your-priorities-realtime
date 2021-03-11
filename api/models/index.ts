@@ -57,7 +57,12 @@ models.Project.hasMany(models.Round, {
   as: "Rounds",
 });
 
-models.Project.belongsTo(models.User,  { as: 'User', foreignKey: 'userId' });
+//models.Project.belongsTo(models.User,  { as: 'User', foreignKey: 'userId' });
+
+models.Project.belongsToMany(models.User, {
+  through: 'ProjectUsers'
+});
+
 
 // User
 /*models.User.hasMany(models.Project, {

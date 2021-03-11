@@ -11,6 +11,7 @@ import {
   HasManyCountAssociationsMixin,
   HasManyCreateAssociationMixin,
   Optional,
+  BelongsToManyGetAssociationsMixin,
 } from "sequelize";
 
 import { Role } from './role';
@@ -39,8 +40,8 @@ export class User
   public addRole!: BelongsToManyAddAssociationMixin<Role, number>;
   public hasRole!: BelongsToManyAddAssociationMixin<Role, number>;
 
-  public getProject!: HasManyGetAssociationsMixin<Project>; // Note the null assertions!
-  public addProject!: HasManyAddAssociationMixin<Project, number>;
+  public getProject!: BelongsToManyGetAssociationsMixin<Project>; // Note the null assertions!
+  public addProject!: BelongsToManyAddAssociationMixin<Project, number>;
 
   public readonly roles?: Role[];
 

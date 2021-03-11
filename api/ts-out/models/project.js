@@ -16,27 +16,30 @@ class Project extends sequelize_1.Model {
                 }
             });
             for (let i = 0; i < lines.length; i++) {
-                const splitLine = lines[0].split(",");
-                const email = splitLine[0];
-                const name = splitLine[0];
-                const user = await _1.models.User.create({
-                    name,
-                    email,
-                    language,
-                    encrypedPassword: "12345"
-                });
-                await user.addRole(role);
-                const project = await _1.models.Project.findOne({
-                    where: {
-                        id: projectId
+                if (lines[i].length > 10) {
+                    const splitLine = lines[i].split(",");
+                    const email = splitLine[0];
+                    const name = splitLine[1];
+                    const user = await _1.models.User.create({
+                        name,
+                        email,
+                        language,
+                        encrypedPassword: "12345"
+                    });
+                    await user.addRole(role);
+                    console.error("pr " + projectId);
+                    const project = await _1.models.Project.findOne({
+                        where: {
+                            id: projectId
+                        }
+                    });
+                    if (!project) {
+                        res.sendStatus(404);
+                        break;
                     }
-                });
-                if (!project) {
-                    res.sendStatus(404);
-                    break;
-                }
-                else {
-                    project.addUser(user);
+                    else {
+                        user.addProject(project);
+                    }
                 }
             }
             res.sendStatus(200);

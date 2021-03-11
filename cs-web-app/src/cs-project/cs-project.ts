@@ -136,6 +136,7 @@ export class CsProject extends YpBaseElement {
     this.participants = (await window.serverApi.getParticipants(
       this.projectId!
     )) as Array<UserAttributes> | undefined;
+    debugger;
   }
 
   async _getHelpPages() {
@@ -440,7 +441,6 @@ export class CsProject extends YpBaseElement {
   }
 
   async addParticipants() {
-    debugger;
     const particpantsUpload = {
       participants: (this.$$('#addParticipantsInput') as HTMLInputElement).value,
       roleId: parseInt((this.$$('#participantsRole') as HTMLInputElement).value),
@@ -448,9 +448,13 @@ export class CsProject extends YpBaseElement {
       projectId: this.projectId
     } as ParticipantsUploadAttributes;
 
-    await window.serverApi.postParticipants(
-      this.projectId!,particpantsUpload
-    );
+    try {
+      await window.serverApi.postParticipants(
+        this.projectId!,particpantsUpload
+      );
+    } catch (error) {
+      console.error(error);
+    }
 
     this._getParticipants();
     (this.$$('#addParticipantsInput') as HTMLInputElement).value = '';
@@ -747,6 +751,7 @@ export class CsProject extends YpBaseElement {
     if (changedProperties.has('projectId') && this.projectId) {
       this._getProject();
       this._getIssues();
+      this._getParticipants();
       //this._getHelpPages();
     }
 

@@ -34,6 +34,7 @@ interface ProjectAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   Rounds?: Array<RoundAttributes>;
+  Users?: Array<UserAttributes>;
 }
 
 interface RoundPublicDataAttributes {
