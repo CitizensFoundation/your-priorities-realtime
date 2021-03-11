@@ -17,6 +17,16 @@ class ProjectsController {
                 res.send(error);
             });
         };
+        this.addIssue = async (req, res) => {
+            models_1.models.Issue.create(req.body).then(issue => {
+                res.send(issue);
+            }).catch(error => {
+                res.send(error);
+            });
+        };
+        this.addParticipants = async (req, res) => {
+            models_1.models.Project.addParticipants(req.body, res);
+        };
         this.getProject = async (req, res) => {
             models_1.models.Project.findAll({
                 where: {
@@ -34,11 +44,46 @@ class ProjectsController {
                 res.send(error);
             });
         };
+        this.getIssues = async (req, res) => {
+            models_1.models.Issue.findAll({
+                where: {
+                    projectId: req.params.id,
+                    type: req.params.issueType
+                }
+            }).then(project => {
+                res.send(project);
+            }).catch(error => {
+                res.send(error);
+            });
+        };
+        this.getParticipants = async (req, res) => {
+            models_1.models.User.findAll({
+                attributes: { exclude: ['encryptedPassword'] },
+                include: [
+                    {
+                        model: models_1.models.Project,
+                        as: "ProjectUsers",
+                        attributes: ['id'],
+                        where: {
+                            ProjectId: req.params.id
+                        }
+                    }
+                ]
+            }).then(users => {
+                res.send(users);
+            }).catch(error => {
+                res.send(error);
+            });
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
         this.router.post(this.path, this.createProject);
+        this.router.post(this.path + "/:id/addParticipants", this.addParticipants);
+        this.router.post(this.path + "/:id/addIssue", this.addIssue);
         this.router.get(this.path + "/:id", this.getProject);
+        this.router.get(this.path + "/:id/getParticipants", this.getParticipants);
+        this.router.get(this.path + "/:id/issues/:issueType", this.getIssues);
     }
 }
 exports.ProjectsController = ProjectsController;

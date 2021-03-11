@@ -48,11 +48,11 @@ exports.models.Project.hasMany(exports.models.Round, {
 });
 exports.models.Project.belongsTo(exports.models.User, { as: 'User', foreignKey: 'userId' });
 // User
-exports.models.User.hasMany(exports.models.Project, {
-    sourceKey: "id",
-    foreignKey: "userId",
-    as: "Projects"
-});
+/*models.User.hasMany(models.Project, {
+  sourceKey: "id",
+  foreignKey: "userId",
+  as: "Projects"
+});*/
 exports.models.User.belongsToMany(exports.models.Role, {
     through: 'UserRoles'
 });
@@ -120,3 +120,40 @@ exports.models.Comment.belongsToMany(exports.models.Action, {
 // ProgressReport
 exports.models.ProgressReport.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
 sequelize.sync({ force: true });
+setTimeout(() => {
+    (async () => {
+        try {
+            const user = await exports.models.User.create({
+                name: "Robert Bjarnason",
+                email: "robert@citizens.is",
+                encrypedPassword: "dsDSDJWD)dw9jdw9d92",
+                language: "en"
+            });
+            const roleNames = ["users", "providers", "workingGroup", "facilitator"];
+            const allRoles = [];
+            for (let i = 0; i < roleNames.length; i++) {
+                const role = await exports.models.Role.create({
+                    nameToken: roleNames[i],
+                });
+                allRoles.push(role);
+            }
+            await user.addRole(allRoles[3]);
+            const project = await exports.models.Project.create({
+                name: "Test Project",
+                description: "This is a test project",
+                userId: user.id,
+                language: "en",
+                publicData: {
+                    service: "",
+                    locations: "",
+                    keyContacts: "123",
+                    languages: "ru,en,ky"
+                }
+            });
+            await user.addProject(project);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    })();
+}, 2000);

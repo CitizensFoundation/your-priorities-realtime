@@ -13,6 +13,7 @@ import { InitAction } from "./action";
 import { InitScoreCard } from "./scoreCard";
 import { InitComment } from "./comment";
 import { InitProgressReport } from "./progressReport";
+import { KeyObject } from "crypto";
 
 
 const Sequelize = require("sequelize");
@@ -59,11 +60,11 @@ models.Project.hasMany(models.Round, {
 models.Project.belongsTo(models.User,  { as: 'User', foreignKey: 'userId' });
 
 // User
-models.User.hasMany(models.Project, {
+/*models.User.hasMany(models.Project, {
   sourceKey: "id",
   foreignKey: "userId",
   as: "Projects"
-});
+});*/
 
 models.User.belongsToMany(models.Role, {
   through: 'UserRoles'
@@ -154,27 +155,45 @@ models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'act
 
 sequelize.sync({force: true});
 
-models.User.create({
-  name: "Robert Bjarnason",
-  email: "robert@citizens.is",
-  encrypedPassword: "dsDSDJWD)dw9jdw9d92",
-  language:"en"
-}).then(user=>{
-  models.Project.create({
-    name: "Test Project",
-    description: "This is a test project",
-    userId: user.id,
-    language: "en",
-    publicData: {
-      service: "",
-      locations: "",
-      keyContacts: "123",
-      languages: "ru,en,ky"
+setTimeout( ()=>{
+  (async () => {
+
+    try {
+      const user = await models.User.create({
+        name: "Robert Bjarnason",
+        email: "robert@citizens.is",
+        encrypedPassword: "dsDSDJWD)dw9jdw9d92",
+        language:"en"
+      });
+
+      const roleNames = ["users","providers","workingGroup","facilitator"];
+      const allRoles = [];
+      for (let i=0;i<roleNames.length;i++) {
+        const role = await models.Role.create({
+          nameToken: roleNames[i],
+        });
+        allRoles.push(role);
+      }
+
+      await user.addRole(allRoles[3]);
+
+      const project = await  models.Project.create({
+        name: "Test Project",
+        description: "This is a test project",
+        userId: user.id,
+        language: "en",
+        publicData: {
+          service: "",
+          locations: "",
+          keyContacts: "123",
+          languages: "ru,en,ky"
+        }
+      });
+
+      await user.addProject(project);
+    } catch (error) {
+      console.error(error);
     }
-  })
-}).catch( error => {
-  console.error(error);
-})
-
-
+  })();
+}, 2000);
 

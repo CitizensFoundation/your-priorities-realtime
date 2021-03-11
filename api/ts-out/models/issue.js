@@ -5,6 +5,7 @@ const sequelize_1 = require("sequelize");
 class Issue extends sequelize_1.Model {
 }
 exports.Issue = Issue;
+Issue.CoreIssueType = 0;
 const InitIssue = (sequelize) => {
     Issue.init({
         id: {
@@ -17,6 +18,10 @@ const InitIssue = (sequelize) => {
             allowNull: false,
         },
         roundId: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: true,
+        },
+        projectId: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },

@@ -11,7 +11,11 @@ export class ProjectsController {
 
   public intializeRoutes() {
     this.router.post(this.path, this.createProject);
+    this.router.post(this.path+"/:id/addParticipants", this.addParticipants);
+    this.router.post(this.path+"/:id/addIssue", this.addIssue);
     this.router.get(this.path+"/:id", this.getProject);
+    this.router.get(this.path+"/:id/getParticipants", this.getParticipants);
+    this.router.get(this.path+"/:id/issues/:issueType", this.getIssues);
   }
 
   createProject = async (
@@ -25,6 +29,26 @@ export class ProjectsController {
     }).catch( error => {
       res.send(error);
     })
+  }
+
+  addIssue = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Issue.create(
+      req.body
+    ).then( issue => {
+      res.send(issue);
+    }).catch( error => {
+      res.send(error);
+    })
+  }
+
+  addParticipants = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Project.addParticipants(req.body, res);
   }
 
   getProject = async (
@@ -56,15 +80,32 @@ export class ProjectsController {
       where: {
         projectId: req.params.id,
         type: req.params.issueType
-      },
-      include: [
-        {
-          model: (models.Round as any),
-          as: "Rounds"
-        }
-      ]
+      }
     }).then( project => {
       res.send(project);
+    }).catch( error => {
+      res.send(error);
+    })
+  }
+
+  getParticipants = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.User.findAll({
+      attributes: {exclude: ['encryptedPassword']},
+      include: [
+        {
+          model: (models.Project as any),
+          as: "ProjectUsers",
+          attributes: ['id'],
+          where: {
+            ProjectId: req.params.id
+          }
+        }
+      ]
+    }).then( users => {
+      res.send(users);
     }).catch( error => {
       res.send(error);
     })

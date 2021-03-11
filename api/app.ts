@@ -2,33 +2,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import * as path from 'path';
 import * as url from 'url';
-const { Client } = require('@elastic/elasticsearch');
 
 export class App {
   public app: express.Application;
-  public esClient: typeof Client;
   public port: number;
 
   constructor(controllers: Array<any>, port: number) {
     this.app = express();
     this.port =  parseInt(process.env.PORT || "8000");
-
-    if (process.env.NODE_ENV=== 'development') {
-      this.esClient = new Client({
-        node: 'https://search-pace-dev-1-jv4lkhrngfqvb3wiwkrcvpsr7m.us-east-1.es.amazonaws.com'
-      })
-//      this.esClient = new Client({ node: 'http://localhost:9200' })
-    } else if (process.env.QUOTAGUARDSTATIC_URL) {
-      this.esClient = new Client({
-        node: 'https://search-pace-dev-1-jv4lkhrngfqvb3wiwkrcvpsr7m.us-east-1.es.amazonaws.com',
-        proxy:  process.env.QUOTAGUARDSTATIC_URL
-      })
-      console.log("USING QUOTAGUARD_URL")
-    } else  {
-      this.esClient = new Client({
-        node: 'https://search-pace-dev-1-jv4lkhrngfqvb3wiwkrcvpsr7m.us-east-1.es.amazonaws.com'
-      })
-    }
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
@@ -48,7 +29,7 @@ export class App {
     }
 
     this.app.use(bodyParser.json());
-    this.app.use(express.static(path.join(__dirname, '/../web-app/dist')));
+    this.app.use(express.static(path.join(__dirname, '/cs-web-app')));
   }
 
   private initializeControllers(controllers: Array<any>) {

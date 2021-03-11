@@ -12,8 +12,11 @@ import {
   Optional,
 } from "sequelize";
 
+import express from "express";
+
 import { User } from "./user";
 import { Round } from "./round";
+import { models } from ".";
 
 // Some attributes are optional in `Project.build` and `Project.create` calls
 interface ProjectCreationAttributes extends Optional<ProjectAttributes, "id"> {}
@@ -50,6 +53,52 @@ export class Project
     rounds: Association<Project, Round>,
     users: Association<Project, User>
   };
+
+  public static async addParticipants(body: ParticipantsUploadAttributes, res: express.Response) {
+    const lines = body.participants.split("\n");
+    const roleId = body.roleId;
+    const language = body.language;
+    const projectId = body.projectId;
+
+    try {
+      const role = await models.Role.findOne({
+        where: {
+          id: roleId
+        }
+      })
+      for (let i=0; i<lines.length;i++) {
+        const splitLine = lines[0].split(",")
+        const email = splitLine[0];
+        const name = splitLine[0];
+        const user = await models.User.create({
+          name,
+          email,
+          language,
+          encrypedPassword: "12345"
+        });
+
+        await user.addRole(role!);
+
+        const project = await models.Project.findOne({
+          where: {
+            id: projectId
+          }
+        })
+
+        if (!project) {
+          res.sendStatus(404);
+          break;
+        } else {
+          project.addUser(user);
+        }
+      }
+
+      res.sendStatus(200);
+    } catch(error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
+  }
 }
 
 export const InitProject = (sequelize: Sequelize) => {

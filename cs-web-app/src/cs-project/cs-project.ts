@@ -9,6 +9,8 @@ import { YpMediaHelpers } from '../@yrpri/YpMediaHelpers.js';
 import '@material/mwc-textfield';
 import '@material/mwc-textarea';
 import '@material/mwc-button';
+import '@material/mwc-select';
+import '@material/mwc-list-item';
 
 import Chart from 'chart.js';
 
@@ -243,6 +245,44 @@ export class CsProject extends YpBaseElement {
     );
   }
 
+
+  supportedLanguages: Record<string, string> = {
+    en: 'English (US)',
+    en_GB: 'English (GB)',
+    fr: 'Français',
+    is: 'Íslenska',
+    es: 'Español',
+    it: 'Italiano',
+    ar: 'اَلْعَرَبِيَّةُ',
+    ar_EG: 'اَلْعَرَبِيَّةُ (EG)',
+    ca: 'Català',
+    ro_MD: 'Moldovenească',
+    de: 'Deutsch',
+    da: 'Dansk',
+    sv: 'Svenska',
+    en_CA: 'English (CA)',
+    nl: 'Nederlands',
+    no: 'Norsk',
+    uk: 'українська',
+    sq: 'Shqip',
+    ky: 'Кыргызча',
+    uz: 'Ўзбек',
+    tr: 'Türkçe',
+    fa: 'فارسی',
+    pl: 'Polski',
+    pt: 'Português',
+    pt_BR: 'Português (Brazil)',
+    ru: 'Русский',
+    hu: 'Magyar',
+    zh_TW: '国语 (TW)',
+    sr: 'Srpski',
+    sr_latin: 'Srpski (latin)',
+    hr: 'Hravtski',
+    kl: 'Kalaallisut',
+    sl: 'Slovenščina',
+  };
+
+
   // UI
 
   static get styles() {
@@ -342,6 +382,43 @@ export class CsProject extends YpBaseElement {
     ];
   }
 
+  get languages() {
+    if (this.supportedLanguages) {
+      let arr = [];
+      const highlighted = [];
+      let highlightedLocales = ['en', 'en_GB', 'is', 'fr', 'de', 'es', 'ar'];
+      if (window.appGlobals.highlightedLanguages) {
+        highlightedLocales = window.appGlobals.highlightedLanguages.split(',');
+      }
+      for (const key in this.supportedLanguages) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (this.supportedLanguages.hasOwnProperty(key)) {
+          if (highlightedLocales.indexOf(key) > -1) {
+            highlighted.push({
+              language: key,
+              name: this.supportedLanguages[key],
+            });
+          } else {
+            arr.push({ language: key, name: this.supportedLanguages[key] });
+          }
+        }
+      }
+
+      arr = arr.sort(function (a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+      return highlighted.concat(arr);
+    } else {
+      return [];
+    }
+  }
+
   async addIssue() {
 
     const issue = {
@@ -359,10 +436,17 @@ export class CsProject extends YpBaseElement {
   }
 
   async addParticipants() {
+    const particpantsUpload = {
+      participants: (this.$$('#addParticipantsInput') as HTMLInputElement).value,
+      roleId: parseInt((this.$$('#participantsRole') as HTMLInputElement).value),
+      language: (this.$$('#participantsLanguage') as HTMLInputElement).value,
+      projectId: this.projectId
+    } as ParticipantsUploadAttributes;
+
     await window.serverApi.postParticipants(
-      this.projectId!,
-      { participants: (this.$$('#addParticipantsInput') as HTMLInputElement).value }
+      this.projectId!,particpantsUpload
     );
+
     this._getParticipants();
     (this.$$('#addParticipantsInput') as HTMLInputElement).value = '';
   }
@@ -466,12 +550,32 @@ export class CsProject extends YpBaseElement {
       <div class="layout vertical">
         <mwc-textarea
           maxLength="20000"
+          rows="10"
           id="addParticipantsInput"
           .label="${this.t('coreIssue')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">
           <div class="layout vertical">
-
+          <mwc-select
+            .label="${this.t("changeRole")}">
+            ${["User","Service provider","Working group","Facilitator"].map(
+                dropDownOptions => html`
+                  <mwc-list-item name="${dropDownOptions}"
+                    >${dropDownOptions}</mwc-list-item
+                  >
+                `
+              )}
+          </mwc-select>
+          <mwc-select label="${this.t('selectLanguage')}">
+                ${this.languages.map(
+                  item => html`
+                    <mwc-list-item
+                      .value="${item.language}"
+                      >${item.name}</mwc-list-item
+                    >
+                  `
+                )}
+              </mwc-select>
           </div>
           <mwc-button
             raised
@@ -485,7 +589,7 @@ export class CsProject extends YpBaseElement {
         <div class="participants shadow-elevation-2dp shadow-transition">
           ${this.participants?.map(
             (participant, index: number) => html`
-              ${participant.email} ${participant.language} ${this._getRoles(participants)}
+              ${participant.email} ${participant.language} ${this._getRoles(participant)}
             `
           )}
         </div>

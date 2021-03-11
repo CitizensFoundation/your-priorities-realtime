@@ -205,3 +205,9 @@ interface ProgressReportAttributes {
   updatedAt?: Date;
 }
 
+interface ParticipantsUploadAttributes {
+  participants: string;
+  roleId: number;
+  language: string;
+  projectId: number;
+}

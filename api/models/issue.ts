@@ -40,7 +40,6 @@ export class Issue
   static CoreIssueType = 0;
 }
 
-
 export const InitIssue = (sequelize: Sequelize) => {
   Issue.init(
     {
