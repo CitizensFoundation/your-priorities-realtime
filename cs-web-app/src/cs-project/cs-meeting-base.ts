@@ -44,30 +44,9 @@ export class CsMeetingBase extends YpBaseElement {
 
   connectedCallback() {
     super.connectedCallback();
-    setTimeout(() => {
-      this.fire('yp-change-header', {
-        headerTitle: this.t('newRound'),
-        documentTitle: this.t('newRound'),
-        headerDescription: '',
-      });
-    }, 500);
   }
 
   // DATA PROCESSING
-
-  /*async _getHelpPages() {
-    if (this.domainId) {
-      const helpPages = (await window.serverApi.getHelpPages(
-        this.collectionType,
-        this.domainId
-      )) as Array<YpHelpPage> | undefined;
-      if (helpPages) {
-        this.fire('yp-set-pages', helpPages);
-      }
-    } else {
-      console.error('Collection id setup for get help pages');
-    }
-  }*/
 
   // UI
 
@@ -80,61 +59,6 @@ export class CsMeetingBase extends YpBaseElement {
           position: fixed;
           bottom: 16px;
           right: 16px;
-        }
-
-        mwc-tab-bar {
-          width: 960px;
-          margin-bottom: 16px;
-        }
-
-        .header {
-          height: 100px;
-          font-size: var(--mdc-typegraphy-headline1-font-size, 24px);
-        }
-
-        .project {
-          background-color: var(--mdc-theme-surface, #fff);
-          color: var(--mdc-theme-on-surface);
-          padding: 16px;
-          margin: 16px;
-          width: 960px;
-        }
-
-        .process {
-          background-color: var(--mdc-theme-surface, #fff);
-          color: var(--mdc-theme-on-surface);
-          padding: 16px;
-          margin: 8px;
-          width: 420px;
-        }
-
-        .processes {
-          margin-top: 32px;
-          margin-bottom: 32px;
-        }
-
-        mwc-icon {
-          margin-right: 8px;
-        }
-
-        .name {
-          font-weight: bold;
-          margin-bottom: 16px;
-        }
-
-        .withLineContainer {
-          background-image: linear-gradient(#555, #aaa);
-          background-size: 2px 100%;
-          background-repeat: no-repeat;
-          background-position: center center;
-          height: 40px;
-          width: 100px;
-        }
-
-        .processHeader {
-          margin-bottom: 16px;
-          font-style: bold;
-          font-weight: 800;
         }
       `,
     ];
@@ -174,39 +98,6 @@ export class CsMeetingBase extends YpBaseElement {
         </div>
       </div>
     `;
-  }
-
-  renderTabs() {
-    return html``;
-  }
-
-  renderCurrentTabPage(): TemplateResult | undefined {
-    let page: TemplateResult | undefined;
-
-    switch (this.selectedTab) {
-      case RoundTabTypes.Process:
-        page = this.renderProcesses();
-        break;
-      case RoundTabTypes.Activities:
-        //page = this.renderProjectList({ archived: true });
-        break;
-      case RoundTabTypes.Analytics:
-        //page = this.renderProjectList({ archived: true });
-        break;
-    }
-
-    return page;
-  }
-
-  render() {
-    return html` ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
-  }
-
-  // EVENTS
-
-  updated(changedProperties: Map<string | number | symbol, unknown>) {
-    super.updated(changedProperties);
-
   }
 
   _selectTab(event: CustomEvent) {

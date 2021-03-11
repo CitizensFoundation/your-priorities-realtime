@@ -99,7 +99,7 @@ export class CsMeeting extends YpBaseElement {
           ></cs-meeting-create-card>`;
           break;
         case MeetingTypes.TypeScoring:
-          meetmeetingPageing = html`<cs-meeting-scoring
+          meetingPage = html`<cs-meeting-scoring
             ?isAdmin="${this.isAdmin}"
             .loggedInUser="${this.loggedInUser}"
             .meeting="${this.meeting}"
