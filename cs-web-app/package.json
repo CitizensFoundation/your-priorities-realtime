@@ -1,10 +1,10 @@
 {
   "devDependencies": {
-    "@open-wc/building-rollup": "^1.0.0",
-    "@open-wc/eslint-config": "^4.0.0",
-    "@open-wc/testing": "^2.5.32",
-    "@open-wc/testing-karma": "^3.0.0",
-    "@rollup/plugin-commonjs": "^14.0.0",
+    "@open-wc/building-rollup": "1.0.0",
+    "@open-wc/eslint-config": "4.0.0",
+    "@open-wc/testing": "2.5.32",
+    "@open-wc/testing-karma": "3.0.0",
+    "@rollup/plugin-commonjs": "14.0.0",
     "@types/chart.js": "^2.9.23",
     "@types/google.analytics": "0.0.40",
     "@types/hammerjs": "^2.0.36",
@@ -16,6 +16,9 @@
     "@typescript-eslint/parser": "^4.16.1",
     "@web/dev-server": "^0.1.8",
     "@web/test-runner": "^0.12.15",
+    "es-dev-commonjs-transformer": "0.2.0",
+    "es-dev-server": "1.5.0",
+    "es-dev-server-rollup": "0.0.4",
     "concurrently": "^5.3.0",
     "deepmerge": "^4.2.2",
     "eslint": "^7.21.0",
@@ -24,9 +27,10 @@
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.40.0",
-    "tslib": "^2.1.0",
-    "typescript": "^4.2.3"
+    "rollup": "2.3.4",
+    "ts-lit-plugin": "1.2.0",
+    "tslib": "1.11.0",
+    "typescript": "4.0.3"
   },
   "scripts": {
     "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
@@ -35,7 +39,8 @@
     "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
     "build": "rimraf dist && tsc && rollup -c rollup.config.js",
     "start:build": "npm run build && web-dev-server --root-dir dist --app-index index.html --open --compatibility none",
-    "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
+    "tsc:watch": "tsc --watch",
+    "start": "concurrently --kill-others --names tsc,web-dev-server \"npm run tsc:watch\" \"web-dev-server --app-index index.html --node-resolve --open --watch\""
   },
   "name": "cs-web-app",
   "version": "0.0.0",
@@ -61,7 +66,6 @@
     "@material/mwc-textarea": "^0.20.0",
     "@material/mwc-textfield": "^0.20.0",
     "@material/mwc-top-app-bar": "^0.20.0",
-    "@rollup/plugin-typescript": "^8.2.0",
     "app-datepicker": "^4.1.0",
     "chart.js": "^2.9.3",
     "hammerjs": "^2.0.8",

@@ -22,7 +22,7 @@ import { YpFormattingHelpers } from '../@yrpri/YpFormattingHelpers.js';
 export const ProjectTabTypes: Record<string, number> = {
   Information: 0,
   CoreIssues: 1,
-  participants: 2,
+  Participants: 2,
   Analytics: 3,
   Activities: 4
 };
@@ -65,6 +65,9 @@ export class CsProject extends YpBaseElement {
   chart: Chart | undefined;
 
   charts: Record<number, Chart> = {};
+
+  //TODO: Get from users
+  roleNames = ["users","providers","workingGroup","facilitator"]
 
   constructor() {
     super();
@@ -420,6 +423,10 @@ export class CsProject extends YpBaseElement {
 
     const issue = {
       description: (this.$$('#coreIssueInput') as HTMLInputElement).value,
+      userId: 1,
+      type: 0,
+      state: 0,
+      projectId: this.projectId
     } as IssueAttributes;
 
     await window.serverApi.postIssue(
@@ -433,6 +440,7 @@ export class CsProject extends YpBaseElement {
   }
 
   async addParticipants() {
+    debugger;
     const particpantsUpload = {
       participants: (this.$$('#addParticipantsInput') as HTMLInputElement).value,
       roleId: parseInt((this.$$('#participantsRole') as HTMLInputElement).value),
@@ -541,29 +549,27 @@ export class CsProject extends YpBaseElement {
 
   renderParticipants() {
     return html`
-      <div class="layout horizontal center-center coreIssuesTitle">
-        ${this.t('participants')}
-      </div>
       <div class="layout vertical">
         <mwc-textarea
           maxLength="20000"
           rows="10"
           id="addParticipantsInput"
-          .label="${this.t('coreIssue')}"
+          .label="${this.t('addOrUpdateParticipants')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">
           <div class="layout vertical">
-          <mwc-select
-            .label="${this.t("changeRole")}">
-            ${["User","Service provider","Working group","Facilitator"].map(
-                dropDownOptions => html`
-                  <mwc-list-item name="${dropDownOptions}"
-                    >${dropDownOptions}</mwc-list-item
+          <mwc-select id="participantsRole"
+            .label="${this.t("selectRole")}">
+            ${this.roleNames.map(
+                (translationKey, index) => html`
+                  <mwc-list-item name="${translationKey}"
+                    .value="${index}"
+                    >${this.t(translationKey)}</mwc-list-item
                   >
                 `
               )}
           </mwc-select>
-          <mwc-select label="${this.t('selectLanguage')}">
+          <mwc-select id="participantsLanguage" label="${this.t('selectLanguage')}">
                 ${this.languages.map(
                   item => html`
                     <mwc-list-item
@@ -656,7 +662,7 @@ export class CsProject extends YpBaseElement {
       case ProjectTabTypes.CoreIssues:
         page = this.renderCoreIssues();
         break;
-      case ProjectTabTypes.CoreIssues:
+      case ProjectTabTypes.Participants:
         page = this.renderParticipants();
         break;
         case ProjectTabTypes.Analytics:
