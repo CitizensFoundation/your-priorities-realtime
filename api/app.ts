@@ -16,6 +16,7 @@ const io = new Server(httpServer, {
 io.on("connection", (socket) => {
   socket.on("meetingState", (arg) => {
     console.log(arg); // world
+    socket.broadcast.emit("meetingState", (arg))
   });
 });
 

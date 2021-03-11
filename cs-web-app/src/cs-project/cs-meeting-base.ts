@@ -69,6 +69,7 @@ export class CsMeetingBase extends YpBaseElement {
     this.roomName = `meeting_${this.meeting.id}`;
 
     this.stateListener = (...args: any) => {
+      console.error("STATELISTENR");
       console.error(args);
       if (!this.isAdmin) {
         this._processState(args[0] as StateAttributes);
@@ -77,12 +78,13 @@ export class CsMeetingBase extends YpBaseElement {
 
     debugger;
 
-    this.io.on("meetingState", this.stateListener);
-    this.io.on("connection", (socket: any)=> {
-      this.socket = socket;
-      console.error("CONNECTION!!!!")
-      socket.on("meetingState", this.stateListener);
-    })
+    this.io.on("meetingState", (...args: any) => {
+      console.error("STATELISTENR");
+      console.error(args);
+      if (!this.isAdmin) {
+        this._processState(args[0] as StateAttributes);
+      }
+    });
   }
 
   _closeSockets() {
