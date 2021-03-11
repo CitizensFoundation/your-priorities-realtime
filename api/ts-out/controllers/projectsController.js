@@ -78,9 +78,11 @@ class ProjectsController {
                 where: {
                     id: req.params.id
                 },
+                attributes: ['id'],
                 include: [
                     {
-                        model: models_1.models.User
+                        model: models_1.models.User,
+                        attributes: { exclude: ['encrypedPassword'] }
                     }
                 ]
             }).then(project => {
