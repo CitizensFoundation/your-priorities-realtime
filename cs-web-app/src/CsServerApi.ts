@@ -120,6 +120,12 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  getUserFromLoginToken(loginToken: string) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/users/${loginToken}/loginFromToken`
+    );
+  }
+
   getIssues(projectId: number, issueType: number | undefined) {
     return this.fetchWrapper(
       this.baseUrlPath + `/projects/${projectId}/issues/${issueType}`

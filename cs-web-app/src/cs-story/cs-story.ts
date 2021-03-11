@@ -13,15 +13,20 @@ import '@material/mwc-button';
 import './cs-story-viewer.js';
 import './cs-story-card.js';
 import { runInThisContext } from 'vm';
+import { CsStoryViewer } from './cs-story-viewer.js';
 
 @customElement('cs-story')
 export class CsStory extends YpBaseElement {
   @property({type: Number})
   number = 1
 
+  setIndex(index: number) {
+    (this.$$("viewer") as CsStoryViewer).setIndex(index);
+  }
+
   renderStoryOne() {
     return html`
-      <cs-story-viewer>
+      <cs-story-viewer id="viewer">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -74,7 +79,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryTwo() {
     return html`
-      <cs-story-viewer>
+      <cs-story-viewer id="viewer">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -127,7 +132,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryThree() {
     return html`
-      <cs-story-viewer>
+      <cs-story-viewer id="viewer">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -180,7 +185,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryFour() {
     return html`
-      <cs-story-viewer>
+      <cs-story-viewer id="viewer">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -233,7 +238,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryFive() {
     return html`
-      <cs-story-viewer>
+      <cs-story-viewer id="viewer">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">

@@ -2,13 +2,23 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import * as path from 'path';
 import * as url from 'url';
+import { createServer } from "http";
+import { Server, Socket } from "socket.io";
+
+const app = express();
+
+const httpServer = createServer(app);
+
+const io = new Server(httpServer, {
+  // ...
+});
 
 export class App {
   public app: express.Application;
   public port: number;
 
   constructor(controllers: Array<any>, port: number) {
-    this.app = express();
+    this.app = app;
     this.port =  parseInt(process.env.PORT || "8000");
 
     this.initializeMiddlewares();
@@ -43,7 +53,7 @@ export class App {
   }
 
   public listen() {
-    this.app.listen(this.port, () => {
+    httpServer.listen(this.port, () => {
       console.log(`App listening on the port ${this.port}`);
     });
   }

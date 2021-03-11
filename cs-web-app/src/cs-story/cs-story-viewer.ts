@@ -62,12 +62,18 @@ export class CsStoryViewer extends YpBaseElement {
     super.update(changedProperties);
   }
 
+  setIndex(index: number) {
+    this.index = index;
+  }
+
   /* Advance to the next story card if possible */
   next() {
     this.index = Math.max(
       0,
       Math.min(this.children.length - 1, this.index + 1)
     );
+
+    this.fire('cs-story-index', this.index);
 
     if (this.index === this.children.length - 1) {
       this.fire('cs-last-story-card')

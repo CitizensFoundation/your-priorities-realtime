@@ -213,3 +213,11 @@ interface ParticipantsUploadAttributes {
   language: string;
   projectId: number;
 }
+
+interface StateAttributes {
+  tabIndex: number;
+  storyPageIndex?: number;
+  issueIndex: number;
+  actionIndex: number;
+  isLive: boolean;
+}

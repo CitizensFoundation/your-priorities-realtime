@@ -26,9 +26,16 @@ exports.App = void 0;
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const path = __importStar(require("path"));
+const http_1 = require("http");
+const socket_io_1 = require("socket.io");
+const app = express_1.default();
+const httpServer = http_1.createServer(app);
+const io = new socket_io_1.Server(httpServer, {
+// ...
+});
 class App {
     constructor(controllers, port) {
-        this.app = express_1.default();
+        this.app = app;
         this.port = parseInt(process.env.PORT || "8000");
         this.initializeMiddlewares();
         this.initializeControllers(controllers);
@@ -58,7 +65,7 @@ class App {
         });
     }
     listen() {
-        this.app.listen(this.port, () => {
+        httpServer.listen(this.port, () => {
             console.log(`App listening on the port ${this.port}`);
         });
     }

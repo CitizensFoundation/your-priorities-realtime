@@ -6,10 +6,7 @@ import { YpBaseElement } from '../@yrpri/yp-base-element.js';
 import { YpAccessHelpers } from '../@yrpri/YpAccessHelpers.js';
 import { YpMediaHelpers } from '../@yrpri/YpMediaHelpers.js';
 
-import '@material/mwc-tab-bar';
-import '@material/mwc-fab';
-import '@material/mwc-icon';
-import '@material/mwc-radio';
+import '@material/mwc-textarea';
 
 import { Radio } from '@material/mwc-radio';
 
@@ -23,27 +20,69 @@ import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 @customElement('cs-meeting-base')
 export class CsMeetingBase extends YpBaseElement {
   @property({ type: Object })
-  meeting: MeetingAttributes | undefined;
+  meeting!: MeetingAttributes;
 
   @property({ type: Boolean })
-  isAdmin = false
+  isAdmin = false;
 
   @property({ type: Boolean })
-  isLive = false
+  isLive = false;
 
   @property({ type: Number })
   selectedTab = 0;
 
+  io: any | undefined;
+
+  stateListener: any | undefined;
+
   constructor() {
     super();
+  }
 
-    //TODO: Fix this as it causes loadMoreData to be called twice on post lists at least
-    // this.addGlobalListener('yp-logged-in', this._getCollection.bind(this));
-    //this.addGlobalListener('yp-got-admin-rights', this.refresh.bind(this));
+  _processState(state: StateAttributes) {
+    if (!this.isAdmin) {
+      this.selectedTab = state.tabIndex;
+      this.isLive = state.isLive;
+    }
+  }
+
+  sendState(state: StateAttributes) {
+    this.io.broadcast.emit(state)
+  }
+
+  updateState() {
+    this.sendState({
+      tabIndex: this.selectedTab,
+      isLive: this.isLive
+    } as StateAttributes)
+  }
+
+  _setupSockets() {
+    this.io = io(`meeting_${this.meeting.id}`);
+
+    this.stateListener = (...args: any) => {
+      if (!this.isAdmin) {
+        this._processState(args[0] as StateAttributes);
+      }
+    }
+
+    this.io.on("connection", (socket: any)=> {
+      socket.on("meetingState", this.stateListener);
+    })
+  }
+
+  _closeSockets() {
+    //TODO
   }
 
   connectedCallback() {
     super.connectedCallback();
+    this._setupSockets();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._closeSockets();
   }
 
   // DATA PROCESSING
@@ -65,16 +104,33 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _liveChanged(event: CustomEvent) {
-    if ((this.$$("#liveRadio") as Radio).checked) {
+    if ((this.$$('#liveRadio') as Radio).checked) {
       this.isLive = true;
     } else {
       this.isLive = false;
     }
+
+    this.updateState();
   }
+
+  sendEmail() {}
 
   renderSendEmail() {
     return html`
-
+      <div class="layout vertical">
+        <mwc-textarea
+          maxLength="20000"
+          rows="10"
+          id="addParticipantsInput"
+          .label="${this.t('emailToParticipants')}"
+        ></mwc-textarea>
+        <mwc-button
+          raised
+          class="layout"
+          @click="${this.sendEmail}"
+          .label="${this.t('sendMeetingEmail')}"
+        ></mwc-button>
+      </div>
     `;
   }
 
@@ -93,9 +149,7 @@ export class CsMeetingBase extends YpBaseElement {
             </mwc-radio>
           </mwc-formfield>
         </div>
-        <div class="layout vertical">
-          ${this.renderSendEmail()}
-        </div>
+        <div class="layout vertical">${this.renderSendEmail()}</div>
       </div>
     `;
   }
@@ -103,20 +157,4 @@ export class CsMeetingBase extends YpBaseElement {
   _selectTab(event: CustomEvent) {
     this.selectedTab = event.detail?.index as number;
   }
-
-  /*_setSelectedTabFromRoute(routeTabName: string): void {
-    let tabNumber;
-
-    switch (routeTabName) {
-      case 'process':
-        tabNumber = RoundTabTypes.Process;
-        break;
-      case 'activities':
-        tabNumber = RoundTabTypes.Activities;
-        break;
-      case 'analytics':
-        tabNumber = RoundTabTypes.Analytics;
-        break;
-    }
-  }*/
 }

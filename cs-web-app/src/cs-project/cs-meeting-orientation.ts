@@ -16,48 +16,26 @@ import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { CsMeetingBase } from './cs-meeting-base.js';
 
-export const MeetingTabTypes: Record<string, number> = {
-  Process: 0,
-  Analytics: 1,
-  Activities: 2,
+import '../cs-story/cs-story.js';
+import { CsStory } from '../cs-story/cs-story.js';
+
+export const OrientationTabTypes: Record<string, number> = {
+  Orientation: 0,
 };
 
-@customElement('cs-meeting')
-export class CsMeeting extends CsMeetingBase {
+@customElement('cs-meeting-orientation')
+export class CsMeetingOrientation extends CsMeetingBase {
+
+  @property({ type: Number })
+  storyPageIndex: number | undefined;
+
   constructor() {
     super();
-
-    //TODO: Fix this as it causes loadMoreData to be called twice on post lists at least
-    // this.addGlobalListener('yp-logged-in', this._getCollection.bind(this));
-    //this.addGlobalListener('yp-got-admin-rights', this.refresh.bind(this));
   }
 
   connectedCallback() {
     super.connectedCallback();
-    setTimeout(() => {
-      this.fire('yp-change-header', {
-        headerTitle: this.t('newRound'),
-        documentTitle: this.t('newRound'),
-        headerDescription: '',
-      });
-    }, 500);
   }
-
-  // DATA PROCESSING
-
-  /*async _getHelpPages() {
-    if (this.domainId) {
-      const helpPages = (await window.serverApi.getHelpPages(
-        this.collectionType,
-        this.domainId
-      )) as Array<YpHelpPage> | undefined;
-      if (helpPages) {
-        this.fire('yp-set-pages', helpPages);
-      }
-    } else {
-      console.error('Collection id setup for get help pages');
-    }
-  }*/
 
   // UI
 
@@ -81,71 +59,39 @@ export class CsMeeting extends CsMeetingBase {
           height: 100px;
           font-size: var(--mdc-typegraphy-headline1-font-size, 24px);
         }
-
-        .project {
-          background-color: var(--mdc-theme-surface, #fff);
-          color: var(--mdc-theme-on-surface);
-          padding: 16px;
-          margin: 16px;
-          width: 960px;
-        }
-
-        .process {
-          background-color: var(--mdc-theme-surface, #fff);
-          color: var(--mdc-theme-on-surface);
-          padding: 16px;
-          margin: 8px;
-          width: 420px;
-        }
-
-        .processes {
-          margin-top: 32px;
-          margin-bottom: 32px;
-        }
-
-        mwc-icon {
-          margin-right: 8px;
-        }
-
-        .name {
-          font-weight: bold;
-          margin-bottom: 16px;
-        }
-
-        .withLineContainer {
-          background-image: linear-gradient(#555, #aaa);
-          background-size: 2px 100%;
-          background-repeat: no-repeat;
-          background-position: center center;
-          height: 40px;
-          width: 100px;
-        }
-
-        .processHeader {
-          margin-bottom: 16px;
-          font-style: bold;
-          font-weight: 800;
-        }
       `,
     ];
   }
 
-  renderHeader() {
+  updateState() {
+    this.sendState({
+      tabIndex: this.selectedTab,
+      isLive: this.isLive,
+      storyPageIndex: this.storyPageIndex
+    } as StateAttributes)
+  }
+
+  _processState(state: StateAttributes) {
+    if (!this.isAdmin) {
+      super._processState(state);
+      if (state.storyPageIndex) {
+        (this.$$("story") as CsStory).setIndex(state.storyPageIndex);
+      }
+      this.selectedTab = state.tabIndex;
+    }
+  }
+
+  setStoryIndex(event: CustomEvent) {
+    if (this.isAdmin && this.isLive) {
+      this.storyPageIndex = event.detail as number;
+      this.updateState();
+    }
+  }
+
+  renderStory() {
     return html`
-      <div class="layout horizontal">
-        <div class="layout vertical">
-          <mwc-formfield .label="${this.t('closed')}">
-            <mwc-radio
-              @change="${this._liveChanged}"
-              ?checked="${this.communityAccess == 'closed'}"
-              value="closed"
-              name="accessRadioButtons"
-            >
-            </mwc-radio>
-          </mwc-formfield>
-        </div>
-        <div class="layout vertical">
-        </div>
+      <div class="layout horizontal center-center">
+        <cs-story id="story" @cs-story-index="${this.setStoryIndex}"></cs-story>
       </div>
     `;
   }
@@ -155,18 +101,8 @@ export class CsMeeting extends CsMeetingBase {
       <div class="layout vertical center-center">
         <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
           <mwc-tab
-            .label="${this.t('process')}"
+            .label="${this.t('orientation')}"
             icon="format_list_numbered"
-            stacked
-          ></mwc-tab>
-          <mwc-tab
-            .label="${this.t('analytics')}"
-            icon="equalizer"
-            stacked
-          ></mwc-tab>
-          <mwc-tab
-            .label="${this.t('activities')}"
-            icon="rss_feed"
             stacked
           ></mwc-tab>
         </mwc-tab-bar>
@@ -178,14 +114,8 @@ export class CsMeeting extends CsMeetingBase {
     let page: TemplateResult | undefined;
 
     switch (this.selectedTab) {
-      case RoundTabTypes.Process:
-        page = this.renderProcesses();
-        break;
-      case RoundTabTypes.Activities:
-        //page = this.renderProjectList({ archived: true });
-        break;
-      case RoundTabTypes.Analytics:
-        //page = this.renderProjectList({ archived: true });
+      case OrientationTabTypes.Process:
+        page = this.renderStory();
         break;
     }
 
@@ -200,7 +130,6 @@ export class CsMeeting extends CsMeetingBase {
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
-
   }
 
   _selectTab(event: CustomEvent) {

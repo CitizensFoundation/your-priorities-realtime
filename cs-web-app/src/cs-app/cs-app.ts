@@ -43,6 +43,7 @@ import { YpAppDialogs } from './yp-app-dialogs.js';
 
 import '../cs-project/cs-projects.js';
 import '../cs-project/cs-project.js';
+import '../cs-project/cs-meeting.js';
 import '../cs-project/cs-round.js';
 import '../cs-project/cs-create-action-plan.js';
 import '../cs-project/cs-report.js';
@@ -457,6 +458,7 @@ export class CsApp extends YpBaseElement {
   renderPage() {
     let pageHtml;
     if (this.page) {
+      debugger;
       switch (this.page) {
         case 'projects':
           pageHtml = cache(html`
@@ -508,7 +510,17 @@ export class CsApp extends YpBaseElement {
             ></cs-create-issues>
           `);
           break;
-        case 'score':
+        case 'meeting':
+          pageHtml = cache(html`
+            <cs-meeting
+              id="meeting"
+              role="main"
+              aria-label="${this.t('meeting')}"
+              .subRoute="${this.subRoute}"
+            ></cs-meeting>
+          `);
+          break;
+          case 'score':
           pageHtml = cache(html`
             <cs-score
               id="project"

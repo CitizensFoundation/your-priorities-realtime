@@ -15,6 +15,8 @@ import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 
+import './cs-meeting-orientation.js';
+
 export const MeetingTypes: Record<string, number> = {
   TypeOrientation: 0,
   TypeCreateCard: 1,
@@ -121,10 +123,7 @@ export class CsMeeting extends YpBaseElement {
           break;
       }
 
-      return html`
-        ${this.renderHeader()}
-        ${meetingPage}
-      `;
+      return meetingPage;
     } else {
       return nothing;
     }
@@ -135,6 +134,7 @@ export class CsMeeting extends YpBaseElement {
     this.meeting = (await window.serverApi.getMeeting(this.meetingId!)) as
       | MeetingAttributes
       | undefined;
+    debugger;
   }
 
   async _getLoggedInUser() {
@@ -148,6 +148,8 @@ export class CsMeeting extends YpBaseElement {
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
+
+    debugger;
 
     if (changedProperties.has('subRoute') && this.subRoute) {
       const splitSubRoute = this.subRoute.split('/');
