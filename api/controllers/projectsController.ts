@@ -55,7 +55,7 @@ export class ProjectsController {
     req: express.Request,
     res: express.Response
   ) => {
-    models.Project.findAll({
+    models.Project.findOne({
       where: {
         id: req.params.id
       },
@@ -100,7 +100,12 @@ export class ProjectsController {
       include: [
         {
           model: (models.User as any),
-          attributes: {exclude: ['encrypedPassword']}
+          attributes: {exclude: ['encrypedPassword']},
+          include: [
+            {
+              model: (models.Role as any),
+            }
+          ]
         }
       ]
     }).then( project => {

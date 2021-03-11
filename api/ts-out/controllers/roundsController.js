@@ -18,17 +18,11 @@ class RoundsController {
             });
         };
         this.getRound = async (req, res) => {
-            models_1.models.Round.findAll({
+            models_1.models.Round.findOne({
                 where: {
                     id: req.params.id,
                 },
-                attributes: { exclude: ['privateData'] },
-                include: [
-                    {
-                        model: models_1.models.Stage,
-                        as: "Stages"
-                    }
-                ]
+                attributes: { exclude: ['privateData'] }
             }).then(round => {
                 res.send(round);
             }).catch(error => {

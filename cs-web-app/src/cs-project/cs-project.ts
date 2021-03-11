@@ -5,6 +5,10 @@ import { nothing, TemplateResult } from 'lit-html';
 import { YpBaseElement } from '../@yrpri/yp-base-element.js';
 import { YpAccessHelpers } from '../@yrpri/YpAccessHelpers.js';
 import { YpMediaHelpers } from '../@yrpri/YpMediaHelpers.js';
+import '@vaadin/vaadin-grid/vaadin-grid.js';
+import '@vaadin/vaadin-grid/vaadin-grid-column.js';
+import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
+import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 
 import '@material/mwc-textfield';
 import '@material/mwc-textarea';
@@ -136,7 +140,6 @@ export class CsProject extends YpBaseElement {
     this.participants = (await window.serverApi.getParticipants(
       this.projectId!
     )) as Array<UserAttributes> | undefined;
-    debugger;
   }
 
   async _getHelpPages() {
@@ -382,6 +385,12 @@ export class CsProject extends YpBaseElement {
         canvas {
           margin-top: 48px;
         }
+
+        vaadin-grid {
+          width: 800px;
+          height: 300px;
+          color: #000;
+        }
       `,
     ];
   }
@@ -594,11 +603,19 @@ export class CsProject extends YpBaseElement {
       </div>
       <div class="layout vertical center-center">
         <div class="participants shadow-elevation-2dp shadow-transition">
-          ${this.participants?.map(
-            (participant, index: number) => html`
-              ${participant.email} ${participant.language} ${this._getRoles(participant)}
-            `
-          )}
+        ${ this.participants ? html`
+          <vaadin-grid .items="${this.participants}" theme="row-dividers" column-reordering-allowed multi-sort>
+            <vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
+            <vaadin-grid-sort-column width="9em" path="email" .header="${this.t('email')}"></vaadin-grid-sort-column>
+            <vaadin-grid-sort-column  width="9em" path="name" .header="${this.t('name')}"></vaadin-grid-sort-column>
+            <vaadin-grid-sort-column  width="5em" path="language" .header="${this.t('language')}"></vaadin-grid-sort-column>
+            <vaadin-grid-column id="rolesColumn" width="15em" flex-grow="2" .header="${this.t('roles')}" .renderer=${
+              (root: any, grid: any, model: any) => {
+                root.textContent = this._getRoles(model.item);
+              }
+            }></vaadin-grid-column>
+          </vaadin-grid>
+        ` : nothing }
         </div>
       </div>
     `;
@@ -692,25 +709,26 @@ export class CsProject extends YpBaseElement {
           ></mwc-button>
         </div>
         <div class="rounds layout vertical">
-          ${this.project?.Rounds?.map(
-            (round: RoundAttributes, index: number) => html`
-              <a @click="${this.gotoRound}" href="/round/${round.id}"
-                ><div
-                  class="layout vertical round shadow-elevation-2dp shadow-transition"
+          ${this.project!.Rounds!.map(
+              (round: RoundAttributes, index: number) => html`
+                <a @click="${this.gotoRound}" href="/round/${round.id}"
+                  ><div
+                    class="layout vertical round shadow-elevation-2dp shadow-transition"
+                  >
+                    <div>
+                      ${this.project!.name}
+                    </div>
+                    <div class="">
+                      ${this.t('round')} ${index + 1} -
+                      ${round.startedAt
+                        ? YpFormattingHelpers.formatDate(round.startedAt)
+                        : nothing}
+                    </div>
+                  </div></a
                 >
-                  <div>
-                    ${(this.$$('#projectName') as HTMLInputElement).value}
-                  </div>
-                  <div class="">
-                    ${this.t('round')} ${index + 1} -
-                    ${round.startedAt
-                      ? YpFormattingHelpers.formatDate(round.startedAt)
-                      : nothing}
-                  </div>
-                </div></a
-              >
-            `
-          )}
+              `
+            )}
+
         </div>
       </div>
     `;

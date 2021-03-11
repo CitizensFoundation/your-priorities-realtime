@@ -23,121 +23,24 @@ export const RoundTabTypes: Record<string, number> = {
 
 @customElement('cs-round')
 export class CsRound extends YpBaseElement {
-  @property({ type: Boolean })
-  noHeader = false;
-
-  @property({ type: Boolean })
-  tabsHidden = false;
-
-  @property({ type: Number })
-  domainId: number | undefined;
-
   @property({ type: Object })
-  community: YpCommunityData | undefined;
+  round: RoundAttributes | undefined;
 
   @property({ type: String })
   subRoute: string | undefined;
 
   @property({ type: Number })
+  roundId: number | undefined;
+
+  @property({ type: Number })
   selectedTab = RoundTabTypes.Process;
-
-  @property({ type: Array })
-  projects: Array<CsProjectData> | undefined;
-
-  @property({ type: Boolean })
-  hideNewsfeed = false;
-
-  @property({ type: Boolean })
-  locationHidden = false;
-
-  @property({ type: Boolean })
-  hideCollection = false;
-
-  @property({ type: String })
-  createFabIcon: string | undefined;
-
-  @property({ type: String })
-  createFabLabel: string | undefined;
-
-  collectionType: string;
-  collectionItemType: string;
-
-  currentProjects: Array<CsProjectData> = [
-    {
-      id: 3,
-      user_id: 1,
-      name: 'Project 3',
-      description:
-        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-    {
-      id: 4,
-      user_id: 1,
-      name: 'Project 4',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  ];
-
-  archivedProjects: Array<CsProjectData> = [
-    {
-      id: 1,
-      user_id: 1,
-      name: 'Project 1',
-      description: 'Project 1 description',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-    {
-      id: 2,
-      user_id: 1,
-      name: 'Project 2',
-      description: 'Project 2 description',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  ];
 
   constructor() {
     super();
-    this.collectionType = 'community';
-    this.collectionItemType = 'project';
 
     //TODO: Fix this as it causes loadMoreData to be called twice on post lists at least
     // this.addGlobalListener('yp-logged-in', this._getCollection.bind(this));
-    this.addGlobalListener('yp-got-admin-rights', this.refresh.bind(this));
-
-    this.community = {
-      id: 1,
-      name: 'ARIS',
-      description: '',
-      hostname: '',
-      domain_id: 1,
-      only_admins_can_create_groups: true,
-      configuration: {
-        disableDomainUpLink: false,
-        forceSecureSamlLogin: false,
-      },
-      counter_communities: 0,
-      counter_points: 0,
-      counter_posts: 0,
-      counter_users: 0,
-      Domain: {
-        id: 1,
-        name: '',
-        domain_name: '',
-        only_admins_can_create_communities: false,
-        Communities: [],
-        counter_points: 0,
-        counter_posts: 0,
-        counter_users: 0,
-        configuration: {},
-      },
-    };
+    //this.addGlobalListener('yp-got-admin-rights', this.refresh.bind(this));
   }
 
   connectedCallback() {
@@ -153,53 +56,7 @@ export class CsRound extends YpBaseElement {
 
   // DATA PROCESSING
 
-  refresh(): void {
-    console.error('REFRESH');
-    if (this.community) {
-      if (this.community.default_locale != null) {
-        window.appGlobals.changeLocaleIfNeeded(this.community.default_locale);
-      }
-
-      if (this.community.theme_id !== undefined) {
-        window.appGlobals.theme.setTheme(this.community.theme_id);
-      }
-
-      this.fire('yp-set-home-link', {
-        type: this.collectionType,
-        id: this.community.id,
-        name: this.community.name,
-      });
-
-      this.fire('yp-change-header', {
-        headerTitle: null,
-        documentTitle: this.community.name,
-        headerDescription:
-          this.community.description || this.community.objectives,
-      });
-
-      if (this.community.configuration?.hideAllTabs) {
-        this.tabsHidden = true;
-      } else {
-        this.tabsHidden = false;
-      }
-    }
-  }
-
-  async _getCollection() {
-    if (this.domainId) {
-      this.community = undefined;
-      this.projects = undefined;
-      this.community = (await window.serverApi.getCollection(
-        this.collectionType,
-        this.domainId
-      )) as YpCommunityData | undefined;
-      this.refresh();
-    } else {
-      console.error('No community id for _getCollection');
-    }
-  }
-
-  async _getHelpPages() {
+  /*async _getHelpPages() {
     if (this.domainId) {
       const helpPages = (await window.serverApi.getHelpPages(
         this.collectionType,
@@ -211,16 +68,7 @@ export class CsRound extends YpBaseElement {
     } else {
       console.error('Collection id setup for get help pages');
     }
-  }
-
-  get collectionTabLabel(): string {
-    const translatedCollectionItems = this.t(
-      CsServerApi.transformCollectionTypeToApi(this.collectionItemType)
-    );
-    return `${translatedCollectionItems} (${
-      this.projects ? this.projects.length : 0
-    })`;
-  }
+  }*/
 
   // UI
 
@@ -283,59 +131,38 @@ export class CsRound extends YpBaseElement {
           height: 40px;
           width: 100px;
         }
+
+        .processHeader {
+          margin-bottom: 16px;
+          font-style: bold;
+          font-weight: 800;
+        }
       `,
     ];
   }
 
   renderTabs() {
-    if (!this.tabsHidden) {
-      return html`
-        <div class="layout vertical center-center">
-          <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
-            <mwc-tab
-              .label="${this.t('process')}"
-              icon="format_list_numbered"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('analytics')}"
-              icon="equalizer"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('activities')}"
-              icon="rss_feed"
-              stacked
-            ></mwc-tab>
-          </mwc-tab-bar>
-        </div>
-      `;
-    } else {
-      return nothing;
-    }
-  }
-
-  renderProjectList(
-    options: Record<string, boolean>
-  ): TemplateResult | undefined {
-    let projects;
-
-    if (options.current) projects = this.currentProjects;
-    else projects = this.archivedProjects;
-
-    const projectList = html`<div class="layout vertical center-center">
-      ${projects.map(
-        project => html`
-        <div class="layout vertical shadow-elevation-4dp shadow-transition project">
-          <div class="name">${project.name}</div>
-          <div class="description">${project.description}</div>
-        </div>
-    </div>
-      `
-      )}
-    </div>`;
-
-    return projectList;
+    return html`
+      <div class="layout vertical center-center">
+        <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
+          <mwc-tab
+            .label="${this.t('process')}"
+            icon="format_list_numbered"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            .label="${this.t('analytics')}"
+            icon="equalizer"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            .label="${this.t('activities')}"
+            icon="rss_feed"
+            stacked
+          ></mwc-tab>
+        </mwc-tab-bar>
+      </div>
+    `;
   }
 
   renderProcess(
@@ -350,11 +177,13 @@ export class CsRound extends YpBaseElement {
       <mwc-icon>${icon}</mwc-icon>
       <div class="processName">${name}</div>
       <div class="flex"></div>
-      <a href="${link}" target="_blank"><mwc-button
-        .label="${this.t('start')}"
-        ?disabled="${disableStart}"
-        raised
-      ></mwc-button></a>
+      <a href="${link}" target="_blank"
+        ><mwc-button
+          .label="${this.t('manage')}"
+          ?disabled="${disableStart}"
+          raised
+        ></mwc-button
+      ></a>
     </div>`;
   }
 
@@ -364,72 +193,91 @@ export class CsRound extends YpBaseElement {
 
   renderProcesses(): TemplateResult | undefined {
     return html`
-      <div class="layout horizontal wrap">
-        <div class="layout vertical center-center processes">
-          <div class="processHeader">${this.t('community')}</div>
-          ${this.renderProcess(this.t('organizeMeetingTime'), 'calendar_today', 'choose_time/1')}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('createScorecardMeeting'),
-            'meeting_room',
-            'create_issues/1',
-            false
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('stakeHolderScoringStage'),
-            'rate_review',
-            'score/1',
-            false
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('organizeMeetingTime'),
-            'calendar_today',
-            'choose_time/1'
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('createActionPlan'),
-            'pending_actions',
-            'action_plan'
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(this.t('monitoring'), 'equalizer', 'report')}
-        </div>
-        <div class="layout vertical center-center processes">
-          <div class="processHeader">${this.t('serviceProvider')}</div>
-          ${this.renderProcess(this.t('organizeMeetingTime'), 'calendar_today', 'choose_time/1')}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('createScorecardMeeting'),
-            'meeting_room',
-            'create_issues/1',
-            false
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('stakeHolderScoringStage'),
-            'rate_review',
-            'score/1',
-            false
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('organizeMeetingTime'),
-            'calendar_today',
-            'choose_time/1'
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(
-            this.t('createActionPlan'),
-            'pending_actions',
-            'action_plan'
-          )}
-          ${this.renderDivider()}
-          ${this.renderProcess(this.t('monitoring'), 'equalizer', 'report')}
-        </div>
-      </div>
+      ${this.round
+        ? html`
+            <div class="layout horizontal center-center wrap">
+              <div class="layout vertical center-center processes">
+                <div class="processHeader">${this.t('users')}</div>
+                ${this.renderProcess(
+                  this.t('orientationMeeting'),
+                  'meeting_room',
+                  `meetings/${
+                    this.round!.publicData!.meetings['userOrentationMeeting']
+                  }`,
+                  false
+                )}
+                ${this.renderDivider()}
+                ${this.renderProcess(
+                  this.t('createScorecardMeeting'),
+                  'meeting_room',
+                  `meetings/${
+                    this.round!.publicData!.meetings['userCreateCardMeeting']
+                  }`,
+                  false
+                )}
+                ${this.renderDivider()}
+                ${this.renderProcess(
+                  this.t('scoringMeeting'),
+                  'rate_review',
+                  `meetings/${
+                    this.round!.publicData!.meetings['userScoringMeeting']
+                  }`,
+                  false
+                )}
+              </div>
+              <div class="layout vertical center-center processes">
+                <div class="processHeader">${this.t('serviceProviders')}</div>
+                ${this.renderProcess(
+                  this.t('orientationMeeting'),
+                  'calendar_today',
+                  `meetings/${
+                    this.round!.publicData!.meetings[
+                      'providerOrentationMeeting'
+                    ]
+                  }`
+                )}
+                ${this.renderDivider()}
+                ${this.renderProcess(
+                  this.t('createSelfEvaluationMeeting'),
+                  'meeting_room',
+                  `meetings/${
+                    this.round!.publicData!.meetings[
+                      'providerCreateCardMeeting'
+                    ]
+                  }`,
+                  false
+                )}
+                ${this.renderDivider()}
+                ${this.renderProcess(
+                  this.t('selfEvaluationMeeting'),
+                  'rate_review',
+                  `meetings/${
+                    this.round!.publicData!.meetings['providerScoringMeeting']
+                  }`,
+                  false
+                )}
+              </div>
+            </div>
+            <div class="layout horizontal center-center wrap">
+              <div class="layout vertical center-center processes">
+                <div class="processHeader">${this.t('everybody')}</div>
+                ${this.renderProcess(
+                  this.t('createActionPlan'),
+                  'pending_actions',
+                  `meetings/${
+                    this.round!.publicData!.meetings['actionPlanMeeting']
+                  }`
+                )}
+                ${this.renderDivider()}
+                ${this.renderProcess(
+                  this.t('monitoring'),
+                  'equalizer',
+                  'report'
+                )}
+              </div>
+            </div>
+          `
+        : nothing}
     `;
   }
 
@@ -441,10 +289,10 @@ export class CsRound extends YpBaseElement {
         page = this.renderProcesses();
         break;
       case RoundTabTypes.Activities:
-        page = this.renderProjectList({ archived: true });
+        //page = this.renderProjectList({ archived: true });
         break;
       case RoundTabTypes.Analytics:
-        page = this.renderProjectList({ archived: true });
+        //page = this.renderProjectList({ archived: true });
         break;
     }
 
@@ -459,6 +307,13 @@ export class CsRound extends YpBaseElement {
     YpNavHelpers.redirectTo(`/project/new`);
   }
 
+  async _getRound() {
+    this.round = undefined;
+    this.round = (await window.serverApi.getRound(this.roundId!)) as
+      | RoundAttributes
+      | undefined;
+  }
+
   // EVENTS
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
@@ -466,7 +321,7 @@ export class CsRound extends YpBaseElement {
 
     if (changedProperties.has('subRoute') && this.subRoute) {
       const splitSubRoute = this.subRoute.split('/');
-      this.domainId = parseInt(splitSubRoute[1]);
+      this.roundId = parseInt(splitSubRoute[1]);
       if (splitSubRoute.length > 2) {
         this._setSelectedTabFromRoute(splitSubRoute[1]);
       } else {
@@ -474,7 +329,8 @@ export class CsRound extends YpBaseElement {
       }
     }
 
-    if (changedProperties.has('domainId') && this.domainId) {
+    if (changedProperties.has('roundId') && this.roundId) {
+      this._getRound();
       //this._getCollection();
       //this._getHelpPages();
     }
@@ -497,14 +353,6 @@ export class CsRound extends YpBaseElement {
       case 'analytics':
         tabNumber = RoundTabTypes.Analytics;
         break;
-    }
-
-    if (tabNumber) {
-      this.selectedTab = tabNumber;
-      window.appGlobals.activity(
-        'open',
-        this.collectionType + '_tab_' + routeTabName
-      );
     }
   }
 }

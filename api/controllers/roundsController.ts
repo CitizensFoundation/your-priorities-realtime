@@ -31,17 +31,11 @@ export class RoundsController {
     req: express.Request,
     res: express.Response
   ) => {
-    models.Round.findAll({
+    models.Round.findOne({
       where: {
         id: req.params.id,
       },
-      attributes: {exclude: ['privateData']},
-      include: [
-        {
-          model: (models.Stage as any),
-          as: "Stages"
-        }
-      ]
+      attributes: {exclude: ['privateData']}
     }).then( round => {
       res.send(round);
     }).catch( error => {

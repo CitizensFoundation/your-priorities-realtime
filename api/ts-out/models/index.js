@@ -231,6 +231,8 @@ setTimeout(() => {
                 userId: user.id
             });
             roundPublicData.meetings["actionPlanMeeting"] = actionPlanMeeting.id;
+            round.publicData = roundPublicData;
+            await round.save();
         }
         catch (error) {
             console.error(error);

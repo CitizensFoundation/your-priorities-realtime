@@ -59,7 +59,7 @@ export class Project
 
   public static async addParticipants(body: ParticipantsUploadAttributes, res: express.Response) {
     const lines = body.participants.split("\n");
-    const roleId = body.roleId;
+    const roleId = body.roleId+1;
     const language = body.language;
     const projectId = body.projectId;
 

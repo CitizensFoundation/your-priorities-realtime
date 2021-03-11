@@ -6,7 +6,7 @@ const _1 = require(".");
 class Project extends sequelize_1.Model {
     static async addParticipants(body, res) {
         const lines = body.participants.split("\n");
-        const roleId = body.roleId;
+        const roleId = body.roleId + 1;
         const language = body.language;
         const projectId = body.projectId;
         try {

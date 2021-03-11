@@ -28,7 +28,7 @@ class ProjectsController {
             models_1.models.Project.addParticipants(req.body, res);
         };
         this.getProject = async (req, res) => {
-            models_1.models.Project.findAll({
+            models_1.models.Project.findOne({
                 where: {
                     id: req.params.id
                 },
@@ -65,7 +65,12 @@ class ProjectsController {
                 include: [
                     {
                         model: models_1.models.User,
-                        attributes: { exclude: ['encrypedPassword'] }
+                        attributes: { exclude: ['encrypedPassword'] },
+                        include: [
+                            {
+                                model: models_1.models.Role,
+                            }
+                        ]
                     }
                 ]
             }).then(project => {

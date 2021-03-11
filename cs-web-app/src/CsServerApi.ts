@@ -108,6 +108,12 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  getRound(roundId: number) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/rounds/${roundId}`
+    );
+  }
+
   getIssues(projectId: number, issueType: number | undefined) {
     return this.fetchWrapper(
       this.baseUrlPath + `/projects/${projectId}/issues/${issueType}`
