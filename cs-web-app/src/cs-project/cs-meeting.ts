@@ -134,7 +134,6 @@ export class CsMeeting extends YpBaseElement {
     this.meeting = (await window.serverApi.getMeeting(this.meetingId!)) as
       | MeetingAttributes
       | undefined;
-    debugger;
   }
 
   async _getLoggedInUser() {
@@ -148,8 +147,6 @@ export class CsMeeting extends YpBaseElement {
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
-
-    debugger;
 
     if (changedProperties.has('subRoute') && this.subRoute) {
       const splitSubRoute = this.subRoute.split('/');

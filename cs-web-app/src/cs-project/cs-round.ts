@@ -201,7 +201,7 @@ export class CsRound extends YpBaseElement {
                 ${this.renderProcess(
                   this.t('orientationMeeting'),
                   'meeting_room',
-                  `meetings/${
+                  `meeting/${
                     this.round!.publicData!.meetings['userOrentationMeeting']
                   }`,
                   false
@@ -210,7 +210,7 @@ export class CsRound extends YpBaseElement {
                 ${this.renderProcess(
                   this.t('createScorecardMeeting'),
                   'meeting_room',
-                  `meetings/${
+                  `meeting/${
                     this.round!.publicData!.meetings['userCreateCardMeeting']
                   }`,
                   false
@@ -219,7 +219,7 @@ export class CsRound extends YpBaseElement {
                 ${this.renderProcess(
                   this.t('scoringMeeting'),
                   'rate_review',
-                  `meetings/${
+                  `meeting/${
                     this.round!.publicData!.meetings['userScoringMeeting']
                   }`,
                   false
@@ -230,7 +230,7 @@ export class CsRound extends YpBaseElement {
                 ${this.renderProcess(
                   this.t('orientationMeeting'),
                   'calendar_today',
-                  `meetings/${
+                  `meeting/${
                     this.round!.publicData!.meetings[
                       'providerOrentationMeeting'
                     ]
@@ -240,7 +240,7 @@ export class CsRound extends YpBaseElement {
                 ${this.renderProcess(
                   this.t('createSelfEvaluationMeeting'),
                   'meeting_room',
-                  `meetings/${
+                  `meeting/${
                     this.round!.publicData!.meetings[
                       'providerCreateCardMeeting'
                     ]
@@ -251,7 +251,7 @@ export class CsRound extends YpBaseElement {
                 ${this.renderProcess(
                   this.t('selfEvaluationMeeting'),
                   'rate_review',
-                  `meetings/${
+                  `meeting/${
                     this.round!.publicData!.meetings['providerScoringMeeting']
                   }`,
                   false
@@ -264,7 +264,7 @@ export class CsRound extends YpBaseElement {
                 ${this.renderProcess(
                   this.t('createActionPlan'),
                   'pending_actions',
-                  `meetings/${
+                  `meeting/${
                     this.round!.publicData!.meetings['actionPlanMeeting']
                   }`
                 )}

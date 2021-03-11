@@ -11,8 +11,12 @@ export default {
   port: 9000,
   middleware: [
     proxy('/api/', {
-      target: 'http://localhost:8000/',
+      target: 'http://localhost:8000/'
     }),
+    proxy('/socket.io/', {
+      target: 'ws://localhost:8000/',
+      ws: true
+    })
   ],
   plugins: [
     commonjs({

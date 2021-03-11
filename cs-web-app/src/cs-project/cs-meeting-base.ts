@@ -12,6 +12,7 @@ import { Radio } from '@material/mwc-radio';
 
 import '@material/mwc-formfield';
 import '@material/mwc-button';
+import '@material/mwc-checkbox';
 
 import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
@@ -31,6 +32,10 @@ export class CsMeetingBase extends YpBaseElement {
   @property({ type: Number })
   selectedTab = 0;
 
+  roomName: string | undefined
+
+  socket: any | undefined;
+
   io: any | undefined;
 
   stateListener: any | undefined;
@@ -47,7 +52,8 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   sendState(state: StateAttributes) {
-    this.io.broadcast.emit(state)
+    console.error(state)
+    this.io.emit("meetingState", (state));
   }
 
   updateState() {
@@ -58,15 +64,23 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _setupSockets() {
-    this.io = io(`meeting_${this.meeting.id}`);
+    this.io = io();
+
+    this.roomName = `meeting_${this.meeting.id}`;
 
     this.stateListener = (...args: any) => {
+      console.error(args);
       if (!this.isAdmin) {
         this._processState(args[0] as StateAttributes);
       }
     }
 
+    debugger;
+
+    this.io.on("meetingState", this.stateListener);
     this.io.on("connection", (socket: any)=> {
+      this.socket = socket;
+      console.error("CONNECTION!!!!")
       socket.on("meetingState", this.stateListener);
     })
   }
@@ -99,6 +113,11 @@ export class CsMeetingBase extends YpBaseElement {
           bottom: 16px;
           right: 16px;
         }
+
+        .sendEmailContainer {
+          padding: 16px;
+          margin: 16px;
+        }
       `,
     ];
   }
@@ -117,10 +136,10 @@ export class CsMeetingBase extends YpBaseElement {
 
   renderSendEmail() {
     return html`
-      <div class="layout vertical">
+      <div class="layout horizontal sendEmailContainer">
         <mwc-textarea
           maxLength="20000"
-          rows="10"
+          rows="4"
           id="addParticipantsInput"
           .label="${this.t('emailToParticipants')}"
         ></mwc-textarea>
@@ -136,19 +155,20 @@ export class CsMeetingBase extends YpBaseElement {
 
   renderHeader() {
     return html`
-      <div class="layout horizontal">
+      <div class="layout horizontal center-center">
         <div class="layout vertical">
-          <mwc-formfield .label="${this.t('closed')}">
-            <mwc-radio
+          <mwc-formfield .label="${this.t('live')}">
+            <mwc-checkbox
               id="liveRadio"
               @change="${this._liveChanged}"
               ?checked="${this.isLive}"
               value="closed"
               name="accessRadioButtons"
             >
-            </mwc-radio>
+            </mwc-checkbox>
           </mwc-formfield>
         </div>
+        <div class="flex"></div>
         <div class="layout vertical">${this.renderSendEmail()}</div>
       </div>
     `;

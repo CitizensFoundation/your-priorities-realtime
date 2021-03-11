@@ -33,6 +33,11 @@ const httpServer = http_1.createServer(app);
 const io = new socket_io_1.Server(httpServer, {
 // ...
 });
+io.on("connection", (socket) => {
+    socket.on("meetingState", (arg) => {
+        console.log(arg); // world
+    });
+});
 class App {
     constructor(controllers, port) {
         this.app = app;

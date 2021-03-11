@@ -13,6 +13,12 @@ const io = new Server(httpServer, {
   // ...
 });
 
+io.on("connection", (socket) => {
+  socket.on("meetingState", (arg) => {
+    console.log(arg); // world
+  });
+});
+
 export class App {
   public app: express.Application;
   public port: number;

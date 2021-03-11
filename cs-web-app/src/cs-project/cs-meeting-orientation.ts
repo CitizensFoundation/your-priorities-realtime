@@ -114,7 +114,7 @@ export class CsMeetingOrientation extends CsMeetingBase {
     let page: TemplateResult | undefined;
 
     switch (this.selectedTab) {
-      case OrientationTabTypes.Process:
+      case OrientationTabTypes.Orientation:
         page = this.renderStory();
         break;
     }
@@ -123,7 +123,7 @@ export class CsMeetingOrientation extends CsMeetingBase {
   }
 
   render() {
-    return html` ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
+    return html` ${this.renderHeader()} ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
   }
 
   // EVENTS

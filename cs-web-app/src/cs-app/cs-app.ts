@@ -458,7 +458,6 @@ export class CsApp extends YpBaseElement {
   renderPage() {
     let pageHtml;
     if (this.page) {
-      debugger;
       switch (this.page) {
         case 'projects':
           pageHtml = cache(html`
