@@ -5,7 +5,7 @@ const sequelize_1 = require("sequelize");
 class Issue extends sequelize_1.Model {
 }
 exports.Issue = Issue;
-Issue.CoreIssueType = 0;
+Issue.TypeCoreIssue = 0;
 const InitIssue = (sequelize) => {
     Issue.init({
         id: {

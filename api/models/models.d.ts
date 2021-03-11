@@ -38,7 +38,7 @@ interface ProjectAttributes {
 }
 
 interface RoundPublicDataAttributes {
-  data: string;
+  meetings: Record<string, number>;
 }
 
 interface RoundAttributes {
@@ -51,7 +51,6 @@ interface RoundAttributes {
   startedAt?: Date;
   completedAt?: Date;
 }
-
 
 interface StoryPublicDataAttributes {
   data: string;
@@ -83,11 +82,13 @@ interface StageAttributes {
 
 interface MeetingAttributes {
   id: number;
-  stageId: number;
+  roundId: number;
   userId: number;
   type: number;
   state: number;
   subState: number;
+  forUsers: boolean;
+  forServiceProviders: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   startedAt?: Date;

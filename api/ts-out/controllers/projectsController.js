@@ -56,23 +56,6 @@ class ProjectsController {
                 res.send(error);
             });
         };
-        this.getParticipantsA = async (req, res) => {
-            models_1.models.User.findAll({
-                attributes: { exclude: ['encryptedPassword'] },
-                include: [
-                    {
-                        model: models_1.models.Project,
-                        as: "ProjectUsersA",
-                        attributes: ['id']
-                    }
-                ]
-            }).then(users => {
-                res.send(users);
-            }).catch(error => {
-                console.error(error);
-                res.send(error);
-            });
-        };
         this.getParticipants = async (req, res) => {
             models_1.models.Project.findOne({
                 where: {

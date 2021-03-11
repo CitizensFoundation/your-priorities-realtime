@@ -88,10 +88,10 @@ models.User.hasMany(models.Role, {
 // Round
 models.Round.belongsTo(models.Project,  { as: 'Project', foreignKey: 'projectId' });
 
-models.Round.hasMany(models.Stage, {
+models.Round.hasMany(models.Meeting, {
   sourceKey: "id",
   foreignKey: "roundId",
-  as: "Stages"
+  as: "Meetings"
 });
 
 models.Round.hasMany(models.Issue, {
@@ -115,7 +115,7 @@ models.Story.belongsToMany(models.Stage, {
 });
 
 // Meeting
-models.Meeting.belongsTo(models.Stage,  { as: 'Project', foreignKey: 'stageId' });
+models.Meeting.belongsTo(models.Round,  { as: 'Round', foreignKey: 'roundId' });
 
 // EmailCampaign
 models.EmailCampaign.hasMany(models.SentEmail, {
@@ -188,14 +188,107 @@ setTimeout( ()=>{
         userId: user.id,
         language: "en",
         publicData: {
-          service: "",
-          locations: "",
-          keyContacts: "123",
-          languages: "ru,en,ky"
+          service: "Health services",
+          locations: "Bosnia",
+          keyContacts: "somebody@somewhere.bi",
+          languages: "Bosnian, Croatian, Serbian & English"
         }
       });
 
       await user.addProject(project);
+
+      const round = await models.Round.create({
+        projectId: project.id,
+        userId: user.id
+      });
+
+      const roundPublicData = {
+        meetings: {}
+      } as RoundPublicDataAttributes
+
+      const userOrentationMeeting = await models.Meeting.create({
+        roundId: round.id,
+        type: models.Meeting.TypeOrientation,
+        state: 0,
+        subState: 0,
+        forUsers: true,
+        forServiceProviders: false,
+        userId: user.id
+      });
+
+      roundPublicData.meetings["userOrentationMeeting"] = userOrentationMeeting.id;
+
+      const providerOrentationMeeting = await models.Meeting.create({
+        roundId: round.id,
+        type: models.Meeting.TypeOrientation,
+        state: 0,
+        subState: 0,
+        forUsers: false,
+        forServiceProviders: true,
+        userId: user.id
+      });
+
+      roundPublicData.meetings["providerOrentationMeeting"] = providerOrentationMeeting.id;
+
+      const userCreateCardMeeting = await models.Meeting.create({
+        roundId: round.id,
+        type: models.Meeting.TypeCreateCard,
+        state: 0,
+        subState: 0,
+        forUsers: true,
+        forServiceProviders: false,
+        userId: user.id
+      });
+
+      roundPublicData.meetings["userCreateCardMeeting"] = userCreateCardMeeting.id;
+
+      const providerCreateCardMeeting = await models.Meeting.create({
+        roundId: round.id,
+        type: models.Meeting.TypeCreateCard,
+        state: 0,
+        subState: 0,
+        forUsers: false,
+        forServiceProviders: true,
+        userId: user.id
+      });
+
+      roundPublicData.meetings["providerCreateCardMeeting"] = providerCreateCardMeeting.id;
+
+      const userScoringMeeting = await models.Meeting.create({
+        roundId: round.id,
+        type: models.Meeting.TypeScoring,
+        state: 0,
+        subState: 0,
+        forUsers: true,
+        forServiceProviders: false,
+        userId: user.id
+      });
+
+      roundPublicData.meetings["userScoringMeeting"] = userScoringMeeting.id;
+
+      const providerScoringMeeting = await models.Meeting.create({
+        roundId: round.id,
+        type: models.Meeting.TypeScoring,
+        state: 0,
+        subState: 0,
+        forUsers: false,
+        forServiceProviders: true,
+        userId: user.id
+      });
+
+      roundPublicData.meetings["providerScoringMeeting"] = providerScoringMeeting.id;
+
+      const actionPlanMeeting = await models.Meeting.create({
+        roundId: round.id,
+        type: models.Meeting.TypeActionPlan,
+        state: 0,
+        subState: 0,
+        forUsers: true,
+        forServiceProviders: true,
+        userId: user.id
+      });
+
+      roundPublicData.meetings["actionPlanMeeting"] = actionPlanMeeting.id;
     } catch (error) {
       console.error(error);
     }

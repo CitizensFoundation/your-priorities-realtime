@@ -88,27 +88,6 @@ export class ProjectsController {
     })
   }
 
-  getParticipantsA = async (
-    req: express.Request,
-    res: express.Response
-  ) => {
-    models.User.findAll({
-      attributes: {exclude: ['encryptedPassword']},
-      include: [
-        {
-          model: (models.Project as any),
-          as: "ProjectUsersA",
-          attributes: ['id']
-        }
-      ]
-    }).then( users => {
-      res.send(users);
-    }).catch( error => {
-      console.error(error);
-      res.send(error);
-    })
-  }
-
   getParticipants = async (
     req: express.Request,
     res: express.Response

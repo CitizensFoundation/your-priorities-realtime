@@ -5,6 +5,11 @@ const sequelize_1 = require("sequelize");
 class Meeting extends sequelize_1.Model {
 }
 exports.Meeting = Meeting;
+Meeting.TypeOrientation = 0;
+Meeting.TypeCreateCard = 1;
+Meeting.TypeScoring = 2;
+Meeting.TypeActionPlan = 3;
+Meeting.TypeReporting = 4;
 const InitMeeting = (sequelize) => {
     Meeting.init({
         id: {
@@ -12,7 +17,7 @@ const InitMeeting = (sequelize) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        stageId: {
+        roundId: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
@@ -31,6 +36,16 @@ const InitMeeting = (sequelize) => {
         subState: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
+        },
+        forUsers: {
+            type: sequelize_1.DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
+        forServiceProviders: {
+            type: sequelize_1.DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         },
         createdAt: {
             type: sequelize_1.DataTypes.DATE,

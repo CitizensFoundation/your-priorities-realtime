@@ -20,16 +20,24 @@ export class Meeting
   extends Model<MeetingAttributes, MeetingCreationAttributes>
   implements MeetingAttributes {
   public id!: number;
-  public stageId!: number;
+  public roundId!: number;
   public userId!: number;
   public type!: number;
   public state!: number;
   public subState!: number;
+  public forUsers!: boolean;
+  public forServiceProviders!: boolean;
 
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
   public readonly staredAt?: Date;
   public readonly completedAt?: Date;
+
+  static TypeOrientation = 0;
+  static TypeCreateCard= 1;
+  static TypeScoring = 2;
+  static TypeActionPlan = 3;
+  static TypeReporting = 4;
 }
 
 export const InitMeeting = (sequelize: Sequelize) => {
@@ -40,7 +48,7 @@ export const InitMeeting = (sequelize: Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      stageId: {
+      roundId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -59,6 +67,16 @@ export const InitMeeting = (sequelize: Sequelize) => {
       subState: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      forUsers: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      forServiceProviders: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       },
       createdAt: {
         type: DataTypes.DATE,

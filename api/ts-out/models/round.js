@@ -34,11 +34,11 @@ const InitRound = (sequelize) => {
         },
         startedAt: {
             type: sequelize_1.DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
         },
         completedAt: {
             type: sequelize_1.DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
         }
     }, {
         timestamps: true,

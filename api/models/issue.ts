@@ -37,7 +37,7 @@ export class Issue
   public readonly staredAt?: Date;
   public readonly completedAt?: Date;
 
-  static CoreIssueType = 0;
+  static TypeCoreIssue = 0;
 }
 
 export const InitIssue = (sequelize: Sequelize) => {

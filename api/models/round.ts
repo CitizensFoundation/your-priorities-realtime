@@ -70,11 +70,11 @@ export const InitRound = (sequelize: Sequelize) => {
       },
       startedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       completedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       }
     },
     {
