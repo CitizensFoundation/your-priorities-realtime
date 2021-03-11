@@ -10,7 +10,7 @@ import '@material/mwc-textfield';
 import '@material/mwc-textarea';
 import '@material/mwc-button';
 import '@material/mwc-select';
-import '@material/mwc-list-item';
+import '@material/mwc-list/mwc-list-item';
 
 import Chart from 'chart.js';
 
@@ -387,9 +387,6 @@ export class CsProject extends YpBaseElement {
       let arr = [];
       const highlighted = [];
       let highlightedLocales = ['en', 'en_GB', 'is', 'fr', 'de', 'es', 'ar'];
-      if (window.appGlobals.highlightedLanguages) {
-        highlightedLocales = window.appGlobals.highlightedLanguages.split(',');
-      }
       for (const key in this.supportedLanguages) {
         // eslint-disable-next-line no-prototype-builtins
         if (this.supportedLanguages.hasOwnProperty(key)) {

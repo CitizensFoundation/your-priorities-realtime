@@ -1,6 +1,7 @@
 import { YpCodeBase } from './@yrpri/YpCodeBaseclass.js';
+import { YpServerApi } from './YpServerApi.js';
 
-export class CsServerApi extends YpCodeBase {
+export class CsServerApi extends YpServerApi {
   protected baseUrlPath = '/api';
 
   static transformCollectionTypeToApi(type: string): string {
@@ -31,7 +32,7 @@ export class CsServerApi extends YpCodeBase {
     return transformedApiType;
   }
 
-  private async fetchWrapper(url: string, options: RequestInit =  {}, showUserError = true) {
+   async fetchWrapper(url: string, options: RequestInit =  {}, showUserError = true) {
     if (!options.headers) {
       options.headers = {
         'Content-Type': 'application/json'
@@ -41,7 +42,7 @@ export class CsServerApi extends YpCodeBase {
     return this.handleResponse(response, showUserError);
   }
 
-  private async handleResponse(response: Response, showUserError: boolean) {
+  async handleResponse(response: Response, showUserError: boolean) {
     if (response.ok) {
       let responseJson = null;
       try {

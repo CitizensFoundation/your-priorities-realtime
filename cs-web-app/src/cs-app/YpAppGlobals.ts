@@ -3,7 +3,7 @@ import i18next from 'i18next';
 //TODO: Fix moment
 //import moment from 'moment';
 
-import { YpServerApi } from '../CsServerApi.js';
+import { CsServerApi } from '../CsServerApi.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { YpCodeBase } from '../@yrpri/YpCodeBaseclass.js';
 import { YpRecommendations } from './YpRecommendations.js';
@@ -70,7 +70,7 @@ export class YpAppGlobals extends YpCodeBase {
   // TODO: Remove any,
   i18nTranslation: any | undefined;
 
-  serverApi: YpServerApi;
+  serverApi: CsServerApi;
 
   recommendations: YpRecommendations;
 
@@ -88,7 +88,7 @@ export class YpAppGlobals extends YpCodeBase {
 
   retryMethodAfter401Login: Function | undefined;
 
-  constructor(serverApi: YpServerApi) {
+  constructor(serverApi: CsServerApi) {
     super();
 
     this.appStartTime = new Date();

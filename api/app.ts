@@ -16,6 +16,8 @@ export class App {
   }
 
   private initializeMiddlewares() {
+    this.app.use(bodyParser.json());
+    this.app.use(express.static(path.join(__dirname, '/../cs-web-app/dist')));
     if (process.env.NODE_ENV !== 'development' && !process.env.DISABLE_FORCE_HTTPS) {
       this.app.enable('trust proxy');
       this.app.use(function checkProtocol (req, res, next) {
@@ -27,9 +29,6 @@ export class App {
         }
       });
     }
-
-    this.app.use(bodyParser.json());
-    this.app.use(express.static(path.join(__dirname, '/cs-web-app')));
   }
 
   private initializeControllers(controllers: Array<any>) {

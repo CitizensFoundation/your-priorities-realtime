@@ -1,10 +1,10 @@
 import { html, fixture, expect } from '@open-wc/testing';
 
-import { CsWebApp } from '../src/CsWebApp.js';
+import { CsApp } from '../src/cs-app/cs-app';
 import '../src/cs-web-app.js';
 
 describe('CsWebApp', () => {
-  let element: CsWebApp;
+  let element: CsApp;
   beforeEach(async () => {
     element = await fixture(html`<cs-web-app></cs-web-app>`);
   });

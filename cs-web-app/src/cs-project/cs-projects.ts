@@ -8,7 +8,7 @@ import { YpMediaHelpers } from '../@yrpri/YpMediaHelpers.js';
 
 import '@material/mwc-tab-bar';
 import '@material/mwc-fab';
-import { YpServerApi } from '../CsServerApi.js';
+import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 
@@ -246,7 +246,7 @@ export class CsProjects extends YpBaseElement {
 
   get collectionTabLabel(): string {
     const translatedCollectionItems = this.t(
-      YpServerApi.transformCollectionTypeToApi(this.collectionItemType)
+      CsServerApi.transformCollectionTypeToApi(this.collectionItemType)
     );
     return `${translatedCollectionItems} (${
       this.projects ? this.projects.length : 0

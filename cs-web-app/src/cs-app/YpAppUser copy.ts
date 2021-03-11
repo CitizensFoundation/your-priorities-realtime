@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { YpServerApi } from '../CsServerApi.js';
+import { CsServerApi } from '../CsServerApi.js';
 import { YpCodeBase } from '../@yrpri/YpCodeBaseclass.js';
 import { YpAccessHelpers } from '../@yrpri/YpAccessHelpers.js';
 
 export class YpAppUser extends YpCodeBase {
-  serverApi: YpServerApi;
+  serverApi: CsServerApi;
 
   loginForAcceptInviteParams: {
     token: string;
@@ -83,7 +83,7 @@ export class YpAppUser extends YpCodeBase {
 
   sessionStorage = window.localStorage;
 
-  constructor(serverApi: YpServerApi) {
+  constructor(serverApi: CsServerApi) {
     super();
     this.serverApi = serverApi;
     if (!window.location.pathname.startsWith('/survey/')) {

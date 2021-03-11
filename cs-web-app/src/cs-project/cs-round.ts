@@ -11,7 +11,7 @@ import '@material/mwc-fab';
 import '@material/mwc-icon';
 import '@material/mwc-button';
 
-import { YpServerApi } from '../CsServerApi.js';
+import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 
@@ -215,7 +215,7 @@ export class CsRound extends YpBaseElement {
 
   get collectionTabLabel(): string {
     const translatedCollectionItems = this.t(
-      YpServerApi.transformCollectionTypeToApi(this.collectionItemType)
+      CsServerApi.transformCollectionTypeToApi(this.collectionItemType)
     );
     return `${translatedCollectionItems} (${
       this.projects ? this.projects.length : 0

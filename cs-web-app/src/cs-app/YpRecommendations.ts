@@ -1,5 +1,5 @@
 import { YpCodeBase } from '../@yrpri/YpCodeBaseclass.js'
-import { YpServerApi } from '../CsServerApi.js';
+import { CsServerApi } from '../CsServerApi.js';
 
 export class YpRecommendations extends YpCodeBase {
 
@@ -17,9 +17,9 @@ export class YpRecommendations extends YpCodeBase {
 
   preCacheLimit = 3
 
-  serverApi: YpServerApi;
+  serverApi: CsServerApi;
 
-  constructor(serverApi: YpServerApi) {
+  constructor(serverApi: CsServerApi) {
     super();
     this.serverApi = serverApi;
   }
