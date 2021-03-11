@@ -24,7 +24,7 @@ export const ProjectTabTypes: Record<string, number> = {
   CoreIssues: 1,
   participants: 2,
   Analytics: 3,
-  Activities: 4,
+  Activities: 4
 };
 
 export const IssueTypes: Record<string, number> = {

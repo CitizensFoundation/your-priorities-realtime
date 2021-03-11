@@ -1,28 +1,29 @@
-// import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
+import { fromRollup } from '@web/dev-server-rollup';
+import rollupCommonjs from '@rollup/plugin-commonjs';
+import proxy from 'koa-proxies';
 
-/** Use Hot Module replacement by adding --hmr to the start command */
-const hmr = process.argv.includes('--hmr');
+import typescript from '@rollup/plugin-typescript';
 
-export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
-  nodeResolve: true,
-  open: '/',
-  watch: !hmr,
+const commonjs = fromRollup(rollupCommonjs);
 
-  /** Compile JS for older browsers. Requires @web/dev-server-esbuild plugin */
-  // esbuildTarget: 'auto'
-
-  /** Set appIndex to enable SPA routing */
-  // appIndex: 'demo/index.html',
-
-  /** Confgure bare import resolve plugin */
-  // nodeResolve: {
-  //   exportConditions: ['browser', 'development']
-  // },
-
-  plugins: [
-    /** Use Hot Module Replacement by uncommenting. Requires @open-wc/dev-server-hmr plugin */
-    // hmr && hmrPlugin({ exclude: ['**/*/node_modules/**/*'], presets: [presets.litElement] }),
+export default {
+  mimeTypes: {
+    '**/*.cjs': 'js'
+  },
+  port: 9000,
+  middleware: [
+    proxy('/api/', {
+      target: 'http://localhost:8000/',
+    }),
   ],
-
-  // See documentation for all available options
-});
+  plugins: [
+    commonjs({
+      include: [
+        'node_modules/linkifyjs/**/*',
+        'node_modules/moment/**/*',
+        '**/*/node_modules/linkifyjs/**/*',
+        '**/*/node_modules/i18next-http-backend/**/*'
+      ],
+    }),
+  ],
+};
