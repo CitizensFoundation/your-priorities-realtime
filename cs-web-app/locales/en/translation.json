@@ -1,4 +1,8 @@
 {
+  "selectRole": "Select role",
+  "selectLanguage": "Select language",
+  "addParticipants": "Add participant",
+  "language": "Language",
   "service": "Service",
   "languages": "Languages",
   "locations": "Locations",

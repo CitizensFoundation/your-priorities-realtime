@@ -203,7 +203,7 @@ export class CsRound extends YpBaseElement {
                   'calendar_today',
                   `meeting/${
                     this.round!.publicData!.meetings['userOrentationMeeting']
-                  }`,
+                  }?isAdmin=1`,
                   false
                 )}
                 ${this.renderDivider()}
@@ -212,7 +212,7 @@ export class CsRound extends YpBaseElement {
                   'meeting_room',
                   `meeting/${
                     this.round!.publicData!.meetings['userCreateCardMeeting']
-                  }`,
+                  }?isAdmin=1`,
                   false
                 )}
                 ${this.renderDivider()}
@@ -221,7 +221,7 @@ export class CsRound extends YpBaseElement {
                   'rate_review',
                   `meeting/${
                     this.round!.publicData!.meetings['userScoringMeeting']
-                  }`,
+                  }?isAdmin=1`,
                   false
                 )}
               </div>
@@ -234,7 +234,7 @@ export class CsRound extends YpBaseElement {
                     this.round!.publicData!.meetings[
                       'providerOrentationMeeting'
                     ]
-                  }`
+                  }?isAdmin=1`
                 )}
                 ${this.renderDivider()}
                 ${this.renderProcess(
@@ -244,7 +244,7 @@ export class CsRound extends YpBaseElement {
                     this.round!.publicData!.meetings[
                       'providerCreateCardMeeting'
                     ]
-                  }`,
+                  }?isAdmin=1`,
                   false
                 )}
                 ${this.renderDivider()}
@@ -253,7 +253,7 @@ export class CsRound extends YpBaseElement {
                   'rate_review',
                   `meeting/${
                     this.round!.publicData!.meetings['providerScoringMeeting']
-                  }`,
+                  }?isAdmin=1`,
                   false
                 )}
               </div>
@@ -266,7 +266,7 @@ export class CsRound extends YpBaseElement {
                   'pending_actions',
                   `meeting/${
                     this.round!.publicData!.meetings['actionPlanMeeting']
-                  }`
+                  }?isAdmin=1`
                 )}
                 ${this.renderDivider()}
                 ${this.renderProcess(
