@@ -1,4 +1,8 @@
 {
+  "service": "Service",
+  "languages": "Languages",
+  "locations": "Locations",
+  "keyContacts": "Key contacts",
   "scoringMeeting": "Scoring meeting",
   "selfEvaluationMeeting": "Self evaluation meeting",
   "createSelfEvaluationMeeting": "Create self evaluation meeting",

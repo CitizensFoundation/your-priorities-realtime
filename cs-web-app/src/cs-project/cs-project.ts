@@ -391,6 +391,27 @@ export class CsProject extends YpBaseElement {
           height: 300px;
           color: #000;
         }
+
+        .projectName {
+          font-size: 24px;
+          margin-bottom: 8px;
+        }
+
+        .projectDescription {
+          margin-bottom: 16px;
+        }
+
+        .projectInfoContainer {
+          width: 950px;
+          margin-top: 16px;
+          margin-bottom: 16px;
+        }
+
+        .projectInfo {
+          margin-left: 24px;
+          font-size: 12px;
+        }
+
       `,
     ];
   }
@@ -738,8 +759,39 @@ export class CsProject extends YpBaseElement {
     return html`${this.project ? this.renderProjectRounds() : nothing}`;
   }
 
+  renderProject() {
+    if (this.project) {
+      return html`
+        <div class="layout horizontal center-center">
+          <div class="layout horizontal projectInfoContainer">
+            <div class="layout vertical">
+              <div class="projectName">${this.project.name}</div>
+              <div class="projectDescription">${this.project.description}</div>
+            </div>
+            <div class="projectInfo layout vertical">
+              <div>
+                ${this.t("service")}: ${this.project.publicData?.service}
+              </div>
+              <div>
+                ${this.t("languages")}:${this.project.publicData?.languages}
+              </div>
+              <div>
+                ${this.t("locations")}: ${this.project.publicData?.locations}
+              </div>
+              <div>
+                ${this.t("keyContacts")}:${this.project.publicData?.keyContacts}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      return nothing;
+    }
+  }
+
   render() {
-    return html` ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
+    return html` ${this.renderProject()} ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
   }
 
   createProject() {
