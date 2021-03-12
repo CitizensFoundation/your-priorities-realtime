@@ -148,7 +148,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     if (!this.isAdmin) {
       super._processState(state);
       if (this.isLive) {
-        if (state.storyPageIndex!=null) {
+        if (state.storyPageIndex!=null && this.$$('#storyViewer')) {
           (this.$$('#storyViewer') as CsStory).setIndex(state.storyPageIndex);
         }
         if (state.coreIssueIndex!=null) {
