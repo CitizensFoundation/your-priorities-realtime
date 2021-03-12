@@ -19,13 +19,13 @@ import { KeyObject } from "crypto";
 const Sequelize = require("sequelize");
 
 const env = process.env.NODE_ENV || "development";
-const config = require(`${__dirname}/../../config/config.json`)[env];
 
-let sequelize
+let sequelize;
 
 if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL);
 } else {
+  const config = require(`${__dirname}/../../config/config.json`)[env];
   sequelize = new Sequelize(
     config.database,
     config.username,
