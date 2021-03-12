@@ -254,6 +254,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   renderCreateLocal() {
     return html`
+      <div ?hidden="${this.isAdmin}" class="subjectHeader">
+        ${this.meeting.forUsers
+                ? this.t('createScoreCard')
+                : this.t('createSelfAssessment')}
+      </div>
+
       <div class="layout vertical center-center comments">
         <mwc-textarea
           id="addIssueInput"
