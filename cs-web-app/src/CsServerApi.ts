@@ -91,6 +91,17 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public postIssueComment(issueId: number, body: object) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/issues/${issueId}/addComment`,
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+      },
+      false
+    );
+  }
+
   public postParticipants(projectId: number, body: object) {
     return this.fetchWrapper(
       this.baseUrlPath + `/projects/${projectId}/addParticipants`,

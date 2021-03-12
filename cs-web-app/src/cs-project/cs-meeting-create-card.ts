@@ -10,6 +10,7 @@ import '@material/mwc-tab-bar';
 import '@material/mwc-fab';
 import '@material/mwc-icon';
 import '@material/mwc-button';
+import '@material/mwc-textarea';
 
 import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
@@ -18,6 +19,7 @@ import { CsMeetingBase } from './cs-meeting-base.js';
 
 import '../cs-story/cs-story.js';
 import { CsStory } from '../cs-story/cs-story.js';
+import { TextArea } from '@material/mwc-textarea';
 
 export const CreateCardTabTypes: Record<string, number> = {
   Infomation: 0,
@@ -107,6 +109,22 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           padding-bottom: 8px;
           padding-top: 0;
         }
+
+        .issueName {
+          padding: 16px;
+        }
+
+        .addCommentInput {
+          width: 300px;
+        }
+
+        .issueVoting {
+          width: 48px;
+        }
+
+        .comments {
+          margin-top: 32px;
+        }
       `,
     ];
   }
@@ -182,45 +200,95 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         </div>
       </div>
 
+      <div class="layout vertical center-center comments">
+        <mwc-textarea
+            id="addCommentInput"
+            charCounter
+            class="addCommentInput"
+            maxLength="200"
+            id="coreIssueInput"
+            .label="${this.t('yourComment')}"
+          ></mwc-textarea>
+          <div class="layout horizontal center-center">
+            <mwc-button
+              raised
+              class="layout addNewIssueButton"
+              @click="${this.addCoreIssueComment}"
+              .label="${this.t('addComment')}"
+            ></mwc-button>
+          </div>
+      </div>
+      </div>
+
+
       ${issue.Comments?.map(comment => {
         return html` <div class="comment">${comment.content}</div> `;
       })}
     `;
   }
 
+  async addCoreIssueComment() {
+    const issue = this.coreIssues![this.coreIssueIndex];
+
+    const comment = {
+      content: (this.$$('#addCommentInput') as HTMLInputElement).value,
+      userId: 1,
+    } as CommentAttributes;
+
+    await window.serverApi.postIssueComment(issue.id, comment);
+
+    issue.Comments!.unshift(comment);
+
+    this.io.emit('newComment', comment);
+
+    (this.$$('#addCommentInput') as HTMLInputElement).value = '';
+  }
+
   leftCoreIssueArrow() {
-    if (this.coreIssueIndex>0) {
+    if (this.coreIssueIndex > 0) {
       this.coreIssueIndex -= 1;
       this.updateState();
+      (this.$$('#addCommentInput') as TextArea).value = '';
     }
   }
 
   rightCoreIssueArrow() {
-    if (this.coreIssueIndex<this.coreIssues!.length) {
+    if (this.coreIssueIndex < this.coreIssues!.length - 1) {
       this.coreIssueIndex += 1;
       this.updateState();
+      (this.$$('#addCommentInput') as TextArea).value = '';
     }
   }
 
   renderReviewCoreIssues() {
-    if (this.coreIssues) {
+    if (this.coreIssues && this.coreIssues.length > 0) {
       return html`
-      <div ?hidden="${this.isAdmin}" class="subjectHeader">
-        ${this.t('reviewCoreIssues')}
-      </div>
+        <div ?hidden="${this.isAdmin}" class="subjectHeader">
+          ${this.t('reviewCoreIssues')}
+        </div>
 
-      <div class="layout horizontal center-center">
-        <div class="issueBack" ?hidden="${this.coreIssueIndex===0}">
-          <mwc-icon-button  @click="${this.leftCoreIssueArrow}">left_arrow</mwc-icon-button>
+        <div class="layout horizontal center-center">
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.coreIssueIndex === 0}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_back"
+              @click="${this.leftCoreIssueArrow}"
+            ></mwc-icon-button>
+          </div>
+          <div class="layout vertical center-center">
+            ${this.renderIssue(this.coreIssueIndex)}
+          </div>
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.coreIssueIndex >= this.coreIssues!.length - 1}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_forward"
+              @click="${this.rightCoreIssueArrow}"
+            ></mwc-icon-button>
+          </div>
         </div>
-        <div class="layout vertical center-center">
-          ${this.renderIssue(this.coreIssueIndex)}
-        </div>
-        <div class="issueBack" ?hidden="${this.coreIssueIndex>=this.coreIssues!.length}">
-          <mwc-icon-button @click="${this.rightCoreIssueArrow}">right_arrow</mwc-icon-button>
-        </div>
-      </div>
-    `;
+      `;
     } else {
       return html``;
     }
@@ -276,7 +344,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       case CreateCardTabTypes.ReviewCoreIssues:
         page = this.renderReviewCoreIssues();
         break;
-      }
+    }
 
     return page;
   }

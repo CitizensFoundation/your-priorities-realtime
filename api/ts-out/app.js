@@ -38,6 +38,10 @@ io.on("connection", (socket) => {
         console.log(arg); // world
         socket.broadcast.emit("meetingState", (arg));
     });
+    socket.on("newComment", (arg) => {
+        console.log(arg); // world
+        socket.broadcast.emit("newComment", (arg));
+    });
 });
 class App {
     constructor(controllers, port) {
