@@ -100,8 +100,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         .issueCard {
           background-color: var(--mdc-theme-surface);
           margin: 8px;
-          width: 300px;
-          max-width: 300px;
+          width: 260px;
+          max-width: 260px;
         }
 
         .voteButton {
@@ -114,7 +114,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         }
 
         .addCommentInput {
-          width: 300px;
+          width: 260px;
         }
 
         .issueVoting {
@@ -125,8 +125,19 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin-top: 32px;
         }
 
+        .comment {
+          margin-top: 16px;
+          padding: 16px;
+          width: 260px;
+          background-color: #f7f7f7;
+        }
+
+        .addNewIssueButton {
+          margin-top: 16px;
+          margin-bottom: 8px;
+        }
+
         cs-story {
-          height: 200px !important;
         }
       `,
     ];
@@ -148,13 +159,13 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     if (!this.isAdmin) {
       super._processState(state);
       if (this.isLive) {
-        if (state.storyPageIndex!=null && this.$$('#storyViewer')) {
+        if (state.storyPageIndex != null && this.$$('#storyViewer')) {
           (this.$$('#storyViewer') as CsStory).setIndex(state.storyPageIndex);
         }
-        if (state.coreIssueIndex!=null) {
+        if (state.coreIssueIndex != null) {
           this.coreIssueIndex = state.coreIssueIndex;
         }
-        if (state.votingIssueIndex!=null) {
+        if (state.votingIssueIndex != null) {
           this.votingIssueIndex = state.votingIssueIndex;
         }
         this.selectedTab = state.tabIndex;
@@ -206,7 +217,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       </div>
 
       <div class="layout vertical center-center comments">
-        <mwc-textarea
+          <mwc-textarea
             id="addCommentInput"
             charCounter
             class="addCommentInput"
@@ -222,13 +233,15 @@ export class CsMeetingCreateCard extends CsMeetingBase {
               .label="${this.t('addComment')}"
             ></mwc-button>
           </div>
-      </div>
+        </div>
       </div>
 
+      <div class="layout vertical self-start">
+        ${issue.Comments?.map(comment => {
+          return html` <div class="comment shadow-elevation-4dp shadow-transition">${comment.content}</div> `;
+        })}
+      </div>
 
-      ${issue.Comments?.map(comment => {
-        return html` <div class="comment">${comment.content}</div> `;
-      })}
     `;
   }
 
@@ -252,7 +265,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       userId: 1,
       issueId: issue.id,
       type: 0,
-      status: 0
+      status: 0,
     } as CommentAttributes;
 
     await window.serverApi.postIssueComment(issue.id, comment);
@@ -287,7 +300,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           ${this.t('reviewCoreIssues')}
         </div>
 
-        <div class="layout horizontal center-center">
+        <div class="layout horizontal center-center self-start">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.coreIssueIndex === 0}"
@@ -380,7 +393,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has("selectedTab")) {
+    if (changedProperties.has('selectedTab')) {
       this.updateState();
     }
   }
