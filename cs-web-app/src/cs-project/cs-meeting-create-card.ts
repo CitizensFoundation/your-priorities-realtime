@@ -24,7 +24,7 @@ import { TextArea } from '@material/mwc-textarea';
 export const CreateCardTabTypes: Record<string, number> = {
   Information: 0,
   ReviewCoreIssues: 1,
-  AddIssues: 2,
+  CreateLocal: 2,
   Vote: 3,
   Review: 4,
 };
@@ -59,6 +59,11 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   connectedCallback() {
     super.connectedCallback();
     this._getIssues();
+    if (this.meeting.forUsers) {
+      this._getParticipantsIssues(IssueTypes.UserIssue);
+    } else {
+      this._getParticipantsIssues(IssueTypes.ProviderIssue);
+    }
   }
 
   async _getIssues() {
@@ -67,6 +72,47 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       1 /*this.meeting.Round.projectId*/,
       IssueTypes.CoreIssue
     )) as Array<IssueAttributes> | undefined;
+  }
+
+  async _getParticipantsIssues(issueType: number) {
+    this.participantsIssues = undefined;
+    this.participantsIssues = (await window.serverApi.getIssues(
+      1 /*this.meeting.Round.projectId*/,
+      issueType
+    )) as Array<IssueAttributes> | undefined;
+  }
+
+  async addIssue() {
+
+    const element = this.$$('#addIssueInput') as HTMLInputElement;
+
+    if (element && element.value && element.value.length>0) {
+      const issue = {
+        description: (this.$$('#addIssueInput') as HTMLInputElement).value,
+        userId: 1,
+        type: this.meeting.forUsers ? IssueTypes.UserIssue : IssueTypes.ProviderIssue,
+        state: 0,
+        projectId: 1 //TODO: FIX
+      } as IssueAttributes;
+
+      await window.serverApi.postIssue(
+        1,
+        issue
+      );
+
+      this.participantsIssues?.unshift(issue);
+
+      this.participantsIssues = [...this.participantsIssues!];
+
+      this.io.emit('newIssue', issue);
+
+      (this.$$('#addIssueInput') as HTMLInputElement).value = '';
+    }
+  }
+
+  _processNewIssue(issue: IssueAttributes) {
+    this.participantsIssues?.unshift(issue);
+    this.participantsIssues = [...this.participantsIssues!];
   }
 
   // UI
@@ -191,6 +237,38 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     `;
   }
 
+  renderCreateLocal() {
+    return html`
+      <div class="layout vertical center-center comments">
+        <mwc-textarea
+          id="addIssueInput"
+          charCounter
+          class="addCommentInput"
+          maxLength="200"
+          .label="${this.t('yourIssue')}"
+        ></mwc-textarea>
+        <div class="layout horizontal center-center">
+          <mwc-button
+            raised
+            class="layout addNewIssueButton"
+            @click="${this.addIssue}"
+            .label="${this.t('addIssue')}"
+          ></mwc-button>
+        </div>
+      </div>
+
+      <div class="layout vertical center-center">
+        ${this.participantsIssues?.map(issue => {
+          return html`
+            <div class="comment shadow-elevation-4dp shadow-transition">
+              ${issue.description}
+            </div>
+          `;
+        })}
+      </div>
+    `;
+  }
+
   renderIssue(index: number) {
     const issue = this.coreIssues![index];
     const showVoting = this.selectedTab == CreateCardTabTypes.Voting;
@@ -217,31 +295,33 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       </div>
 
       <div class="layout vertical center-center comments">
-          <mwc-textarea
-            id="addCommentInput"
-            charCounter
-            class="addCommentInput"
-            maxLength="200"
-            id="coreIssueInput"
-            .label="${this.t('yourComment')}"
-          ></mwc-textarea>
-          <div class="layout horizontal center-center">
-            <mwc-button
-              raised
-              class="layout addNewIssueButton"
-              @click="${this.addCoreIssueCommentFromInput}"
-              .label="${this.t('addComment')}"
-            ></mwc-button>
-          </div>
+        <mwc-textarea
+          id="addCommentInput"
+          charCounter
+          class="addCommentInput"
+          maxLength="200"
+          id="coreIssueInput"
+          .label="${this.t('yourComment')}"
+        ></mwc-textarea>
+        <div class="layout horizontal center-center">
+          <mwc-button
+            raised
+            class="layout addNewIssueButton"
+            @click="${this.addCoreIssueCommentFromInput}"
+            .label="${this.t('addComment')}"
+          ></mwc-button>
         </div>
       </div>
 
       <div class="layout vertical self-start">
         ${issue.Comments?.map(comment => {
-          return html` <div class="comment shadow-elevation-4dp shadow-transition">${comment.content}</div> `;
+          return html`
+            <div class="comment shadow-elevation-4dp shadow-transition">
+              ${comment.content}
+            </div>
+          `;
         })}
       </div>
-
     `;
   }
 
@@ -377,7 +457,10 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       case CreateCardTabTypes.ReviewCoreIssues:
         page = this.renderReviewCoreIssues();
         break;
-    }
+      case CreateCardTabTypes.CreateLocal:
+        page = this.renderCreateLocal();
+        break;
+      }
 
     return page;
   }

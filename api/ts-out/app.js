@@ -42,6 +42,10 @@ io.on("connection", (socket) => {
         console.log(arg); // world
         socket.broadcast.emit("newComment", (arg));
     });
+    socket.on("newIssue", (arg) => {
+        console.log(arg); // world
+        socket.broadcast.emit("newIssue", (arg));
+    });
 });
 class App {
     constructor(controllers, port) {

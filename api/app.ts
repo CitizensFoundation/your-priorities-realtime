@@ -18,10 +18,17 @@ io.on("connection", (socket) => {
     console.log(arg); // world
     socket.broadcast.emit("meetingState", (arg))
   });
+
   socket.on("newComment", (arg) => {
     console.log(arg); // world
     socket.broadcast.emit("newComment", (arg))
   });
+
+  socket.on("newIssue", (arg) => {
+    console.log(arg); // world
+    socket.broadcast.emit("newIssue", (arg))
+  });
+
 });
 
 export class App {

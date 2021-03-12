@@ -76,6 +76,12 @@ export class CsMeetingBase extends YpBaseElement {
       console.error(args);
       this._processNewComment(args[0] as CommentAttributes);
     });
+
+
+    this.io.on("newIssue", (...args: any) => {
+      console.error(args);
+      this._processNewIssue(args[0] as IssueAttributes);
+    });
   }
 
   _closeSockets() {
@@ -83,6 +89,10 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _processNewComment(comment: CommentAttributes) {
+
+  }
+
+  _processNewIssue(issue: IssueAttributes) {
 
   }
 
