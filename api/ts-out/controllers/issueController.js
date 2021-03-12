@@ -10,6 +10,23 @@ class IssueController {
     constructor() {
         this.path = "/api/issues";
         this.router = express_1.default.Router();
+        this.vote = async (req, res) => {
+            models_1.models.Issue.findOne({
+                where: {
+                    id: req.params.id
+                },
+            }).then(project => {
+                if (req.body.value == 1) {
+                    project.increment("counterUpVotes");
+                    res.sendStatus(200);
+                }
+                else {
+                    project.increment("counterDownVotes");
+                }
+            }).catch(error => {
+                res.send(error);
+            });
+        };
         this.addComment = async (req, res) => {
             models_1.models.Comment.create(req.body).then(project => {
                 res.send(project);
@@ -21,6 +38,7 @@ class IssueController {
     }
     intializeRoutes() {
         this.router.post(this.path + "/:id/addComment", this.addComment);
+        this.router.post(this.path + "/:id/vote", this.vote);
     }
 }
 exports.IssueController = IssueController;

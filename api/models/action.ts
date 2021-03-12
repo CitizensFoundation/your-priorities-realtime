@@ -22,6 +22,9 @@ export class Action
   public id!: number;
   public description!: string;
   public language!: string;
+
+  public counterUpVotes!: number;
+  public counterDownVotes!: number;
   public actionPlanId!: number;
   public userId!: number;
   public state!: number;
@@ -65,6 +68,16 @@ export const InitAction = (sequelize: Sequelize) => {
         allowNull: true
       },
       completedPercent: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
+      counterUpVotes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
+      counterDownVotes: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0

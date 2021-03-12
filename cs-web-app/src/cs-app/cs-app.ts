@@ -181,6 +181,7 @@ export class CsApp extends YpBaseElement {
     window.app = this;
     window.serverApi = new CsServerApi();
     window.appGlobals = new YpAppGlobals(window.serverApi);
+    window.appDialogs = new YpAppDialogs();
     window.appUser = new YpAppUser(window.serverApi);
     this._setupTranslationSystem();
   }

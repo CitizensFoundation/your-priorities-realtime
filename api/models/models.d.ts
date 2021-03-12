@@ -156,6 +156,8 @@ interface ActionAttributes {
   actionPlanId: number;
   userId: number;
   state: number;
+  counterUpVotes: number;
+  counterDownVotes: number;
   completeBy: number;
   completedPercent: number;
   assignedToType?: number;

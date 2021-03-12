@@ -20,12 +20,13 @@ import { CsMeetingBase } from './cs-meeting-base.js';
 import '../cs-story/cs-story.js';
 import { CsStory } from '../cs-story/cs-story.js';
 import { TextArea } from '@material/mwc-textarea';
+import { Snackbar } from '@material/mwc-snackbar';
 
 export const CreateCardTabTypes: Record<string, number> = {
   Information: 0,
   ReviewCoreIssues: 1,
   CreateLocal: 2,
-  Vote: 3,
+  Voting: 3,
   Review: 4,
 };
 
@@ -51,6 +52,9 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   @property({ type: Array })
   participantsIssues: Array<IssueAttributes> | undefined;
+
+  @property({ type: Array })
+  orderedParticipantsIssues: Array<IssueAttributes> | undefined;
 
   constructor() {
     super();
@@ -269,9 +273,40 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     `;
   }
 
+  async voteIssueUp() {
+    const issue = this.participantsIssues![this.votingIssueIndex];
+
+    await window.serverApi.voteIssue(
+      issue.id,
+      1
+    );
+
+    window.appDialogs.getDialogAsync('masterToast', (toast: Snackbar) => {
+      toast.labelText = this.t('youVoted');
+      toast.open = true;
+    });
+  }
+
+  async voteIssueDown() {
+    const issue = this.participantsIssues![this.votingIssueIndex];
+
+    await window.serverApi.voteIssue(
+      issue.id,
+      -1
+    );
+  }
+
   renderIssue(index: number) {
-    const issue = this.coreIssues![index];
-    const showVoting = this.selectedTab == CreateCardTabTypes.Voting;
+    let issue: IssueAttributes;
+    let showVoting = false;
+
+    if (this.selectedTab == CreateCardTabTypes.Voting) {
+      issue = this.participantsIssues![index];
+      showVoting = true;
+    } else {
+      issue = this.coreIssues![index];
+    }
+
     return html`
       <div
         class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
@@ -282,10 +317,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
             <mwc-icon-button
               icon="arrow_upward"
               class="voteButton"
+              @click="${this.voteIssueUp}"
               .label="${this.t('voteUp')}"
             ></mwc-icon-button>
             <mwc-icon-button
               icon="arrow_downward"
+              @click="${this.voteIssueDown}"
               class="voteButton"
               .label="${this.t('voteDown')}"
             ></mwc-icon-button>
@@ -294,7 +331,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         </div>
       </div>
 
-      <div class="layout vertical center-center comments">
+      <div class="layout vertical center-center comments" ?hidden="${showVoting}">
         <mwc-textarea
           id="addCommentInput"
           charCounter
@@ -373,6 +410,20 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     this.updateState();
   }
 
+  leftVotingIssueArrow() {
+    if (this.votingIssueIndex > 0) {
+      this.votingIssueIndex -= 1;
+    }
+    this.updateState();
+  }
+
+  rightVotingIssueArrow() {
+    if (this.votingIssueIndex < this.participantsIssues!.length - 1) {
+      this.votingIssueIndex += 1;
+    }
+    this.updateState();
+  }
+
   renderReviewCoreIssues() {
     if (this.coreIssues && this.coreIssues.length > 0) {
       return html`
@@ -406,6 +457,41 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       return html``;
     }
   }
+
+  renderVoting() {
+    if (this.participantsIssues && this.participantsIssues.length > 0) {
+      return html`
+        <div ?hidden="${this.isAdmin}" class="subjectHeader">
+          ${this.t('reviewCoreIssues')}
+        </div>
+
+        <div class="layout horizontal center-center self-start">
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.votingIssueIndex === 0}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_back"
+              @click="${this.leftVotingIssueArrow}"
+            ></mwc-icon-button>
+          </div>
+          <div class="layout vertical center-center">
+            ${this.renderIssue(this.votingIssueIndex)}
+          </div>
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.votingIssueIndex >= this.participantsIssues!.length - 1}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_forward"
+              @click="${this.rightVotingIssueArrow}"
+            ></mwc-icon-button>
+          </div>
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
 
   renderTabs() {
     if (this.isAdmin) {
@@ -460,6 +546,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       case CreateCardTabTypes.CreateLocal:
         page = this.renderCreateLocal();
         break;
+      case CreateCardTabTypes.Voting:
+        page = this.renderVoting();
+        break;
+      case CreateCardTabTypes.Voting:
+        page = this.renderVoting();
+        break;
       }
 
     return page;
@@ -478,6 +570,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
     if (changedProperties.has('selectedTab')) {
       this.updateState();
+    }
+
+    if (changedProperties.has('participantsIssues') && this.participantsIssues) {
+      this.orderedParticipantsIssues = this.participantsIssues.sort( (item) => {
+        return (item.counterUpVotes-item.counterDownVotes)
+      })
     }
   }
 
