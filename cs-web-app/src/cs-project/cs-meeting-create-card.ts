@@ -195,8 +195,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         }
 
         .votingNumber {
-          margin-left: 8px;
-          margin-top: 16px;
+          margin-left: -4px;
+          margin-top: 14px;
           margin-right: 0;
           padding-right: 0;
         }
@@ -329,7 +329,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         <div class="layout vertical">
           <div class="issueName">${issue.description}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
-            <div class="votingNumber" ?hidden="${!showNumbers}">${issue.counterUpVotes}</div>
             <mwc-icon-button
               icon="arrow_upward"
               ?disabled="${disableVoting}"
@@ -337,7 +336,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
               @click="${this.voteIssueUp}"
               .label="${this.t('voteUp')}"
             ></mwc-icon-button>
-            <div class="votingNumber" ?hidden="${!showNumbers}">${issue.counterDownVotes}</div>
+            <div class="votingNumber" ?hidden="${!showNumbers}">${issue.counterUpVotes}</div>
             <mwc-icon-button
               icon="arrow_downward"
               ?disabled="${disableVoting}"
@@ -345,6 +344,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
               class="voteButton"
               .label="${this.t('voteDown')}"
             ></mwc-icon-button>
+            <div class="votingNumber" ?hidden="${!showNumbers}">${issue.counterDownVotes}</div>
             <div class="flex"></div>
           </div>
         </div>
