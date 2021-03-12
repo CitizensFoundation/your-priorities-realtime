@@ -1,4 +1,12 @@
 {
+  "providers": "Service providers",
+  "workingGroup": "Working group",
+  "review": "Review",
+  "voting": "Voting",
+  "createSelfAssessment": "Create self",
+  "createScoreCard": "Create local",
+  "reviewCoreIssues": "Review core",
+  "live": "Meeting is live",
   "selectRole": "Select role",
   "selectLanguage": "Select language",
   "addParticipants": "Add participant",

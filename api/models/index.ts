@@ -146,6 +146,11 @@ models.Issue.belongsToMany(models.ScoreCard, {
   through: 'ScoreCardIssues'
 });
 
+models.Issue.hasMany(models.Comment, {
+  sourceKey: "id",
+  foreignKey: "issueId"
+});
+
 // ActionPlan
 models.ActionPlan.hasMany(models.Action, {
   sourceKey: "id",
@@ -159,13 +164,9 @@ models.Action.belongsTo(models.ActionPlan,  { as: 'ActionPlan', foreignKey: 'act
 // ScoreCard
 
 // Comment
-models.Comment.belongsToMany(models.Issue, {
-  through: 'IssueComments'
-});
 
-models.Comment.belongsToMany(models.Action, {
-  through: 'ActionComments'
-});
+models.Comment.belongsTo(models.Issue,  { as: 'Issue', foreignKey: 'issueId' });
+models.Comment.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });
 
 // ProgressReport
 models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });

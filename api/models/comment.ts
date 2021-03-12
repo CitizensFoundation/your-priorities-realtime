@@ -21,6 +21,8 @@ export class Comment
   implements CommentAttributes {
   public id!: number;
   public roundId!: number;
+  public issueId!: number;
+  public actionId!: number;
   public userId!: number;
   public content!: string;
   public language!: string;
@@ -51,7 +53,15 @@ export const InitComment = (sequelize: Sequelize) => {
       },
       roundId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
+      },
+      issueId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      actionId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
       content: {
         type: new DataTypes.STRING,

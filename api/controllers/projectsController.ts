@@ -80,7 +80,12 @@ export class ProjectsController {
       where: {
         projectId: req.params.id,
         type: req.params.issueType
-      }
+      },
+      include: [
+        {
+          model: (models.Comment as any)
+        }
+      ]
     }).then( project => {
       res.send(project);
     }).catch( error => {

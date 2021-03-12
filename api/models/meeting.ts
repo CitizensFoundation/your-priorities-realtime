@@ -34,7 +34,7 @@ export class Meeting
   public readonly completedAt?: Date;
 
   static TypeOrientation = 0;
-  static TypeCreateCard= 1;
+  static TypeCreateCard = 1;
   static TypeScoring = 2;
   static TypeActionPlan = 3;
   static TypeReporting = 4;

@@ -117,6 +117,10 @@ exports.models.Issue.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 
 exports.models.Issue.belongsToMany(exports.models.ScoreCard, {
     through: 'ScoreCardIssues'
 });
+exports.models.Issue.hasMany(exports.models.Comment, {
+    sourceKey: "id",
+    foreignKey: "issueId"
+});
 // ActionPlan
 exports.models.ActionPlan.hasMany(exports.models.Action, {
     sourceKey: "id",
@@ -127,12 +131,8 @@ exports.models.ActionPlan.hasMany(exports.models.Action, {
 exports.models.Action.belongsTo(exports.models.ActionPlan, { as: 'ActionPlan', foreignKey: 'actionPlanId' });
 // ScoreCard
 // Comment
-exports.models.Comment.belongsToMany(exports.models.Issue, {
-    through: 'IssueComments'
-});
-exports.models.Comment.belongsToMany(exports.models.Action, {
-    through: 'ActionComments'
-});
+exports.models.Comment.belongsTo(exports.models.Issue, { as: 'Issue', foreignKey: 'issueId' });
+exports.models.Comment.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
 // ProgressReport
 exports.models.ProgressReport.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
 sequelize.sync({ force: true });

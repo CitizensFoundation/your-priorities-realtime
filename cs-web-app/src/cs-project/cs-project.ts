@@ -321,7 +321,7 @@ export class CsProject extends YpBaseElement {
         mwc-textfield,
         mwc-textarea {
           margin-bottom: 16px;
-          width: 450px;
+          width: 650px;
         }
 
         .coreIssuesTitle,
@@ -412,6 +412,9 @@ export class CsProject extends YpBaseElement {
           font-size: 12px;
         }
 
+        .participantsInput {
+
+        }
       `,
     ];
   }
@@ -550,7 +553,7 @@ export class CsProject extends YpBaseElement {
       <div class="layout horizontal center-center coreIssuesTitle">
         ${this.t('coreIssues')}
       </div>
-      <div class="layout vertical">
+      <div class="layout vertical center-center">
         <mwc-textarea
           ?hidden="${this.saved}"
           charCounter
@@ -583,36 +586,37 @@ export class CsProject extends YpBaseElement {
 
   renderParticipants() {
     return html`
-      <div class="layout vertical">
+      <div class="layout vertical center-center">
         <mwc-textarea
+          class="participantsInput"
           maxLength="20000"
-          rows="10"
+          rows="7"
           id="addParticipantsInput"
           .label="${this.t('addOrUpdateParticipants')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">
-          <div class="layout vertical">
-          <mwc-select id="participantsRole"
-            .label="${this.t("selectRole")}">
-            ${this.roleNames.map(
-                (translationKey, index) => html`
-                  <mwc-list-item name="${translationKey}"
-                    .value="${index}"
-                    >${this.t(translationKey)}</mwc-list-item
-                  >
-                `
-              )}
-          </mwc-select>
-          <mwc-select id="participantsLanguage" label="${this.t('selectLanguage')}">
-                ${this.languages.map(
-                  item => html`
-                    <mwc-list-item
-                      .value="${item.language}"
-                      >${item.name}</mwc-list-item
+          <div class="layout horizontal center-center" style="padding: 16px;margin: 8px;">
+            <mwc-select id="participantsRole" style="padding: 8px;"
+              .label="${this.t("selectRole")}">
+              ${this.roleNames.map(
+                  (translationKey, index) => html`
+                    <mwc-list-item name="${translationKey}"
+                      .value="${index}"
+                      >${this.t(translationKey)}</mwc-list-item
                     >
                   `
                 )}
-              </mwc-select>
+            </mwc-select>
+            <mwc-select id="participantsLanguage" label="${this.t('selectLanguage')}">
+                  ${this.languages.map(
+                    item => html`
+                      <mwc-list-item
+                        .value="${item.language}"
+                        >${item.name}</mwc-list-item
+                      >
+                    `
+                  )}
+                </mwc-select>
           </div>
           <mwc-button
             raised
@@ -736,13 +740,10 @@ export class CsProject extends YpBaseElement {
                   ><div
                     class="layout vertical round shadow-elevation-2dp shadow-transition"
                   >
-                    <div>
-                      ${this.project!.name}
-                    </div>
                     <div class="">
                       ${this.t('round')} ${index + 1} -
-                      ${round.startedAt
-                        ? YpFormattingHelpers.formatDate(round.startedAt)
+                      ${round.createdAt
+                        ? YpFormattingHelpers.formatDate(round.createdAt!)
                         : nothing}
                     </div>
                   </div></a

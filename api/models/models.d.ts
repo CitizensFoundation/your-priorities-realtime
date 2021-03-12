@@ -93,6 +93,7 @@ interface MeetingAttributes {
   updatedAt?: Date;
   startedAt?: Date;
   completedAt?: Date;
+  Round?: RoundAttributes;
 }
 
 interface EmailCampaignAttributes {
@@ -137,6 +138,7 @@ interface IssueAttributes {
   counterDownVotes: number;
   createdAt?: Date;
   updatedAt?: Date;
+  Comments?: Array<CommentAttributes> | null;
   publicData: IssuePublicDataAttributes | null;
   privateData: IssuePublicDataAttributes | null;
 }
@@ -185,6 +187,8 @@ interface CommentAttributes {
   content: string;
   language?: string;
   roundId: number;
+  actionId: number;
+  issueId: number;
   userId: number;
   type: number;
   status: number;
@@ -217,7 +221,9 @@ interface ParticipantsUploadAttributes {
 interface StateAttributes {
   tabIndex: number;
   storyPageIndex?: number;
-  issueIndex: number;
-  actionIndex: number;
+  issueIndex?: number;
+  coreIssueIndex?: number;
+  votingIssueIndex?: number;
+  actionIndex?: number;
   isLive: boolean;
 }

@@ -12,7 +12,7 @@ import {
   Optional,
 } from "sequelize";
 
-import { Round } from './round';
+import { Comment } from './comment';
 
 interface IssueCreationAttributes extends Optional<IssueAttributes, "id"> {}
 
@@ -32,10 +32,17 @@ export class Issue
   public publicData!: IssuePublicDataAttributes | null;
   public privateData!: IssuePrivateDataAttributes | null;
 
+  public getComment!: HasManyGetAssociationsMixin<Comment>; // Note the null assertions!
+  public addComment!: HasManyAddAssociationMixin<Comment, number>;
+
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
   public readonly staredAt?: Date;
   public readonly completedAt?: Date;
+
+  public static associations: {
+    Comments: Association<Issue, Comment>
+  };
 
   static TypeCoreIssue = 0;
 }

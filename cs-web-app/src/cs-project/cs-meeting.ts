@@ -16,6 +16,7 @@ import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 
 import './cs-meeting-orientation.js';
+import './cs-meeting-create-card.js';
 
 export const MeetingTypes: Record<string, number> = {
   TypeOrientation: 0,
@@ -84,7 +85,6 @@ export class CsMeeting extends YpBaseElement {
   render() {
     if (this.meeting) {
       let meetingPage: TemplateResult | undefined;
-
       switch (this.meeting.type) {
         case MeetingTypes.TypeOrientation:
           meetingPage = html`<cs-meeting-orientation

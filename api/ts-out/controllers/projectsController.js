@@ -49,7 +49,12 @@ class ProjectsController {
                 where: {
                     projectId: req.params.id,
                     type: req.params.issueType
-                }
+                },
+                include: [
+                    {
+                        model: models_1.models.Comment
+                    }
+                ]
             }).then(project => {
                 res.send(project);
             }).catch(error => {

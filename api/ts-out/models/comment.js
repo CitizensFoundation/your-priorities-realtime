@@ -18,7 +18,15 @@ const InitComment = (sequelize) => {
         },
         roundId: {
             type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
+        },
+        issueId: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: true,
+        },
+        actionId: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: true,
         },
         content: {
             type: new sequelize_1.DataTypes.STRING,
