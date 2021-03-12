@@ -1,6 +1,8 @@
 {
+  "addIssue": "Add issue",
+  "yourIssue": "Your issue",
   "yourComment": "Your Comment",
-  "addComemnt": "Add comment",
+  "addComment": "Add comment",
   "providers": "Service providers",
   "workingGroup": "Working group",
   "review": "Review",
