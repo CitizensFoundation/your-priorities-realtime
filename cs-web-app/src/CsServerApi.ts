@@ -127,8 +127,6 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
-
-
   getProject(projectId: number) {
     return this.fetchWrapper(
       this.baseUrlPath + `/projects/${projectId}`

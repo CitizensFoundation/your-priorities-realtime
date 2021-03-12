@@ -15,13 +15,19 @@ class IssueController {
                 where: {
                     id: req.params.id
                 },
-            }).then(project => {
-                if (req.body.value == 1) {
-                    project.increment("counterUpVotes");
-                    res.sendStatus(200);
+            }).then(async (issue) => {
+                if (issue) {
+                    if (req.body.value == 1) {
+                        await issue.increment("counterUpVotes");
+                        res.sendStatus(200);
+                    }
+                    else {
+                        await issue.increment("counterDownVotes");
+                        res.sendStatus(200);
+                    }
                 }
                 else {
-                    project.increment("counterDownVotes");
+                    res.sendStatus(404);
                 }
             }).catch(error => {
                 res.send(error);
