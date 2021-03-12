@@ -200,7 +200,7 @@ export class CsRound extends YpBaseElement {
                 <div class="processHeader">${this.t('users')}</div>
                 ${this.renderProcess(
                   this.t('orientationMeeting'),
-                  'meeting_room',
+                  'calendar_today',
                   `meeting/${
                     this.round!.publicData!.meetings['userOrentationMeeting']
                   }`,

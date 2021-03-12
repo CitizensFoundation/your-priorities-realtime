@@ -361,7 +361,7 @@ export class CsApp extends YpBaseElement {
       }
 
       .facilitatorInfo {
-        font-size: 20px;
+        font-size: 16px;
         margin-left: 16px;
       }
     `];
