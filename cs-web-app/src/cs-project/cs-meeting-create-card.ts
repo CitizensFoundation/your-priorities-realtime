@@ -22,7 +22,7 @@ import { CsStory } from '../cs-story/cs-story.js';
 import { TextArea } from '@material/mwc-textarea';
 
 export const CreateCardTabTypes: Record<string, number> = {
-  Infomation: 0,
+  Information: 0,
   ReviewCoreIssues: 1,
   AddIssues: 2,
   Vote: 3,
@@ -67,7 +67,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       1 /*this.meeting.Round.projectId*/,
       IssueTypes.CoreIssue
     )) as Array<IssueAttributes> | undefined;
-    debugger;
   }
 
   // UI
@@ -125,6 +124,10 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         .comments {
           margin-top: 32px;
         }
+
+        cs-story {
+          height: 200px !important;
+        }
       `,
     ];
   }
@@ -144,16 +147,18 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   _processState(state: StateAttributes) {
     if (!this.isAdmin) {
       super._processState(state);
-      if (state.storyPageIndex) {
-        (this.$$('#storyViewer') as CsStory).setIndex(state.storyPageIndex);
+      if (this.isLive) {
+        if (state.storyPageIndex!=null) {
+          (this.$$('#storyViewer') as CsStory).setIndex(state.storyPageIndex);
+        }
+        if (state.coreIssueIndex!=null) {
+          this.coreIssueIndex = state.coreIssueIndex;
+        }
+        if (state.votingIssueIndex!=null) {
+          this.votingIssueIndex = state.votingIssueIndex;
+        }
+        this.selectedTab = state.tabIndex;
       }
-      if (state.coreIssueIndex) {
-        this.coreIssueIndex = state.coreIssueIndex;
-      }
-      if (state.votingIssueIndex) {
-        this.votingIssueIndex = state.votingIssueIndex;
-      }
-      this.selectedTab = state.tabIndex;
     }
   }
 
@@ -262,17 +267,17 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   leftCoreIssueArrow() {
     if (this.coreIssueIndex > 0) {
       this.coreIssueIndex -= 1;
-      this.updateState();
       (this.$$('#addCommentInput') as TextArea).value = '';
     }
+    this.updateState();
   }
 
   rightCoreIssueArrow() {
     if (this.coreIssueIndex < this.coreIssues!.length - 1) {
       this.coreIssueIndex += 1;
-      this.updateState();
       (this.$$('#addCommentInput') as TextArea).value = '';
     }
+    this.updateState();
   }
 
   renderReviewCoreIssues() {
@@ -374,6 +379,10 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
+
+    if (changedProperties.has("selectedTab")) {
+      this.updateState();
+    }
   }
 
   _selectTab(event: CustomEvent) {

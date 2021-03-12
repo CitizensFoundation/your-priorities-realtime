@@ -364,7 +364,14 @@ export class CsApp extends YpBaseElement {
         font-size: 16px;
         margin-left: 16px;
       }
-    `];
+
+      @media(max-width: 960px) {
+        .facilitatorInfo {
+          font-size: 14px;
+          margin-left: 16px;
+        }
+      }
+   `];
   }
 
   renderNavigationIcon() {

@@ -46,7 +46,6 @@ export class CsMeetingBase extends YpBaseElement {
 
   _processState(state: StateAttributes) {
     if (!this.isAdmin) {
-      this.selectedTab = state.tabIndex;
       this.isLive = state.isLive;
     }
   }
@@ -116,6 +115,12 @@ export class CsMeetingBase extends YpBaseElement {
           padding: 16px;
           margin: 16px;
         }
+
+        .liveButton {
+          font-size: 18px;
+          margin-top: 8px;
+          margin-bottom: 8px;
+        }
       `,
     ];
   }
@@ -142,7 +147,7 @@ export class CsMeetingBase extends YpBaseElement {
 
   renderSendEmail() {
     return html`
-      <div class="layout horizontal sendEmailContainer">
+      <div class="layout horizontal sendEmailContainer" hidden>
         <mwc-textarea
           maxLength="20000"
           rows="4"
@@ -162,9 +167,8 @@ export class CsMeetingBase extends YpBaseElement {
   renderHeader() {
     if (this.isAdmin) {
       return html`
-      <div class="layout horizontal center-center">
-        <div class="layout vertical">
-          <mwc-formfield .label="${this.t('live')}">
+      <div class="layout horizontal center-center liveButton">
+      <mwc-formfield .label="${this.t('live')}">
             <mwc-checkbox
               id="liveRadio"
               @change="${this._liveChanged}"
@@ -174,8 +178,6 @@ export class CsMeetingBase extends YpBaseElement {
             >
             </mwc-checkbox>
           </mwc-formfield>
-        </div>
-        <div class="flex"></div>
         <div class="layout vertical">${this.renderSendEmail()}</div>
       </div>
     `;

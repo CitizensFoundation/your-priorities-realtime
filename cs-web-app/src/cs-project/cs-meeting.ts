@@ -58,8 +58,8 @@ export class CsMeeting extends YpBaseElement {
     super.connectedCallback();
     setTimeout(() => {
       this.fire('yp-change-header', {
-        headerTitle: this.t('meeting'),
-        documentTitle: this.t('meeting'),
+        headerTitle: "", //this.t('meeting'),
+        documentTitle: "", //this.t('meeting'),
         headerDescription: '',
       });
     }, 500);
