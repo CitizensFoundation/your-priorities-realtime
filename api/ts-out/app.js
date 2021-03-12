@@ -34,6 +34,7 @@ const io = new socket_io_1.Server(httpServer, {
 // ...
 });
 io.on("connection", (socket) => {
+    //TODO: Send latest state to new connections
     socket.on("meetingState", (arg) => {
         console.log(arg); // world
         socket.broadcast.emit("meetingState", (arg));

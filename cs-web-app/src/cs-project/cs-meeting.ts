@@ -17,6 +17,7 @@ import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 
 import './cs-meeting-orientation.js';
 import './cs-meeting-create-card.js';
+import './cs-meeting-scoring.js';
 
 export const MeetingTypes: Record<string, number> = {
   TypeOrientation: 0,

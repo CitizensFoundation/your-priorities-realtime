@@ -1,4 +1,5 @@
 {
+  "reviewScorecard": "Review scorecard",
   "sendMeetingEmail": "Send meeting email",
   "addIssue": "Add issue",
   "yourIssue": "Your issue",
@@ -11,7 +12,7 @@
   "createSelfAssessment": "Create self assessment",
   "createScoreCard": "Create local",
   "reviewCoreIssues": "Review core",
-  "live": "Meeting is live",
+  "live": "Live meeting",
   "selectRole": "Select role",
   "selectLanguage": "Select language",
   "addParticipants": "Add participant",
