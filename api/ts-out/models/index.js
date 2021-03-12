@@ -135,7 +135,8 @@ exports.models.Comment.belongsTo(exports.models.Issue, { as: 'Issue', foreignKey
 exports.models.Comment.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
 // ProgressReport
 exports.models.ProgressReport.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
-sequelize.sync({ force: true });
+//sequelize.sync({force: true});
+sequelize.sync({});
 setTimeout(() => {
     (async () => {
         try {

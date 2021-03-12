@@ -66,27 +66,25 @@ export class CsMeetingBase extends YpBaseElement {
   _setupSockets() {
     this.io = io();
 
-    this.roomName = `meeting_${this.meeting.id}`;
-
-    this.stateListener = (...args: any) => {
-      console.error("STATELISTENR");
-      console.error(args);
-      if (!this.isAdmin) {
-        this._processState(args[0] as StateAttributes);
-      }
-    }
-
     this.io.on("meetingState", (...args: any) => {
-      console.error("STATELISTENR");
       console.error(args);
       if (!this.isAdmin) {
         this._processState(args[0] as StateAttributes);
       }
     });
+
+    this.io.on("newComment", (...args: any) => {
+      console.error(args);
+      this._processNewComment(args[0] as CommentAttributes);
+    });
   }
 
   _closeSockets() {
     //TODO
+  }
+
+  _processNewComment(comment: CommentAttributes) {
+
   }
 
   connectedCallback() {

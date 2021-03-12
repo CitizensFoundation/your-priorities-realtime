@@ -213,7 +213,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
             <mwc-button
               raised
               class="layout addNewIssueButton"
-              @click="${this.addCoreIssueComment}"
+              @click="${this.addCoreIssueCommentFromInput}"
               .label="${this.t('addComment')}"
             ></mwc-button>
           </div>
@@ -227,17 +227,32 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     `;
   }
 
-  async addCoreIssueComment() {
+  async addCoreIssueComment(comment: CommentAttributes) {
+    const issue = this.coreIssues![this.coreIssueIndex];
+
+    issue.Comments!.unshift(comment);
+
+    this.coreIssues = [...this.coreIssues!];
+  }
+
+  _processNewComment(comment: CommentAttributes) {
+    this.addCoreIssueComment(comment);
+  }
+
+  async addCoreIssueCommentFromInput() {
     const issue = this.coreIssues![this.coreIssueIndex];
 
     const comment = {
       content: (this.$$('#addCommentInput') as HTMLInputElement).value,
       userId: 1,
+      issueId: issue.id,
+      type: 0,
+      status: 0
     } as CommentAttributes;
 
     await window.serverApi.postIssueComment(issue.id, comment);
 
-    issue.Comments!.unshift(comment);
+    this.addCoreIssueComment(comment);
 
     this.io.emit('newComment', comment);
 
