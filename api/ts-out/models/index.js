@@ -19,7 +19,13 @@ const progressReport_1 = require("./progressReport");
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 const config = require(`${__dirname}/../../config/config.json`)[env];
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+let sequelize;
+if (process.env.DATABASE_URL) {
+    sequelize = new Sequelize(process.env.DATABASE_URL);
+}
+else {
+    sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
 exports.models = {
     sequelize,
     Sequelize,
