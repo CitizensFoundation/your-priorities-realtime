@@ -184,7 +184,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         .comment {
           margin-top: 16px;
           padding: 16px;
-          width: 260px;
+          width: 228px;
+          max-width: 2228px;
           background-color: #f7f7f7;
         }
 
@@ -193,7 +194,11 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin-bottom: 8px;
         }
 
-        cs-story {
+        .votingNumber {
+          margin-left: 8px;
+          margin-top: 16px;
+          margin-right: 0;
+          padding-right: 0;
         }
       `,
     ];
@@ -611,7 +616,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       this.orderedParticipantsIssues = sortBy(this.participantsIssues,  (item) => {
         return (item.counterDownVotes-item.counterUpVotes)
       })
-      debugger;
     }
   }
 
