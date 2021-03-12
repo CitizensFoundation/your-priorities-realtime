@@ -341,11 +341,11 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   async addCoreIssueComment(comment: CommentAttributes) {
-    const issue = this.coreIssues![this.coreIssueIndex];
+    const issue = this.allIssues![this.coreIssueIndex];
 
     issue.Comments!.unshift(comment);
 
-    this.coreIssues = [...this.coreIssues!];
+    this.allIssues = [...this.allIssues!];
   }
 
   _processNewComment(comment: CommentAttributes) {
