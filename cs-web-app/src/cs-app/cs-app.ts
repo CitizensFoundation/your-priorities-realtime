@@ -87,6 +87,9 @@ export class CsApp extends YpBaseElement {
   showSearch = false;
 
   @property({ type: Boolean })
+  isLive = false;
+
+  @property({ type: Boolean })
   showBack = false;
 
   @property({ type: String })
@@ -234,6 +237,8 @@ export class CsApp extends YpBaseElement {
       this._resetKeepOpenForPage,
       this
     );
+
+    this.addListener('yp-set-live-status', this._setLiveStatus, this);
     this.addListener('yp-open-login', this._login, this);
     this.addListener('yp-open-page', this._openPageFromEvent, this);
     this.addListener('yp-open-toast', this._openToast, this);
@@ -280,6 +285,7 @@ export class CsApp extends YpBaseElement {
       this
     );
     this.removeListener('yp-open-login', this._login, this);
+    this.removeListener('yp-set-live-status', this._setLiveStatus, this);
     this.removeListener('yp-open-page', this._openPageFromEvent, this);
     this.removeListener('yp-open-toast', this._openToast, this);
     this.removeListener('yp-open-notify-dialog', this._openNotifyDialog, this);
@@ -295,17 +301,10 @@ export class CsApp extends YpBaseElement {
       this
     );
     this.removeListener('yp-set-pages', this._setPages, this);
-    window.removeEventListener('locationchange', this.updateLocation);
-    window.removeEventListener('location-changed', this.updateLocation);
-    window.removeEventListener('popstate', this.updateLocation);
-    this._removeTouchEvents();
-
-    this.removeEventListener('yp-hide-app-bar', () => { this.hideAppBar = true });
-    this.removeEventListener('yp-unhide-app-bar', () => { this.hideAppBar = false });
   }
 
-  static get styles() {
-    return [super.styles, css``];
+  _setLiveStatus(event: CustomEvent) {
+    this.isLive = event.detail;
   }
 
   updateLocation() {
@@ -354,12 +353,37 @@ export class CsApp extends YpBaseElement {
     this._routePageChanged(oldRouteData);
   }
 
+  static get styles() {
+    return [super.styles, css`
+      .liveIcon {
+        color: #f00;
+        margin-left: 8px;
+      }
+
+      .facilitatorInfo {
+        font-size: 20px;
+        margin-left: 16px;
+      }
+    `];
+  }
+
   renderNavigationIcon() {
-    return html`<mwc-icon-button
-      title="${this.t('close')}"
-      icon="menu"
-      @click="${this._closePost}"
-    ></mwc-icon-button>`;
+    if (this.isLive) {
+      return html`
+        <div class="layout horizontal">
+          <mwc-icon class="liveIcon">record_voice_over</mwc-icon>
+          <div class="facilitatorInfo">Facilitator: Robert Bjarnason</div>
+        </div>
+      `;
+
+
+    } else {
+      return html`<mwc-icon-button
+        title="${this.t('close')}"
+        icon="menu"
+        @click="${this._closePost}"
+      ></mwc-icon-button>`;
+    }
   }
 
   _openHelpMenu() {

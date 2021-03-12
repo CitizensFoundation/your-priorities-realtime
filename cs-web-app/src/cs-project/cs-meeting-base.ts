@@ -76,8 +76,6 @@ export class CsMeetingBase extends YpBaseElement {
       }
     }
 
-    debugger;
-
     this.io.on("meetingState", (...args: any) => {
       console.error("STATELISTENR");
       console.error(args);
@@ -122,6 +120,14 @@ export class CsMeetingBase extends YpBaseElement {
         }
       `,
     ];
+  }
+
+  updated(changedProperties: Map<string | number | symbol, unknown>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('isLive')) {
+      this.fire('yp-set-live-status', this.isLive);
+    }
   }
 
   _liveChanged(event: CustomEvent) {

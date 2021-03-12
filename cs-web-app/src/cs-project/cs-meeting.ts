@@ -155,6 +155,7 @@ export class CsMeeting extends YpBaseElement {
 
     if (changedProperties.has('meetingId') && this.meetingId) {
       this._getMeeting();
+      this._getLoggedInUser();
       //this._getCollection();
       //this._getHelpPages();
     }
