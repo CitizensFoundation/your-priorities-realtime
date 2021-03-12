@@ -48,12 +48,22 @@ export class CsStory extends YpBaseElement {
             <h3>from us at ACME</h3>
           </div>
         </cs-story-card>
+        <cs-story-card style="background: white;color: black">
+          <a target="_blank" href="https://citizens.is/"><div class="regulationHeader">Regulation 1</div></a>
+          <div class="regulationText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et molestie ac feugiat sed. Eget nulla facilisi etiam dignissim diam quis enim lobortis. Malesuada pellentesque elit eget gravida cum sociis natoque penatibus et. Suscipit tellus mauris a diam. Pellentesque eu tincidunt tortor aliquam. Lacus sed viverra tellus in hac habitasse platea. Faucibus in ornare quam viverra. Mi bibendum neque egestas congue quisque. Justo eget magna fermentum iaculis eu non. Ultricies mi eget mauris pharetra et ultrices neque ornare aenean. Suspendisse sed nisi lacus sed viverra tellus in hac habitasse. Ac orci phasellus egestas tellus rutrum.</div>
+          <a target="_blank" href="https://citizens.is/"><div class="regulationHeader">Regulation 2</div></a>
+          <div class="regulationText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et molestie ac feugiat sed. Eget nulla facilisi etiam dignissim diam quis enim lobortis. Malesuada pellentesque elit eget gravida cum sociis natoque penatibus et. Suscipit tellus mauris a diam. Pellentesque eu tincidunt tortor aliquam. Lacus sed viverra tellus in hac habitasse platea. Faucibus in ornare quam viverra. Mi bibendum neque egestas congue quisque. Justo eget magna fermentum iaculis eu non. Ultricies mi eget mauris pharetra et ultrices neque ornare aenean. Suspendisse sed nisi lacus sed viverra tellus in hac habitasse. Ac orci phasellus egestas tellus rutrum.</div>
+          <a target="_blank" href="https://citizens.is/"><div class="regulationHeader">Regulation 3</div></a>
+          <div class="regulationText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et molestie ac feugiat sed. Eget nulla facilisi etiam dignissim diam quis enim lobortis. Malesuada pellentesque elit eget gravida cum sociis natoque penatibus et. Suscipit tellus mauris a diam. Pellentesque eu tincidunt tortor aliquam. Lacus sed viverra tellus in hac habitasse platea. Faucibus in ornare quam viverra. Mi bibendum neque egestas congue quisque. Justo eget magna fermentum iaculis eu non. Ultricies mi eget mauris pharetra et ultrices neque ornare aenean. Suspendisse sed nisi lacus sed viverra tellus in hac habitasse. Ac orci phasellus egestas tellus rutrum.</div>
+        </cs-story-card>
 
         <cs-story-card>
           <img slot="media" src="https://i.imgur.com/1wTXrAu.jpg" />
           <h1>Choose meeting time</h1>
           <p>for <i>Acme</i> hospital project.</p>
         </cs-story-card>
+
+
 
         <cs-story-card>
           <video
@@ -308,6 +318,18 @@ export class CsStory extends YpBaseElement {
         .bottom > * {
           margin: 0;
           text-align: center;
+        }
+        .regulationHeader {
+          font-size: 16px;
+          color: black;
+          margin-bottom: 16px;
+          margin-top: 16px;
+        }
+
+        .regulationText {
+          font-size: 11px;
+          color: black;
+          margin-bottom: 8px;
         }
       `,
     ];

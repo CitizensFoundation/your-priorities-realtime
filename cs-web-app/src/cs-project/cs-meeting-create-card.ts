@@ -414,7 +414,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
             <mwc-tab
               .label="${this.t('information')}"
-              icon="format_list_numbered"
+              icon="info_outlined"
               stacked
             ></mwc-tab>
             <mwc-tab
@@ -426,17 +426,17 @@ export class CsMeetingCreateCard extends CsMeetingBase {
               .label="${this.meeting.forUsers
                 ? this.t('createScoreCard')
                 : this.t('createSelfAssessment')}"
-              icon="format_list_numbered"
+              icon="add_comment_outlined"
               stacked
             ></mwc-tab>
             <mwc-tab
               .label="${this.t('voting')}"
-              icon="format_list_numbered"
+              icon="how_to_vote"
               stacked
             ></mwc-tab>
             <mwc-tab
               .label="${this.t('review')}"
-              icon="format_list_numbered"
+              icon="checklist"
               stacked
             ></mwc-tab>
           </mwc-tab-bar>

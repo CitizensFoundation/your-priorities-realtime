@@ -157,15 +157,15 @@ export class CsMeetingBase extends YpBaseElement {
 
   renderSendEmail() {
     return html`
-      <div class="layout horizontal sendEmailContainer" hidden>
-        <mwc-textarea
+      <div class="layout horizontal sendEmailContainer">
+        <mwc-textarea hidden
           maxLength="20000"
           rows="4"
           id="addParticipantsInput"
           .label="${this.t('emailToParticipants')}"
         ></mwc-textarea>
         <mwc-button
-          raised
+          outlined
           class="layout"
           @click="${this.sendEmail}"
           .label="${this.t('sendMeetingEmail')}"
