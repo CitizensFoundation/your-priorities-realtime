@@ -31,12 +31,6 @@ export const ProjectTabTypes: Record<string, number> = {
   Activities: 4
 };
 
-export const IssueTypes: Record<string, number> = {
-  CoreIssue: 0,
-  UserIssue: 1,
-  ProviderIssue: 2,
-};
-
 @customElement('cs-project')
 export class CsProject extends YpBaseElement {
   @property({ type: Boolean })
@@ -93,6 +87,12 @@ export class CsProject extends YpBaseElement {
     }, 500);
   }
 
+  IssueTypes: Record<string, number> = {
+    CoreIssue: 0,
+    UserIssue: 1,
+    ProviderIssue: 2,
+  };
+
   // DATA PROCESSING
 
   refresh(): void {
@@ -131,7 +131,7 @@ export class CsProject extends YpBaseElement {
     this.coreIssues = undefined;
     this.coreIssues = (await window.serverApi.getIssues(
       this.projectId!,
-      IssueTypes.CoreIssue
+      this.IssueTypes.CoreIssue
     )) as Array<IssueAttributes> | undefined;
   }
 

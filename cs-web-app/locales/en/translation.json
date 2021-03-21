@@ -1,4 +1,5 @@
 {
+  "viewIssues": "View issues",
   "reviewScorecard": "Review scorecard",
   "sendMeetingEmail": "Send meeting email",
   "addIssue": "Add issue",
@@ -15,7 +16,7 @@
   "live": "Live meeting",
   "selectRole": "Select role",
   "selectLanguage": "Select language",
-  "addParticipants": "Add participant",
+  "addParticipants": "Add participants",
   "language": "Language",
   "service": "Service",
   "languages": "Languages",

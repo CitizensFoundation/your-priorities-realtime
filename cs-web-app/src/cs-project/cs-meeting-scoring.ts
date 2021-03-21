@@ -28,21 +28,13 @@ import { sortBy } from 'lodash-es';
 export const ScoringTabTypes: Record<string, number> = {
   Information: 0,
   ReviewScoreCard: 1,
-  RateIssues: 2,
-  Results: 3,
-};
-
-export const IssueTypes: Record<string, number> = {
-  CoreIssue: 0,
-  UserIssue: 1,
-  ProviderIssue: 2,
+  ViewIssues: 2,
+  RateIssues: 3,
+  Results: 4,
 };
 
 @customElement('cs-meeting-scoring')
 export class CsMeetingScoring extends CsMeetingBase {
-  @property({ type: Number })
-  storyPageIndex: number | undefined;
-
   @property({ type: Number })
   coreIssueIndex = 0;
 
@@ -73,9 +65,9 @@ export class CsMeetingScoring extends CsMeetingBase {
 
   _getAnyParticipantsIssues() {
     if (this.meeting.forUsers) {
-      this._getParticipantsIssues(IssueTypes.UserIssue);
+      this._getParticipantsIssues(this.IssueTypes.UserIssue);
     } else {
-      this._getParticipantsIssues(IssueTypes.ProviderIssue);
+      this._getParticipantsIssues(this.IssueTypes.ProviderIssue);
     }
   }
 
@@ -83,7 +75,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     this.coreIssues = undefined;
     this.coreIssues = (await window.serverApi.getIssues(
       1 /*this.meeting.Round.projectId*/,
-      IssueTypes.CoreIssue
+      this.IssueTypes.CoreIssue
     )) as Array<IssueAttributes> | undefined;
   }
 
@@ -103,8 +95,8 @@ export class CsMeetingScoring extends CsMeetingBase {
         description: (this.$$('#addIssueInput') as HTMLInputElement).value,
         userId: 1,
         type: this.meeting.forUsers
-          ? IssueTypes.UserIssue
-          : IssueTypes.ProviderIssue,
+          ? this.IssueTypes.UserIssue
+          : this.IssueTypes.ProviderIssue,
         state: 0,
         projectId: 1, //TODO: FIX
       } as IssueAttributes;
@@ -207,7 +199,6 @@ export class CsMeetingScoring extends CsMeetingBase {
         #emojiLarge {
           --star-size: 1.1em;
         }
-
       `,
     ];
   }
@@ -242,31 +233,13 @@ export class CsMeetingScoring extends CsMeetingBase {
     }
   }
 
-  setStoryIndex(event: CustomEvent) {
-    if (this.isAdmin && this.isLive) {
-      this.storyPageIndex = event.detail as number;
-      this.updateState();
-    }
-  }
-
-  renderStory() {
-    return html`
-      <div class="layout horizontal center-center">
-        <cs-story
-          id="storyViewer"
-          @cs-story-index="${this.setStoryIndex}"
-        ></cs-story>
-      </div>
-    `;
-  }
-
   async _scoreIssue(event: CustomEvent) {
     const issue = this.participantsIssues![this.votingIssueIndex];
 
     await window.serverApi.voteIssue(issue.id, 1);
   }
 
-  renderIssue(index: number) {
+  renderIssue(index: number, hideRating = false) {
     let issue: IssueAttributes;
     let showVoting = true;
     let showComments = false;
@@ -277,67 +250,24 @@ export class CsMeetingScoring extends CsMeetingBase {
     issue = this.allIssues![index];
     showComments = true;
 
-    if (this.selectedTab==ScoringTabTypes.ReviewScoreCard) {
+    if (this.selectedTab == ScoringTabTypes.ReviewScoreCard) {
       disableVoting = true;
       showComments = false;
     }
 
-    if (this.selectedTab==ScoringTabTypes.Results) {
-      hideSubmitComment = true
+    if (this.selectedTab == ScoringTabTypes.Results) {
+      hideSubmitComment = true;
     }
 
-    return html`
-      <div
-        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
-      >
-        <div class="layout vertical">
-          <div class="issueName">${issue.description}</div>
-          <div class="layout horizontal" ?hidden="${!showVoting}">
-          <div class="layout horizontal">
-              <stars-rating
-                id="emoji"
-                numstars="5"
-                ?manual="${!disableVoting}"
-                @click="${this._scoreIssue}"
-              ></stars-rating>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="layout vertical center-center comments"
-        ?hidden="${!showComments}"
-      >
-        <mwc-textarea
-          id="addCommentInput"
-          ?hidden="${hideSubmitComment}"
-          charCounter
-          class="addCommentInput"
-          maxLength="200"
-          id="coreIssueInput"
-          .label="${this.t('yourComment')}"
-        ></mwc-textarea>
-        <div class="layout horizontal center-center">
-          <mwc-button  ?hidden="${hideSubmitComment}"
-            raised
-            class="layout addNewIssueButton"
-            @click="${this.addCoreIssueCommentFromInput}"
-            .label="${this.t('addComment')}"
-          ></mwc-button>
-        </div>
-      </div>
-
-      <div class="layout vertical self-start" ?hidden="${!showComments}">
-        ${issue.Comments?.map(comment => {
-          return html`
-            <div class="comment shadow-elevation-4dp shadow-transition">
-              ${comment.content}
-            </div>
-          `;
-        })}
-      </div>
-    `;
+    return this.renderIssueHtml(
+      issue,
+      showVoting,
+      disableVoting,
+      showComments,
+      hideSubmitComment,
+      hideRating,
+      this.addCoreIssueCommentFromInput
+    );
   }
 
   async addCoreIssueComment(comment: CommentAttributes) {
@@ -402,12 +332,10 @@ export class CsMeetingScoring extends CsMeetingBase {
     this.updateState();
   }
 
-  renderRateIssues() {
+  renderIssues(title: string, hideRating = false) {
     if (this.allIssues && this.allIssues.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${this.t('reviewScorecard')}
-        </div>
+        <div ?hidden="${this.isAdmin}" class="subjectHeader">${title}</div>
 
         <div class="layout horizontal center-center self-start">
           <div class="issueBack issueVoting">
@@ -437,10 +365,7 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   renderReviewScoreCard() {
-    if (
-      this.allIssues &&
-      this.allIssues.length > 0
-    ) {
+    if (this.allIssues && this.allIssues.length > 0) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
@@ -448,7 +373,7 @@ export class CsMeetingScoring extends CsMeetingBase {
 
         <div class="layout vertical center-center">
           ${this.allIssues.map((issue, index) => {
-            return html`${this.renderIssue(index)}`;
+            return html`${this.renderIssue(index, true)}`;
           })}
         </div>
       `;
@@ -458,10 +383,7 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   renderResults() {
-    if (
-      this.allIssues &&
-      this.allIssues.length > 0
-    ) {
+    if (this.allIssues && this.allIssues.length > 0) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
@@ -495,6 +417,13 @@ export class CsMeetingScoring extends CsMeetingBase {
             ></mwc-tab>
             <mwc-tab
               .label="${this.meeting.forUsers
+                ? this.t('viewIssues')
+                : this.t('viewIssues')}"
+              icon="how_to_vote"
+              stacked
+            ></mwc-tab>
+            <mwc-tab
+              .label="${this.meeting.forUsers
                 ? this.t('scoreIssues')
                 : this.t('scoreIssues')}"
               icon="how_to_vote"
@@ -523,8 +452,11 @@ export class CsMeetingScoring extends CsMeetingBase {
       case ScoringTabTypes.ReviewScoreCard:
         page = this.renderReviewScoreCard();
         break;
+      case ScoringTabTypes.ViewIssues:
+        page = this.renderIssues(this.t('viewIssues'), true);
+        break;
       case ScoringTabTypes.RateIssues:
-        page = this.renderRateIssues();
+        page = this.renderIssues(this.t('scoreIssues'));
         break;
       case ScoringTabTypes.Results:
         page = this.renderResults();
@@ -559,27 +491,11 @@ export class CsMeetingScoring extends CsMeetingBase {
       this.participantsIssues &&
       this.coreIssues
     ) {
-       this.allIssues = this.coreIssues.concat(this.participantsIssues);
+      this.allIssues = this.coreIssues.concat(this.participantsIssues);
     }
   }
 
   _selectTab(event: CustomEvent) {
     this.selectedTab = event.detail?.index as number;
   }
-
-  /*_setSelectedTabFromRoute(routeTabName: string): void {
-    let tabNumber;
-
-    switch (routeTabName) {
-      case 'process':
-        tabNumber = RoundTabTypes.Process;
-        break;
-      case 'activities':
-        tabNumber = RoundTabTypes.Activities;
-        break;
-      case 'analytics':
-        tabNumber = RoundTabTypes.Analytics;
-        break;
-    }
-  }*/
 }

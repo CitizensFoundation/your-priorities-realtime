@@ -20,6 +20,9 @@ import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 
 @customElement('cs-meeting-base')
 export class CsMeetingBase extends YpBaseElement {
+  @property({ type: Number })
+  storyPageIndex: number | undefined;
+
   @property({ type: Object })
   meeting!: MeetingAttributes;
 
@@ -44,6 +47,12 @@ export class CsMeetingBase extends YpBaseElement {
     super();
   }
 
+  IssueTypes: Record<string, number> = {
+    CoreIssue: 0,
+    UserIssue: 1,
+    ProviderIssue: 2,
+  };
+
   _processState(state: StateAttributes) {
     if (!this.isAdmin) {
       this.isLive = state.isLive;
@@ -63,7 +72,11 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _setupSockets() {
-    this.io = io();
+    this.io = io({
+      query: {
+        meetingId: this.meeting.id
+      }
+    });
 
     this.io.on("meetingState", (...args: any) => {
       console.error(args);
@@ -94,6 +107,14 @@ export class CsMeetingBase extends YpBaseElement {
 
   _processNewIssue(issue: IssueAttributes) {
 
+  }
+
+
+  setStoryIndex(event: CustomEvent) {
+    if (this.isAdmin && this.isLive) {
+      this.storyPageIndex = event.detail as number;
+      this.updateState();
+    }
   }
 
   connectedCallback() {
@@ -151,6 +172,84 @@ export class CsMeetingBase extends YpBaseElement {
     }
 
     this.updateState();
+  }
+
+
+  renderStory() {
+    return html`
+      <div class="layout horizontal center-center">
+        <cs-story
+          id="storyViewer"
+          @cs-story-index="${this.setStoryIndex}"
+        ></cs-story>
+      </div>
+    `;
+  }
+
+  renderIssueHtml(
+    issue: IssueAttributes,
+    showVoting: boolean,
+    disableVoting: boolean,
+    showComments: boolean,
+    hideSubmitComment: boolean,
+    hideRating: boolean,
+    addCommentFunction: Function | undefined = undefined,
+    scoreIssueFunction: Function | undefined = undefined
+  ) {
+    return html`
+      <div
+        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
+      >
+        <div class="layout vertical">
+          <div class="issueName">${issue.description}</div>
+          <div class="layout horizontal" ?hidden="${!showVoting}">
+            <div class="layout horizontal">
+              <stars-rating
+                id="emoji"
+                ?hidden="${hideRating}"
+                numstars="5"
+                ?manual="${!disableVoting}"
+                @click="${scoreIssueFunction}"
+              ></stars-rating>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="layout vertical center-center comments"
+        ?hidden="${!showComments}"
+      >
+        <mwc-textarea
+          id="addCommentInput"
+          ?hidden="${hideSubmitComment}"
+          charCounter
+          class="addCommentInput"
+          maxLength="200"
+          id="coreIssueInput"
+          .label="${this.t('yourComment')}"
+        ></mwc-textarea>
+        <div class="layout horizontal center-center">
+          <mwc-button
+            ?hidden="${hideSubmitComment}"
+            raised
+            class="layout addNewIssueButton"
+            @click="${addCommentFunction}"
+            .label="${this.t('addComment')}"
+          ></mwc-button>
+        </div>
+      </div>
+
+      <div class="layout vertical self-start" ?hidden="${!showComments}">
+        ${issue.Comments?.map(comment => {
+          return html`
+            <div class="comment shadow-elevation-4dp shadow-transition">
+              ${comment.content}
+            </div>
+          `;
+        })}
+      </div>
+    `;
   }
 
   sendEmail() {}

@@ -4,33 +4,57 @@ import * as path from 'path';
 import * as url from 'url';
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
+const redis = require("redis");
+
+const redisUrl = process.env.REDIS_URL ? process.env.REDIS_URL : "redis://localhost:6379";
+
+const redisClient = redis.createClient({
+  url: redisUrl
+});
 
 const app = express();
 
 const httpServer = createServer(app);
 
-const io = new Server(httpServer, {
-  // ...
-});
+const io = new Server(httpServer, {});
 
 io.on("connection", (socket) => {
-  //TODO: Send latest state to new connections
-  socket.on("meetingState", (arg) => {
 
-    console.log(arg); // world
-    socket.broadcast.emit("meetingState", (arg))
-  });
+  const meetingId = socket.handshake.query.meetingId;
 
-  socket.on("newComment", (arg) => {
-    console.log(arg); // world
-    socket.broadcast.emit("newComment", (arg))
-  });
+  if (meetingId) {
+    const redisMeetingStateKey = `meetingState${meetingId}`;
+    const latestMeetingState = redisClient.get(redisMeetingStateKey);
 
-  socket.on("newIssue", (arg) => {
-    console.log(arg); // world
-    socket.broadcast.emit("newIssue", (arg))
-  });
+    if (latestMeetingState) {
+      socket.in(socket.id).emit("meetingState", latestMeetingState);
+    }
 
+    socket.join(meetingId);
+
+    socket.on("meetingState", (meetingState: StateAttributes) => {
+      console.log(meetingState);
+      socket.in(meetingId).emit("meetingState", meetingState)
+      if (meetingState.isLive===false) {
+        redis.del(redisMeetingStateKey);
+      } else {
+        redis.set(redisMeetingStateKey, meetingState);
+      }
+    });
+
+    socket.on("newComment", (newComment) => {
+      console.log(newComment);
+      socket.in(meetingId).emit("newComment", newComment);
+    });
+
+    socket.on("newIssue", (newIssue) => {
+      console.log(newIssue);
+      socket.in(meetingId).emit("newIssue", newIssue);
+    });
+
+  } else {
+    console.error("No meeting id from socket");
+  }
 });
 
 export class App {

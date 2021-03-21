@@ -25,10 +25,6 @@ export const OrientationTabTypes: Record<string, number> = {
 
 @customElement('cs-meeting-orientation')
 export class CsMeetingOrientation extends CsMeetingBase {
-
-  @property({ type: Number })
-  storyPageIndex: number | undefined;
-
   constructor() {
     super();
   }
@@ -81,21 +77,6 @@ export class CsMeetingOrientation extends CsMeetingBase {
     }
   }
 
-  setStoryIndex(event: CustomEvent) {
-    if (this.isAdmin && this.isLive) {
-      this.storyPageIndex = event.detail as number;
-      this.updateState();
-    }
-  }
-
-  renderStory() {
-    return html`
-      <div class="layout horizontal center-center">
-        <cs-story id="storyViewer" @cs-story-index="${this.setStoryIndex}"></cs-story>
-      </div>
-    `;
-  }
-
   renderTabs() {
     return html`
       <div class="layout vertical center-center" ?hidden="${!this.isAdmin}">
@@ -135,20 +116,4 @@ export class CsMeetingOrientation extends CsMeetingBase {
   _selectTab(event: CustomEvent) {
     this.selectedTab = event.detail?.index as number;
   }
-
-  /*_setSelectedTabFromRoute(routeTabName: string): void {
-    let tabNumber;
-
-    switch (routeTabName) {
-      case 'process':
-        tabNumber = RoundTabTypes.Process;
-        break;
-      case 'activities':
-        tabNumber = RoundTabTypes.Activities;
-        break;
-      case 'analytics':
-        tabNumber = RoundTabTypes.Analytics;
-        break;
-    }
-  }*/
 }
