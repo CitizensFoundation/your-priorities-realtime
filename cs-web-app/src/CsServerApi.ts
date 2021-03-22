@@ -91,6 +91,17 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public postAction(issueId: number, body: object) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/issues/${issueId}/addAction`,
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+      },
+      false
+    );
+  }
+
   public postIssueComment(issueId: number, body: object) {
     return this.fetchWrapper(
       this.baseUrlPath + `/issues/${issueId}/addComment`,
@@ -113,6 +124,18 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public voteAction(actionId: number, value: number) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/actions/${actionId}/vote`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          value
+        }),
+      },
+      false
+    );
+  }
 
   public voteIssue(issueId: number, value: number) {
     return this.fetchWrapper(

@@ -28,11 +28,10 @@ export class Action
   public actionPlanId!: number;
   public userId!: number;
   public state!: number;
-  public completeBy!: number;
+  public completeBy!: Date;
   public completedPercent!: number;
   public assignedToType?: number;
   public assignedToName?: string;
-
 
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
@@ -64,7 +63,7 @@ export const InitAction = (sequelize: Sequelize) => {
         allowNull: false,
       },
       completeBy: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATE,
         allowNull: true
       },
       completedPercent: {

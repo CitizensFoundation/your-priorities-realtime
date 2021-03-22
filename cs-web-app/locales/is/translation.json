@@ -1,4 +1,7 @@
 {
+  "createActions": "Create actions",
+  "assignActions": "Assign actions",
+  "viewIssues": "View issues",
   "reviewScorecard": "Review scorecard",
   "sendMeetingEmail": "Send meeting email",
   "addIssue": "Add issue",

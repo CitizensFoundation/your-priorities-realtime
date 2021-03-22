@@ -27,11 +27,11 @@ import { sortBy } from 'lodash-es';
 
 export const ActionPlanTabTypes: Record<string, number> = {
   Information: 0,
-  ReviewScoreCard: 1,
+  ReviewScores: 1,
   ReviewIssues: 2,
   CreationActions: 3,
   AssignActions: 4,
-  FinalReview: 5
+  FinalReview: 5,
 };
 
 @customElement('cs-meeting-action-plan')
@@ -40,7 +40,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   coreIssueIndex = 0;
 
   @property({ type: Number })
-  votingIssueIndex = 0;
+  actionIssueIndex = 0;
 
   @property({ type: Array })
   coreIssues: Array<IssueAttributes> | undefined;
@@ -54,6 +54,9 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   @property({ type: Array })
   orderedParticipantsIssues: Array<IssueAttributes> | undefined;
 
+  @property({ type: Array })
+  actions: Array<ActionAttributes> | undefined;
+
   constructor() {
     super();
   }
@@ -65,11 +68,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   _getAnyParticipantsIssues() {
-    if (this.meeting.forUsers) {
-      this._getParticipantsIssues(this.IssueTypes.UserIssue);
-    } else {
-      this._getParticipantsIssues(this.IssueTypes.ProviderIssue);
-    }
+    this._getParticipantsIssues(this.IssueTypes.allIssues);
   }
 
   async _getIssues() {
@@ -88,29 +87,32 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     )) as Array<IssueAttributes> | undefined;
   }
 
-  async addIssue() {
-    const element = this.$$('#addIssueInput') as HTMLInputElement;
+  async addAction() {
+    const element = this.$$('#addActionInput') as HTMLInputElement;
+    const issue = this.allIssues![this.coreIssueIndex];
 
     if (element && element.value && element.value.length > 0) {
-      const issue = {
-        description: (this.$$('#addIssueInput') as HTMLInputElement).value,
+      const action = {
+        description: (this.$$('#addActionInput') as HTMLInputElement).value,
         userId: 1,
-        type: this.meeting.forUsers
-          ? this.IssueTypes.UserIssue
-          : this.IssueTypes.ProviderIssue,
+        actionPlanId: 1,
+        counterDownVotes: 0,
+        counterUpVotes: 0,
         state: 0,
+        completedPercent: 0,
+        completeBy: null,
         projectId: 1, //TODO: FIX
-      } as IssueAttributes;
+      } as ActionAttributes;
 
-      await window.serverApi.postIssue(1, issue);
+      await window.serverApi.postAction(issue.id, action);
 
-      this.participantsIssues?.unshift(issue);
+      this.actions?.unshift(action);
 
-      this.participantsIssues = [...this.participantsIssues!];
+      this.actions = [...this.actions!];
 
-      this.io.emit('newIssue', issue);
+      this.io.emit('newAction', action);
 
-      (this.$$('#addIssueInput') as HTMLInputElement).value = '';
+      (this.$$('#addActionInput') as HTMLInputElement).value = '';
     }
   }
 
@@ -200,7 +202,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         #emojiLarge {
           --star-size: 1.1em;
         }
-
       `,
     ];
   }
@@ -211,7 +212,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         tabIndex: this.selectedTab,
         isLive: this.isLive,
         storyPageIndex: this.storyPageIndex,
-        votingIssueIndex: this.votingIssueIndex,
+        actionIssueIndex: this.actionIssueIndex,
         coreIssueIndex: this.coreIssueIndex,
       } as StateAttributes);
     }
@@ -227,8 +228,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         if (state.coreIssueIndex != null) {
           this.coreIssueIndex = state.coreIssueIndex;
         }
-        if (state.votingIssueIndex != null) {
-          this.votingIssueIndex = state.votingIssueIndex;
+        if (state.actionIssueIndex != null) {
+          this.actionIssueIndex = state.actionIssueIndex;
         }
         this.selectedTab = state.tabIndex;
       }
@@ -236,30 +237,20 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   async _scoreIssue(event: CustomEvent) {
-    const issue = this.participantsIssues![this.votingIssueIndex];
+    const issue = this.participantsIssues![this.actionIssueIndex];
 
     await window.serverApi.voteIssue(issue.id, 1);
   }
 
   renderIssue(index: number, hideRating = false) {
     let issue: IssueAttributes;
-    let showVoting = true;
-    let showComments = false;
+    let showVoting = false;
+    let showComments = true;
     let disableVoting = false;
-    let hideSubmitComment = false;
+    let hideSubmitComment = true;
     let showNumbers = false;
 
     issue = this.allIssues![index];
-    showComments = true;
-
-    if (this.selectedTab==ScoringTabTypes.ReviewScoreCard) {
-      disableVoting = true;
-      showComments = false;
-    }
-
-    if (this.selectedTab==ScoringTabTypes.Results) {
-      hideSubmitComment = true
-    }
 
     return this.renderIssueHtml(
       issue,
@@ -267,41 +258,20 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       disableVoting,
       showComments,
       hideSubmitComment,
-      hideRating,
-      this.addCoreIssueCommentFromInput
+      hideRating
     );
   }
 
-  async addCoreIssueComment(comment: CommentAttributes) {
+  async addActionFromEvent(action: ActionAttributes) {
     const issue = this.allIssues![this.coreIssueIndex];
 
-    issue.Comments!.unshift(comment);
+    issue.Actions!.unshift(action);
 
     this.allIssues = [...this.allIssues!];
   }
 
-  _processNewComment(comment: CommentAttributes) {
-    this.addCoreIssueComment(comment);
-  }
-
-  async addCoreIssueCommentFromInput() {
-    const issue = this.allIssues![this.coreIssueIndex];
-
-    const comment = {
-      content: (this.$$('#addCommentInput') as HTMLInputElement).value,
-      userId: 1,
-      issueId: issue.id,
-      type: 0,
-      status: 0,
-    } as CommentAttributes;
-
-    await window.serverApi.postIssueComment(issue.id, comment);
-
-    this.addCoreIssueComment(comment);
-
-    this.io.emit('newComment', comment);
-
-    (this.$$('#addCommentInput') as HTMLInputElement).value = '';
+  _processNewAction(action: ActionAttributes) {
+    this.addActionFromEvent(action);
   }
 
   leftCoreIssueArrow() {
@@ -320,26 +290,43 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     this.updateState();
   }
 
-  leftVotingIssueArrow() {
-    if (this.votingIssueIndex > 0) {
-      this.votingIssueIndex -= 1;
+  leftActionArrow() {
+    if (this.actionIssueIndex > 0) {
+      this.actionIssueIndex -= 1;
     }
     this.updateState();
   }
 
-  rightVotingIssueArrow() {
-    if (this.votingIssueIndex < this.participantsIssues!.length - 1) {
-      this.votingIssueIndex += 1;
+  rightActionArrow() {
+    if (this.actionIssueIndex < this.participantsIssues!.length - 1) {
+      this.actionIssueIndex += 1;
     }
     this.updateState();
+  }
+
+  async voteActionUp() {
+    const action = this.actions![this.actionIssueIndex];
+
+    await window.serverApi.voteAction(
+      action.id!,
+      1
+    );
+  }
+
+  async voteActionDown() {
+    const action = this.actions![this.actionIssueIndex];
+
+    await window.serverApi.voteAction(
+      action.id!,
+      -1
+    );
   }
 
   renderIssues(title: string, hideRating = false) {
     if (this.allIssues && this.allIssues.length > 0) {
+      const issue = this.allIssues[this.coreIssueIndex];
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${title}
-        </div>
+        <div ?hidden="${this.isAdmin}" class="subjectHeader">${title}</div>
 
         <div class="layout horizontal center-center self-start">
           <div class="issueBack issueVoting">
@@ -362,17 +349,118 @@ export class CsMeetingActionPlan extends CsMeetingBase {
             ></mwc-icon-button>
           </div>
         </div>
+
+        ${this.isAdmin
+          ? html`
+              <div class="layout vertical center-center comments">
+                <mwc-textarea
+                  id="addActiontInput"
+                  charCounter
+                  class="addActiontInput"
+                  maxLength="500"
+                  .label="${this.t('action')}"
+                ></mwc-textarea>
+                <div class="layout horizontal center-center">
+                  <mwc-button
+                    raised
+                    class="layout addNewIssueButton"
+                    @click="${this.addAction}"
+                    .label="${this.t('addAction')}"
+                  ></mwc-button>
+                </div>
+              </div>
+            `
+          : nothing}
+
+        <div class="layout vertical self-start">
+          ${issue.Actions?.map(action => {
+            return html`
+              <div class="comment shadow-elevation-4dp shadow-transition">
+                ${action.description}
+              </div>
+            `;
+          })}
+        </div>
       `;
     } else {
       return html``;
     }
   }
 
-  renderReviewScoreCard() {
-    if (
-      this.allIssues &&
-      this.allIssues.length > 0
-    ) {
+  renderAction(index: number) {
+    let issue: IssueAttributes;
+    let showVoting = false;
+    let disableVoting = false;
+    let showNumbers = false;
+
+    const action = this.actions![this.actionIssueIndex];
+
+    return html`
+      <div
+        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
+      >
+        <div class="layout vertical">
+          <div class="issueName">${action.description}</div>
+          <div class="layout horizontal" ?hidden="${!showVoting}">
+            <mwc-icon-button
+              icon="arrow_upward"
+              ?disabled="${disableVoting}"
+              class="voteButton"
+              @click="${this.voteActionUp}"
+              .label="${this.t('voteUp')}"
+            ></mwc-icon-button>
+            <div class="votingNumber" ?hidden="${!showNumbers}">${action.counterUpVotes}</div>
+            <mwc-icon-button
+              icon="arrow_downward"
+              ?disabled="${disableVoting}"
+              @click="${this.voteActionDown}"
+              class="voteButton"
+              .label="${this.t('voteDown')}"
+            ></mwc-icon-button>
+            <div class="votingNumber" ?hidden="${!showNumbers}">${action.counterDownVotes}</div>
+            <div class="flex"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderActions(title: string) {
+    if (this.actions && this.actions.length > 0) {
+      const issue = this.actions[this.actionIssueIndex];
+      return html`
+        <div ?hidden="${this.isAdmin}" class="subjectHeader">${title}</div>
+
+        <div class="layout horizontal center-center self-start">
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.actionIssueIndex === 0}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_back"
+              @click="${this.leftActionArrow}"
+            ></mwc-icon-button>
+          </div>
+          <div class="layout vertical center-center">
+            ${this.renderAction(this.actionIssueIndex)}
+          </div>
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.actionIssueIndex >= this.actions!.length - 1}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_forward"
+              @click="${this.rightActionArrow}"
+            ></mwc-icon-button>
+          </div>
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
+
+  renderReviewScores() {
+    if (this.allIssues && this.allIssues.length > 0) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
@@ -390,10 +478,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   renderResults() {
-    if (
-      this.allIssues &&
-      this.allIssues.length > 0
-    ) {
+    if (this.allIssues && this.allIssues.length > 0) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
@@ -403,6 +488,58 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           ${this.allIssues.map((issue, index) => {
             return html`${this.renderIssue(index)}`;
           })}
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
+  renderVoting() {
+    if (this.actions && this.actions.length > 0) {
+      return html`
+        <div ?hidden="${this.isAdmin}" class="subjectHeader">
+          ${this.t('voting')}
+        </div>
+
+        <div class="layout horizontal center-center self-start">
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.actionIssueIndex === 0}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_back"
+              @click="${this.leftActionArrow}"
+            ></mwc-icon-button>
+          </div>
+          <div class="layout vertical center-center">
+            ${this.renderIssue(this.actionIssueIndex)}
+          </div>
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.actionIssueIndex >= this.participantsIssues!.length - 1}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_forward"
+              @click="${this.rightActionArrow}"
+            ></mwc-icon-button>
+          </div>
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
+  renderReview() {
+    if (this.orderedParticipantsIssues && this.orderedParticipantsIssues.length > 0) {
+      return html`
+        <div ?hidden="${this.isAdmin}" class="subjectHeader">
+          ${this.t('review')}
+        </div>
+
+        <div class="layout vertical center-center">
+           ${ this.orderedParticipantsIssues.map( (issue, index) => {
+              return html`${this.renderIssue(index)}`
+           })}
         </div>
       `;
     } else {
@@ -426,21 +563,17 @@ export class CsMeetingActionPlan extends CsMeetingBase {
               stacked
             ></mwc-tab>
             <mwc-tab
-              .label="${this.meeting.forUsers
-                ? this.t('viewIssues')
-                : this.t('viewIssues')}"
+              .label="${this.t('createActionPlan')}"
               icon="how_to_vote"
               stacked
             ></mwc-tab>
             <mwc-tab
-              .label="${this.meeting.forUsers
-                ? this.t('scoreIssues')
-                : this.t('scoreIssues')}"
+              .label="${this.t('voting')}"
               icon="how_to_vote"
               stacked
             ></mwc-tab>
             <mwc-tab
-              .label="${this.t('results')}"
+              .label="${this.t('review')}"
               icon="checklist"
               stacked
             ></mwc-tab>
@@ -459,17 +592,17 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       case ActionPlanTabTypes.Information:
         page = this.renderStory();
         break;
-      case ActionPlanTabTypes.ReviewScoreCard:
-        page = this.renderReviewScoreCard();
+      case ActionPlanTabTypes.ReviewScores:
+        page = this.renderReviewScores();
         break;
       case ActionPlanTabTypes.ReviewIssues:
         page = this.renderIssues(this.t('viewIssues'), true);
         break;
       case ActionPlanTabTypes.CreationActions:
-        page = this.renderIssues(this.t('scoreIssues'));
+        page = this.renderIssues(this.t('createActions'));
         break;
       case ActionPlanTabTypes.AssignActions:
-        page = this.renderIssues(this.t('scoreIssues'));
+        page = this.renderIssues(this.t('assignActions'));
         break;
       case ActionPlanTabTypes.FinalReview:
         page = this.renderResults();
@@ -485,6 +618,20 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     `;
   }
 
+  setupActions() {
+    if (this.allIssues) {
+      let allActions: Array<ActionAttributes> = [];
+      for (let i=0;i<this.allIssues.length;i++) {
+        if (this.allIssues[i].Actions!=null && this.allIssues[i].Actions!.length>0) {
+          allActions = allActions.concat(this.allIssues[i].Actions!);
+        }
+      }
+      this.actions = allActions;
+    } else {
+      this.actions = undefined;
+    }
+  }
+
   // EVENTS
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
@@ -493,9 +640,13 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     if (changedProperties.has('selectedTab')) {
       this.updateState();
 
-      if (this.selectedTab == ScoringTabTypes.Results) {
+      if (this.selectedTab == ActionPlanTabTypes.Results) {
         this._getAnyParticipantsIssues();
       }
+    }
+
+    if (changedProperties.has('allIssues')) {
+      this.setupActions();
     }
 
     if (
@@ -504,27 +655,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       this.participantsIssues &&
       this.coreIssues
     ) {
-       this.allIssues = this.coreIssues.concat(this.participantsIssues);
+      this.allIssues = this.coreIssues.concat(this.participantsIssues);
     }
   }
 
   _selectTab(event: CustomEvent) {
     this.selectedTab = event.detail?.index as number;
   }
-
-  /*_setSelectedTabFromRoute(routeTabName: string): void {
-    let tabNumber;
-
-    switch (routeTabName) {
-      case 'process':
-        tabNumber = RoundTabTypes.Process;
-        break;
-      case 'activities':
-        tabNumber = RoundTabTypes.Activities;
-        break;
-      case 'analytics':
-        tabNumber = RoundTabTypes.Analytics;
-        break;
-    }
-  }*/
 }

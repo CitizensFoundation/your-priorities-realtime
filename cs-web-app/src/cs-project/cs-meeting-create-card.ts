@@ -238,7 +238,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           id="addIssueInput"
           charCounter
           class="addCommentInput"
-          maxLength="200"
+          maxLength="500"
           .label="${this.t('yourIssue')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">

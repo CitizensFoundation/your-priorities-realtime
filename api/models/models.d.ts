@@ -139,6 +139,7 @@ interface IssueAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   Comments?: Array<CommentAttributes> | null;
+  Actions?: Array<ActionAttributes> | null;
   publicData: IssuePublicDataAttributes | null;
   privateData: IssuePublicDataAttributes | null;
 }
@@ -150,7 +151,7 @@ interface ActionPlanAttributes {
 }
 
 interface ActionAttributes {
-  id: number;
+  id?: number;
   description: string;
   language?: string;
   actionPlanId: number;
@@ -158,13 +159,13 @@ interface ActionAttributes {
   state: number;
   counterUpVotes: number;
   counterDownVotes: number;
-  completeBy: number;
+  completeBy: Date | null;
   completedPercent: number;
   assignedToType?: number;
   assignedToName?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  completedAt?: Date;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+  completedAt?: Date | null;
 }
 
 interface ScoreCardAttributes {
@@ -226,6 +227,14 @@ interface StateAttributes {
   issueIndex?: number;
   coreIssueIndex?: number;
   votingIssueIndex?: number;
-  actionIndex?: number;
+  actionIssueIndex?: number;
   isLive: boolean;
+}
+
+interface TranslationCacheAttributes {
+  id: number;
+  indexKey: string;
+  content: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

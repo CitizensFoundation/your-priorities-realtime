@@ -90,6 +90,10 @@ export class CsMeetingBase extends YpBaseElement {
       this._processNewComment(args[0] as CommentAttributes);
     });
 
+    this.io.on("newAction", (...args: any) => {
+      console.error(args);
+      this._processNewAction(args[0] as ActionAttributes);
+    });
 
     this.io.on("newIssue", (...args: any) => {
       console.error(args);
@@ -109,6 +113,9 @@ export class CsMeetingBase extends YpBaseElement {
 
   }
 
+  _processNewAction(action: ActionAttributes) {
+
+  }
 
   setStoryIndex(event: CustomEvent) {
     if (this.isAdmin && this.isLive) {

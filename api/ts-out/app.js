@@ -28,25 +28,55 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const path = __importStar(require("path"));
 const http_1 = require("http");
 const socket_io_1 = require("socket.io");
+const redis = require("redis");
+const redisUrl = process.env.REDIS_URL ? process.env.REDIS_URL : "redis://localhost:6379";
+const redisClient = redis.createClient({
+    url: redisUrl
+});
 const app = express_1.default();
 const httpServer = http_1.createServer(app);
-const io = new socket_io_1.Server(httpServer, {
-// ...
-});
+const io = new socket_io_1.Server(httpServer, {});
 io.on("connection", (socket) => {
-    //TODO: Send latest state to new connections
-    socket.on("meetingState", (arg) => {
-        console.log(arg); // world
-        socket.broadcast.emit("meetingState", (arg));
-    });
-    socket.on("newComment", (arg) => {
-        console.log(arg); // world
-        socket.broadcast.emit("newComment", (arg));
-    });
-    socket.on("newIssue", (arg) => {
-        console.log(arg); // world
-        socket.broadcast.emit("newIssue", (arg));
-    });
+    const meetingId = socket.handshake.query.meetingId;
+    if (meetingId) {
+        const redisMeetingStateKey = `meetingState${meetingId}`;
+        redisClient.get(redisMeetingStateKey, (error, reply) => {
+            const parsedLatestMeetingState = JSON.parse(reply);
+            console.log(parsedLatestMeetingState);
+            if (parsedLatestMeetingState) {
+                socket.emit("meetingState", parsedLatestMeetingState);
+                console.log("Sending last meeting state");
+            }
+        });
+        socket.join(meetingId);
+        socket.on("meetingState", (meetingState) => {
+            console.log(meetingState);
+            socket.in(meetingId).emit("meetingState", meetingState);
+            if (meetingState.isLive === false) {
+                redisClient.del(redisMeetingStateKey);
+            }
+            else {
+                console.log("Saving last meeting state");
+                console.log(meetingState);
+                redisClient.set(redisMeetingStateKey, JSON.stringify(meetingState), redis.print);
+            }
+        });
+        socket.on("newComment", (newComment) => {
+            console.log(newComment);
+            socket.in(meetingId).emit("newComment", newComment);
+        });
+        socket.on("newIssue", (newIssue) => {
+            console.log(newIssue);
+            socket.in(meetingId).emit("newIssue", newIssue);
+        });
+        socket.on("newAction", (newAction) => {
+            console.log(newAction);
+            socket.in(meetingId).emit("newAction", newAction);
+        });
+    }
+    else {
+        console.error("No meeting id from socket");
+    }
 });
 class App {
     constructor(controllers, port) {

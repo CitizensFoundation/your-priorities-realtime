@@ -29,7 +29,7 @@ const InitAction = (sequelize) => {
             allowNull: false,
         },
         completeBy: {
-            type: sequelize_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.DATE,
             allowNull: true
         },
         completedPercent: {

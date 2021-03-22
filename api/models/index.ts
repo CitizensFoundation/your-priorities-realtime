@@ -14,6 +14,7 @@ import { InitScoreCard } from "./scoreCard";
 import { InitComment } from "./comment";
 import { InitProgressReport } from "./progressReport";
 import { KeyObject } from "crypto";
+import { InitTranslationCache } from "./translationCache";
 
 
 const Sequelize = require("sequelize");
@@ -57,7 +58,8 @@ export const models = {
   Action: InitAction(sequelize),
   ScoreCard: InitScoreCard(sequelize),
   Comment: InitComment(sequelize),
-  ProgressReport: InitProgressReport(sequelize)
+  ProgressReport: InitProgressReport(sequelize),
+  TranslationCache: InitTranslationCache(sequelize)
 };
 
 // Associations
@@ -151,6 +153,11 @@ models.Issue.hasMany(models.Comment, {
   foreignKey: "issueId"
 });
 
+models.Issue.hasMany(models.Action, {
+  sourceKey: "id",
+  foreignKey: "issueId"
+});
+
 // ActionPlan
 models.ActionPlan.hasMany(models.Action, {
   sourceKey: "id",
@@ -159,6 +166,7 @@ models.ActionPlan.hasMany(models.Action, {
 });
 
 // Action
+models.Action.belongsTo(models.Issue, { as: 'Issue', foreignKey: 'issueId' });
 models.Action.belongsTo(models.ActionPlan,  { as: 'ActionPlan', foreignKey: 'actionPlanId' });
 
 // ScoreCard
@@ -174,7 +182,7 @@ models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'act
 const force = true;
 
 if (force) {
-  sequelize.sync({force: true});
+  sequelize.sync({force});
 
   setTimeout( ()=>{
     (async () => {

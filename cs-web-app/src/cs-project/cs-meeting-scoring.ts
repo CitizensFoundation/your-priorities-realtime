@@ -266,7 +266,8 @@ export class CsMeetingScoring extends CsMeetingBase {
       showComments,
       hideSubmitComment,
       hideRating,
-      this.addCoreIssueCommentFromInput
+      this.addCoreIssueCommentFromInput,
+      this._scoreIssue
     );
   }
 

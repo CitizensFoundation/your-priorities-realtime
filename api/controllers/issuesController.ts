@@ -1,7 +1,7 @@
 import express from "express";
 import { models } from "../models";
 
-export class IssueController {
+export class IssuesController {
   public path = "/api/issues";
   public router = express.Router();
 
@@ -11,6 +11,7 @@ export class IssueController {
 
   public intializeRoutes() {
     this.router.post(this.path + "/:id/addComment", this.addComment);
+    this.router.post(this.path + "/:id/addAction", this.addAction);
     this.router.post(this.path + "/:id/vote", this.vote);
   }
 
@@ -39,6 +40,18 @@ export class IssueController {
     })
   }
 
+  addAction = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Action.create(
+      req.body
+    ).then( action => {
+      res.send(action);
+    }).catch( error => {
+      res.send(error);
+    })
+  }
 
   addComment = async (
     req: express.Request,

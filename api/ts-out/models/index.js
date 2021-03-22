@@ -16,6 +16,7 @@ const action_1 = require("./action");
 const scoreCard_1 = require("./scoreCard");
 const comment_1 = require("./comment");
 const progressReport_1 = require("./progressReport");
+const translationCache_1 = require("./translationCache");
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 let sequelize;
@@ -50,7 +51,8 @@ exports.models = {
     Action: action_1.InitAction(sequelize),
     ScoreCard: scoreCard_1.InitScoreCard(sequelize),
     Comment: comment_1.InitComment(sequelize),
-    ProgressReport: progressReport_1.InitProgressReport(sequelize)
+    ProgressReport: progressReport_1.InitProgressReport(sequelize),
+    TranslationCache: translationCache_1.InitTranslationCache(sequelize)
 };
 // Associations
 // Project
@@ -121,6 +123,10 @@ exports.models.Issue.hasMany(exports.models.Comment, {
     sourceKey: "id",
     foreignKey: "issueId"
 });
+exports.models.Issue.hasMany(exports.models.Action, {
+    sourceKey: "id",
+    foreignKey: "issueId"
+});
 // ActionPlan
 exports.models.ActionPlan.hasMany(exports.models.Action, {
     sourceKey: "id",
@@ -128,6 +134,7 @@ exports.models.ActionPlan.hasMany(exports.models.Action, {
     as: "Actions"
 });
 // Action
+exports.models.Action.belongsTo(exports.models.Issue, { as: 'Issue', foreignKey: 'issueId' });
 exports.models.Action.belongsTo(exports.models.ActionPlan, { as: 'ActionPlan', foreignKey: 'actionPlanId' });
 // ScoreCard
 // Comment
@@ -137,7 +144,7 @@ exports.models.Comment.belongsTo(exports.models.Action, { as: 'Action', foreignK
 exports.models.ProgressReport.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
 const force = true;
 if (force) {
-    sequelize.sync({ force: true });
+    sequelize.sync({ force });
     setTimeout(() => {
         (async () => {
             try {

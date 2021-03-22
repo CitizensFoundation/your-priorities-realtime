@@ -24,11 +24,15 @@ io.on("connection", (socket) => {
 
   if (meetingId) {
     const redisMeetingStateKey = `meetingState${meetingId}`;
-    const latestMeetingState = redisClient.get(redisMeetingStateKey);
+    redisClient.get(redisMeetingStateKey, (error: string, reply: any) => {
+      const parsedLatestMeetingState = JSON.parse(reply);
+      console.log(parsedLatestMeetingState);
 
-    if (latestMeetingState) {
-      socket.in(socket.id).emit("meetingState", latestMeetingState);
-    }
+      if (parsedLatestMeetingState) {
+        socket.emit("meetingState", parsedLatestMeetingState);
+        console.log("Sending last meeting state");
+      }
+    });
 
     socket.join(meetingId);
 
@@ -36,9 +40,11 @@ io.on("connection", (socket) => {
       console.log(meetingState);
       socket.in(meetingId).emit("meetingState", meetingState)
       if (meetingState.isLive===false) {
-        redis.del(redisMeetingStateKey);
+        redisClient.del(redisMeetingStateKey);
       } else {
-        redis.set(redisMeetingStateKey, meetingState);
+        console.log("Saving last meeting state");
+        console.log(meetingState);
+        redisClient.set(redisMeetingStateKey, JSON.stringify(meetingState), redis.print);
       }
     });
 
@@ -52,6 +58,10 @@ io.on("connection", (socket) => {
       socket.in(meetingId).emit("newIssue", newIssue);
     });
 
+    socket.on("newAction", (newAction) => {
+      console.log(newAction);
+      socket.in(meetingId).emit("newAction", newAction);
+    });
   } else {
     console.error("No meeting id from socket");
   }
