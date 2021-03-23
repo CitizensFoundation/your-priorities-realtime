@@ -45,21 +45,43 @@ class ProjectsController {
             });
         };
         this.getIssues = async (req, res) => {
-            models_1.models.Issue.findAll({
-                where: {
-                    projectId: req.params.id,
-                    type: req.params.issueType
-                },
-                include: [
-                    {
-                        model: models_1.models.Comment
-                    }
-                ]
-            }).then(project => {
-                res.send(project);
-            }).catch(error => {
-                res.send(error);
-            });
+            console.error(req.params.issueType);
+            if (req.params.issueType == -1) {
+                models_1.models.Issue.findAll({
+                    where: {
+                        projectId: req.params.id
+                    },
+                    include: [
+                        {
+                            model: models_1.models.Comment
+                        },
+                        {
+                            model: models_1.models.Action
+                        }
+                    ]
+                }).then(project => {
+                    res.send(project);
+                }).catch(error => {
+                    res.send(error);
+                });
+            }
+            else {
+                models_1.models.Issue.findAll({
+                    where: {
+                        projectId: req.params.id,
+                        type: req.params.issueType != "-1" ? req.params.issueType : undefined
+                    },
+                    include: [
+                        {
+                            model: models_1.models.Comment
+                        }
+                    ]
+                }).then(project => {
+                    res.send(project);
+                }).catch(error => {
+                    res.send(error);
+                });
+            }
         };
         this.getParticipants = async (req, res) => {
             models_1.models.Project.findOne({

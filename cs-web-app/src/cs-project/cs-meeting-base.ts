@@ -51,6 +51,7 @@ export class CsMeetingBase extends YpBaseElement {
     CoreIssue: 0,
     UserIssue: 1,
     ProviderIssue: 2,
+    AllIssues: -1
   };
 
   _processState(state: StateAttributes) {
@@ -215,6 +216,7 @@ export class CsMeetingBase extends YpBaseElement {
               <stars-rating
                 id="emoji"
                 ?hidden="${hideRating}"
+                .rating="${issue.score}"
                 numstars="5"
                 ?manual="${!disableVoting}"
                 @click="${scoreIssueFunction}"

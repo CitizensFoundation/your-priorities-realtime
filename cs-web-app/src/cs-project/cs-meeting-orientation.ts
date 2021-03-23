@@ -91,6 +91,18 @@ export class CsMeetingOrientation extends CsMeetingBase {
     `;
   }
 
+  renderStory() {
+    return html`
+      <div class="layout horizontal center-center">
+        <cs-story
+          id="storyViewer"
+          number="1"
+          @cs-story-index="${this.setStoryIndex}"
+        ></cs-story>
+      </div>
+    `;
+  }
+
   renderCurrentTabPage(): TemplateResult | undefined {
     let page: TemplateResult | undefined;
 

@@ -278,12 +278,6 @@ export class CsStory extends YpBaseElement {
             <h1>Swipe to start</h1>
           </div>
         </cs-story-card>
-
-        <img
-          style="object-fit: cover"
-          src="https://i.imgur.com/ktDKGxb.jpg"
-          draggable="false"
-        />
       </cs-story-viewer>
     `;
   }

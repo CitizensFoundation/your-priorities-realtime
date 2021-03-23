@@ -136,6 +136,7 @@ interface IssueAttributes {
   state: number;
   counterUpVotes: number;
   counterDownVotes: number;
+  score: number;
   createdAt?: Date;
   updatedAt?: Date;
   Comments?: Array<CommentAttributes> | null;
@@ -154,7 +155,7 @@ interface ActionAttributes {
   id?: number;
   description: string;
   language?: string;
-  actionPlanId: number;
+  actionPlanId?: number;
   userId: number;
   state: number;
   counterUpVotes: number;

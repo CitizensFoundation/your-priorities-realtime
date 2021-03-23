@@ -13,6 +13,7 @@ export class IssuesController {
     this.router.post(this.path + "/:id/addComment", this.addComment);
     this.router.post(this.path + "/:id/addAction", this.addAction);
     this.router.post(this.path + "/:id/vote", this.vote);
+    this.router.post(this.path + "/:id/score", this.score);
   }
 
   vote = async (
@@ -40,16 +41,48 @@ export class IssuesController {
     })
   }
 
+  score = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Issue.findOne({
+      where: {
+        id: req.params.id
+      },
+    }).then( async issue => {
+      if (issue) {
+        issue.score = req.body.value;
+        issue.save().then(()=>{
+          res.sendStatus(200);
+        }).catch( error => {
+          res.send(error);
+        })
+      } else {
+        res.sendStatus(404);
+      }
+    }).catch( error => {
+      res.send(error);
+    })
+  }
+
   addAction = async (
     req: express.Request,
     res: express.Response
   ) => {
-    models.Action.create(
-      req.body
-    ).then( action => {
-      res.send(action);
-    }).catch( error => {
-      res.send(error);
+
+    models.ActionPlan.create().then(actionPlan => {
+      req.body.actionPlanId=actionPlan.id;
+
+      models.Action.create(
+        req.body
+      ).then( action => {
+        res.send(action);
+      }).catch( error => {
+        res.send(error);
+      })
+    })
+    models.Action.findAll().then(all=>{
+      console.error(all.length);
     })
   }
 

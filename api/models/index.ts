@@ -179,7 +179,7 @@ models.Comment.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' 
 // ProgressReport
 models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });
 
-const force = true;
+const force = false;
 
 if (force) {
   sequelize.sync({force});

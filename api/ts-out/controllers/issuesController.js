@@ -33,11 +33,38 @@ class IssuesController {
                 res.send(error);
             });
         };
-        this.addAction = async (req, res) => {
-            models_1.models.Action.create(req.body).then(action => {
-                res.send(action);
+        this.score = async (req, res) => {
+            models_1.models.Issue.findOne({
+                where: {
+                    id: req.params.id
+                },
+            }).then(async (issue) => {
+                if (issue) {
+                    issue.score = req.body.value;
+                    issue.save().then(() => {
+                        res.sendStatus(200);
+                    }).catch(error => {
+                        res.send(error);
+                    });
+                }
+                else {
+                    res.sendStatus(404);
+                }
             }).catch(error => {
                 res.send(error);
+            });
+        };
+        this.addAction = async (req, res) => {
+            models_1.models.ActionPlan.create().then(actionPlan => {
+                req.body.actionPlanId = actionPlan.id;
+                models_1.models.Action.create(req.body).then(action => {
+                    res.send(action);
+                }).catch(error => {
+                    res.send(error);
+                });
+            });
+            models_1.models.Action.findAll().then(all => {
+                console.error(all.length);
             });
         };
         this.addComment = async (req, res) => {
@@ -53,6 +80,7 @@ class IssuesController {
         this.router.post(this.path + "/:id/addComment", this.addComment);
         this.router.post(this.path + "/:id/addAction", this.addAction);
         this.router.post(this.path + "/:id/vote", this.vote);
+        this.router.post(this.path + "/:id/score", this.score);
     }
 }
 exports.IssuesController = IssuesController;

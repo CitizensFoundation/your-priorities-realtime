@@ -30,6 +30,7 @@ export class Issue
   public state!: number;
   public counterUpVotes!: number;
   public counterDownVotes!: number;
+  public score!: number;
   public publicData!: IssuePublicDataAttributes | null;
   public privateData!: IssuePrivateDataAttributes | null;
 
@@ -86,6 +87,11 @@ export const InitIssue = (sequelize: Sequelize) => {
         defaultValue: 0
       },
       counterDownVotes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
+      score: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0

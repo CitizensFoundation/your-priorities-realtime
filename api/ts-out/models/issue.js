@@ -43,6 +43,11 @@ const InitIssue = (sequelize) => {
             allowNull: false,
             defaultValue: 0
         },
+        score: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
         language: {
             type: new sequelize_1.DataTypes.STRING(10),
             allowNull: true,

@@ -28,10 +28,10 @@ import { sortBy } from 'lodash-es';
 export const ActionPlanTabTypes: Record<string, number> = {
   Information: 0,
   ReviewScores: 1,
-  ReviewIssues: 2,
-  CreationActions: 3,
+  CreationActions: 2,
+  Voting: 3,
   AssignActions: 4,
-  FinalReview: 5,
+  FinalReview: 5
 };
 
 @customElement('cs-meeting-action-plan')
@@ -43,19 +43,13 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   actionIssueIndex = 0;
 
   @property({ type: Array })
-  coreIssues: Array<IssueAttributes> | undefined;
-
-  @property({ type: Array })
-  participantsIssues: Array<IssueAttributes> | undefined;
-
-  @property({ type: Array })
   allIssues: Array<IssueAttributes> | undefined;
 
   @property({ type: Array })
-  orderedParticipantsIssues: Array<IssueAttributes> | undefined;
+  actions: Array<ActionAttributes> | undefined;
 
   @property({ type: Array })
-  actions: Array<ActionAttributes> | undefined;
+  sortedActions: Array<ActionAttributes> | undefined;
 
   constructor() {
     super();
@@ -63,27 +57,14 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
   connectedCallback() {
     super.connectedCallback();
-    this._getIssues();
-    this._getAnyParticipantsIssues();
+    this._getAllIssues();
   }
 
-  _getAnyParticipantsIssues() {
-    this._getParticipantsIssues(this.IssueTypes.allIssues);
-  }
-
-  async _getIssues() {
-    this.coreIssues = undefined;
-    this.coreIssues = (await window.serverApi.getIssues(
+  async _getAllIssues() {
+    this.allIssues = undefined;
+    this.allIssues = (await window.serverApi.getIssues(
       1 /*this.meeting.Round.projectId*/,
-      this.IssueTypes.CoreIssue
-    )) as Array<IssueAttributes> | undefined;
-  }
-
-  async _getParticipantsIssues(issueType: number) {
-    this.participantsIssues = undefined;
-    this.participantsIssues = (await window.serverApi.getIssues(
-      1 /*this.meeting.Round.projectId*/,
-      issueType
+      this.IssueTypes.AllIssues
     )) as Array<IssueAttributes> | undefined;
   }
 
@@ -95,20 +76,20 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       const action = {
         description: (this.$$('#addActionInput') as HTMLInputElement).value,
         userId: 1,
-        actionPlanId: 1,
         counterDownVotes: 0,
         counterUpVotes: 0,
         state: 0,
         completedPercent: 0,
         completeBy: null,
+        issueId: issue.id,
         projectId: 1, //TODO: FIX
       } as ActionAttributes;
 
       await window.serverApi.postAction(issue.id, action);
 
-      this.actions?.unshift(action);
+      issue!.Actions!.unshift(action);
 
-      this.actions = [...this.actions!];
+      this.allIssues = [...this.allIssues!];
 
       this.io.emit('newAction', action);
 
@@ -117,8 +98,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   _processNewIssue(issue: IssueAttributes) {
-    this.participantsIssues?.unshift(issue);
-    this.participantsIssues = [...this.participantsIssues!];
+    this.allIssues?.unshift(issue);
+    this.allIssues = [...this.allIssues!];
   }
 
   // UI
@@ -128,6 +109,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       super.styles,
       ShadowStyles,
       css`
+        .actionsHeader {
+          font-size: 18px;
+          margin-top: 20px;
+        }
+
         mwc-fab {
           position: fixed;
           bottom: 16px;
@@ -169,12 +155,16 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           width: 260px;
         }
 
+        .addActionInput {
+          width: 260px;
+        }
+
         .issueVoting {
           width: 48px;
         }
 
         .comments {
-          margin-top: 32px;
+          margin-top: 16px;
         }
 
         .comment {
@@ -183,6 +173,18 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           width: 228px;
           max-width: 2228px;
           background-color: #f7f7f7;
+        }
+
+        .action {
+          margin-top: 16px;
+          padding: 16px;
+          width: 228px;
+          max-width: 2228px;
+          background-color: #f7f7f7;
+        }
+
+        .actions {
+          margin-top: 16px;
         }
 
         .addNewIssueButton {
@@ -237,16 +239,16 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   async _scoreIssue(event: CustomEvent) {
-    const issue = this.participantsIssues![this.actionIssueIndex];
+    const issue = this.allIssues![this.actionIssueIndex];
 
     await window.serverApi.voteIssue(issue.id, 1);
   }
 
   renderIssue(index: number, hideRating = false) {
     let issue: IssueAttributes;
-    let showVoting = false;
+    let showVoting = true;
     let showComments = true;
-    let disableVoting = false;
+    let disableVoting = true;
     let hideSubmitComment = true;
     let showNumbers = false;
 
@@ -258,7 +260,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       disableVoting,
       showComments,
       hideSubmitComment,
-      hideRating
+      false
     );
   }
 
@@ -298,7 +300,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   rightActionArrow() {
-    if (this.actionIssueIndex < this.participantsIssues!.length - 1) {
+    if (this.actionIssueIndex < this.actions!.length - 1) {
       this.actionIssueIndex += 1;
     }
     this.updateState();
@@ -352,11 +354,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
         ${this.isAdmin
           ? html`
-              <div class="layout vertical center-center comments">
+              <div class="layout vertical center-center actions">
                 <mwc-textarea
-                  id="addActiontInput"
+                  id="addActionInput"
                   charCounter
-                  class="addActiontInput"
+                  class="addActionInput"
                   maxLength="500"
                   .label="${this.t('action')}"
                 ></mwc-textarea>
@@ -372,10 +374,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
             `
           : nothing}
 
-        <div class="layout vertical self-start">
+        <div class="layout vertical center-center">
+          <div class="actionsHeader">${this.t('actions')}</div>
           ${issue.Actions?.map(action => {
             return html`
-              <div class="comment shadow-elevation-4dp shadow-transition">
+              <div class="action shadow-elevation-4dp shadow-transition">
                 ${action.description}
               </div>
             `;
@@ -387,13 +390,10 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     }
   }
 
-  renderAction(index: number) {
+  renderAction(index: number, showNumbers = false, showVoting = true, disableVoting = false) {
     let issue: IssueAttributes;
-    let showVoting = false;
-    let disableVoting = false;
-    let showNumbers = false;
 
-    const action = this.actions![this.actionIssueIndex];
+    const action = this.actions![index];
 
     return html`
       <div
@@ -401,9 +401,10 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       >
         <div class="layout vertical">
           <div class="issueName">${action.description}</div>
-          <div class="layout horizontal" ?hidden="${!showVoting}">
+          <div class="layout horizontal">
             <mwc-icon-button
               icon="arrow_upward"
+              ?hidden="${!showVoting}"
               ?disabled="${disableVoting}"
               class="voteButton"
               @click="${this.voteActionUp}"
@@ -413,6 +414,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
             <mwc-icon-button
               icon="arrow_downward"
               ?disabled="${disableVoting}"
+              ?hidden="${!showVoting}"
               @click="${this.voteActionDown}"
               class="voteButton"
               .label="${this.t('voteDown')}"
@@ -468,7 +470,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
         <div class="layout vertical center-center">
           ${this.allIssues.map((issue, index) => {
-            return html`${this.renderIssue(index, true)}`;
+            return html`${this.renderIssue(index)}`;
           })}
         </div>
       `;
@@ -478,15 +480,15 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   renderResults() {
-    if (this.allIssues && this.allIssues.length > 0) {
+    if (this.actions && this.actions.length > 0) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
         </div>
 
         <div class="layout vertical center-center">
-          ${this.allIssues.map((issue, index) => {
-            return html`${this.renderIssue(index)}`;
+          ${this.sortedActions!.map((issue, index) => {
+            return html`${this.renderAction(index, true, true, true)}`;
           })}
         </div>
       `;
@@ -512,11 +514,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
             ></mwc-icon-button>
           </div>
           <div class="layout vertical center-center">
-            ${this.renderIssue(this.actionIssueIndex)}
+            ${this.renderAction(this.actionIssueIndex)}
           </div>
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.actionIssueIndex >= this.participantsIssues!.length - 1}"
+              ?hidden="${this.actionIssueIndex >= this.actions!.length - 1}"
               ?disabled="${!this.isAdmin && this.isLive}"
               icon="arrow_forward"
               @click="${this.rightActionArrow}"
@@ -530,15 +532,15 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   renderReview() {
-    if (this.orderedParticipantsIssues && this.orderedParticipantsIssues.length > 0) {
+    if (this.allIssues && this.allIssues!.length > 0) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
         </div>
 
         <div class="layout vertical center-center">
-           ${ this.orderedParticipantsIssues.map( (issue, index) => {
-              return html`${this.renderIssue(index)}`
+           ${ this.allIssues.map( (issue, index) => {
+              return html`${this.renderIssue(index, true)}`
            })}
         </div>
       `;
@@ -564,12 +566,17 @@ export class CsMeetingActionPlan extends CsMeetingBase {
             ></mwc-tab>
             <mwc-tab
               .label="${this.t('createActionPlan')}"
-              icon="how_to_vote"
+              icon="create"
               stacked
             ></mwc-tab>
             <mwc-tab
               .label="${this.t('voting')}"
               icon="how_to_vote"
+              stacked
+            ></mwc-tab>
+            <mwc-tab
+              .label="${this.t('assign')}"
+              icon="assignment_outline"
               stacked
             ></mwc-tab>
             <mwc-tab
@@ -595,13 +602,13 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       case ActionPlanTabTypes.ReviewScores:
         page = this.renderReviewScores();
         break;
-      case ActionPlanTabTypes.ReviewIssues:
-        page = this.renderIssues(this.t('viewIssues'), true);
-        break;
       case ActionPlanTabTypes.CreationActions:
         page = this.renderIssues(this.t('createActions'));
         break;
-      case ActionPlanTabTypes.AssignActions:
+      case ActionPlanTabTypes.Voting:
+        page = this.renderVoting();
+        break;
+        case ActionPlanTabTypes.AssignActions:
         page = this.renderIssues(this.t('assignActions'));
         break;
       case ActionPlanTabTypes.FinalReview:
@@ -640,8 +647,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     if (changedProperties.has('selectedTab')) {
       this.updateState();
 
-      if (this.selectedTab == ActionPlanTabTypes.Results) {
-        this._getAnyParticipantsIssues();
+      if (this.selectedTab == ActionPlanTabTypes.FinalReview) {
+        this._getAllIssues();
       }
     }
 
@@ -649,13 +656,10 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       this.setupActions();
     }
 
-    if (
-      (changedProperties.has('participantsIssues') ||
-        changedProperties.has('coreIssues')) &&
-      this.participantsIssues &&
-      this.coreIssues
-    ) {
-      this.allIssues = this.coreIssues.concat(this.participantsIssues);
+    if (changedProperties.has('actions') && this.actions) {
+      this.sortedActions = sortBy(this.actions,  (item) => {
+        return (item.counterDownVotes-item.counterUpVotes)
+      })
     }
   }
 

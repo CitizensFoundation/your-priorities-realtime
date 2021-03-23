@@ -150,6 +150,19 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public scoreIssue(issueId: number, value: number) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/issues/${issueId}/score`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          value
+        }),
+      },
+      false
+    );
+  }
+
   getProject(projectId: number) {
     return this.fetchWrapper(
       this.baseUrlPath + `/projects/${projectId}`

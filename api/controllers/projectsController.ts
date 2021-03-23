@@ -77,21 +77,42 @@ export class ProjectsController {
     req: express.Request,
     res: express.Response
   ) => {
-    models.Issue.findAll({
-      where: {
-        projectId: req.params.id,
-        type: req.params.issueType
-      },
-      include: [
-        {
-          model: (models.Comment as any)
-        }
-      ]
-    }).then( project => {
-      res.send(project);
-    }).catch( error => {
-      res.send(error);
-    })
+    console.error(req.params.issueType)
+    if ((req.params.issueType as unknown as number) == -1) {
+      models.Issue.findAll({
+        where: {
+          projectId: req.params.id
+        },
+        include: [
+          {
+            model: (models.Comment as any)
+          },
+          {
+            model: (models.Action as any)
+          }
+        ]
+      }).then( project => {
+        res.send(project);
+      }).catch( error => {
+        res.send(error);
+      })
+   } else {
+      models.Issue.findAll({
+        where: {
+          projectId: req.params.id,
+          type: req.params.issueType!="-1" ? req.params.issueType : undefined
+        },
+        include: [
+          {
+            model: (models.Comment as any)
+          }
+        ]
+      }).then( project => {
+        res.send(project);
+      }).catch( error => {
+        res.send(error);
+      })
+    }
   }
 
   getParticipants = async (

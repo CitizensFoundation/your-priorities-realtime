@@ -236,7 +236,9 @@ export class CsMeetingScoring extends CsMeetingBase {
   async _scoreIssue(event: CustomEvent) {
     const issue = this.participantsIssues![this.votingIssueIndex];
 
-    await window.serverApi.voteIssue(issue.id, 1);
+    //TODO: Fix
+    const randomScore = Math.floor(Math.random() * 5) + 1;
+    await window.serverApi.scoreIssue(issue.id, randomScore);
   }
 
   renderIssue(index: number, hideRating = false) {
@@ -427,7 +429,7 @@ export class CsMeetingScoring extends CsMeetingBase {
               .label="${this.meeting.forUsers
                 ? this.t('scoreIssues')
                 : this.t('scoreIssues')}"
-              icon="how_to_vote"
+              icon="rate_review_outline"
               stacked
             ></mwc-tab>
             <mwc-tab
