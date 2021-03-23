@@ -64,6 +64,7 @@ export class CsMeetingBase extends YpBaseElement {
     this.io.emit("meetingState", (state));
   }
 
+  //TODO: Fix storyPageIndex where you go live, then offline, move to another story page, go live and state doesn't update
   updateState() {
     this.sendState({
       tabIndex: this.selectedTab,
