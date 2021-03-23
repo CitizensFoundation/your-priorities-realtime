@@ -8,9 +8,9 @@ const redis = require("redis");
 
 const redisUrl = process.env.REDIS_URL ? process.env.REDIS_URL : "redis://localhost:6379";
 
-const redisClient = redis.createClient({
+/*const redisClient = redis.createClient({
   url: redisUrl
-});
+});*/
 
 const app = express();
 
@@ -24,7 +24,7 @@ io.on("connection", (socket) => {
 
   if (meetingId) {
     const redisMeetingStateKey = `meetingState${meetingId}`;
-    redisClient.get(redisMeetingStateKey, (error: string, reply: any) => {
+    /*redisClient.get(redisMeetingStateKey, (error: string, reply: any) => {
       const parsedLatestMeetingState = JSON.parse(reply);
       console.log(parsedLatestMeetingState);
 
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
         socket.emit("meetingState", parsedLatestMeetingState);
         console.log("Sending last meeting state");
       }
-    });
+    });*/
 
     socket.join(meetingId);
 
@@ -40,11 +40,11 @@ io.on("connection", (socket) => {
       console.log(meetingState);
       socket.in(meetingId).emit("meetingState", meetingState)
       if (meetingState.isLive===false) {
-        redisClient.del(redisMeetingStateKey);
+        //redisClient.del(redisMeetingStateKey);
       } else {
         console.log("Saving last meeting state");
         console.log(meetingState);
-        redisClient.set(redisMeetingStateKey, JSON.stringify(meetingState), redis.print);
+        //redisClient.set(redisMeetingStateKey, JSON.stringify(meetingState), redis.print);
       }
     });
 
