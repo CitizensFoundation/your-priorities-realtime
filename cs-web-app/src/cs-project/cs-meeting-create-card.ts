@@ -92,6 +92,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
     const element = this.$$('#addIssueInput') as HTMLInputElement;
 
+    debugger;
     if (element && element.value && element.value.length > 0) {
       const issue = {
         description: (this.$$('#addIssueInput') as HTMLInputElement).value,
@@ -100,6 +101,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           ? this.IssueTypes.UserIssue
           : this.IssueTypes.ProviderIssue,
         state: 0,
+        standard: "",
+        roundId: 1,
         projectId: 1, //TODO: FIX
       } as IssueAttributes;
 
@@ -153,17 +156,21 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin: 8px;
           width: 296px;
           margin-bottom: 24px;
+          padding-bottom: 8px;
+        }
+
+        .issueCardNotUsed {
           background-color: #fefefe;
           background: #fefefe;
           background: radial-gradient(
-              circle at 140px 130px,
+              circle at 146px 155px,
               transparent 35px,
               #fefefe 0
             )
             0 0;
           background-size: 100% 100%;
           background-repeat: no-repeat;
-          padding-bottom: 24px;
+
         }
 
         .voteButton {
@@ -175,6 +182,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           padding: 16px;
           font-weight: bold;
           padding-bottom: 4px;
+          padding-top: 4px;
         }
 
         .issueStandard {
@@ -192,11 +200,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         }
 
         .issue {
-          margin-top: 16px;
-          width: 280px;
-          max-width: 280px;
-          margin-bottom: 24px;
+          margin-top: 8px;
+          width: 290px;
+          max-width: 290px;
+          margin-bottom: 8px;
           background-color: #fefefe;
+          overflow: hidden;
         }
 
         .issueDescription {
@@ -295,6 +304,11 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           --mdc-icon-size: 28px;
           padding: 8px;
           padding-top: 12px;
+          color: #555;
+        }
+
+        .bookmarkIconStronger {
+          color: #333;
         }
 
         .largePerson {
@@ -309,10 +323,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         .issueDescription {
           padding: 16px;
           padding-top: 0;
-        }
-
-        .cutout {
-
         }
 
       `,
@@ -363,9 +373,9 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           charCounter
           outlined
           class="addCommentInput"
-          maxLength="250"
+          maxLength="200"
           @keyup="${this.setIssueInput}"
-          rows="5"
+          rows="4"
           .label="${this.t('yourIssue')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">
@@ -384,7 +394,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           return html`
             <div class="issue shadow-elevation-2dp shadow-transition">
               <div class="layout horizontal center-center">
-                <mwc-icon class="bookmarkIcon">face</mwc-icon>
+                <mwc-icon class="bookmarkIcon">${ this.meeting.forUsers ? "face" : "local_hospital"}</mwc-icon>
               </div>
               <div class="issueDescription">${issue.description}</div>
             </div>
@@ -431,6 +441,9 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         class="issueCard shadow-elevation-2dp shadow-transition layout horizontal"
       >
         <div class="layout vertical">
+          <div class="layout horizontal center-center">
+            <mwc-icon class="bookmarkIcon bookmarkIconStronger">center_focus_weak</mwc-icon>
+          </div>
           <div class="issueName">${issue.description}</div>
           <div class="issueStandard">${issue.standard}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
@@ -770,7 +783,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
               .label="${this.meeting.forUsers
                 ? this.t('createScoreCard')
                 : this.t('createSelfAssessment')}"
-              icon="face"
+              icon="${this.meeting.forUsers ? "face" : "local_hospital"}"
               stacked
             ></mwc-tab>
             <mwc-tab
@@ -817,7 +830,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   render() {
     return html`
-      ${this.renderHeader()} ${this.renderTabs()} ${this.renderCurrentTabPage()}
+      ${this.renderTabs()} ${this.renderCurrentTabPage()}
     `;
   }
 

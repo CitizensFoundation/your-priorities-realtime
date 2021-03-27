@@ -124,10 +124,12 @@ export class CsMeetingBase extends YpBaseElement {
   connectedCallback() {
     super.connectedCallback();
     this._setupSockets();
+    this.addGlobalListener("cs-live", this._liveChanged.bind(this));
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    this.removeGlobalListener("cs-live", this._liveChanged.bind(this));
     this._closeSockets();
   }
 
@@ -169,12 +171,7 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _liveChanged(event: CustomEvent) {
-    if ((this.$$('#liveRadio') as Radio).checked) {
-      this.isLive = true;
-    } else {
-      this.isLive = false;
-    }
-
+    this.isLive = event.detail;
     this.updateState();
   }
 
@@ -278,28 +275,6 @@ export class CsMeetingBase extends YpBaseElement {
         ></mwc-button>
       </div>
     `;
-  }
-
-  renderHeader() {
-    if (this.isAdmin) {
-      return html`
-        <div class="layout horizontal center-center liveButton">
-          <mwc-formfield .label="${this.t('live')}">
-            <mwc-checkbox
-              id="liveRadio"
-              @change="${this._liveChanged}"
-              ?checked="${this.isLive}"
-              value="closed"
-              name="accessRadioButtons"
-            >
-            </mwc-checkbox>
-          </mwc-formfield>
-          <div class="layout vertical">${this.renderSendEmail()}</div>
-        </div>
-      `;
-    } else {
-      return nothing;
-    }
   }
 
   _selectTab(event: CustomEvent) {

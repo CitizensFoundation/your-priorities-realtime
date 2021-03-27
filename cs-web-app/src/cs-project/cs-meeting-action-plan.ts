@@ -620,7 +620,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
   render() {
     return html`
-      ${this.renderHeader()} ${this.renderTabs()} ${this.renderCurrentTabPage()}
+      ${this.renderTabs()} ${this.renderCurrentTabPage()}
     `;
   }
 

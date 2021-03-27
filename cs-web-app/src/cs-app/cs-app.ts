@@ -32,6 +32,10 @@ import '@material/mwc-menu';
 import '@material/mwc-top-app-bar';
 
 import '@material/mwc-list/mwc-list-item';
+import '@material/mwc-radio';
+import '@material/mwc-checkbox';
+
+import '@material/mwc-formfield';
 
 import { YpBaseElement } from '../@yrpri/yp-base-element.js';
 //import { YpAppStyles } from './YpAppStyles.js';
@@ -53,6 +57,7 @@ import '../cs-project/cs-choose-meeting-time.js';
 import '../cs-project/cs-score.js';
 
 import '../cs-project/cs-create-issues.js';
+import { Radio } from '@material/mwc-radio';
 
 //import '../yp-collection/yp-domain.js';
 //import '../yp-collection/yp-community.js';
@@ -115,6 +120,9 @@ export class CsApp extends YpBaseElement {
 
   @property({ type: Boolean })
   showBackToPost = false;
+
+  @property({ type: Boolean })
+  isAdmin = false;
 
   @property({ type: String })
   goForwardPostName: string | undefined;
@@ -192,6 +200,10 @@ export class CsApp extends YpBaseElement {
     console.info('yp-app is ready');
     this._setupSamlCallback();
     this.updateLocation();
+
+    if (window.appGlobals.originalQueryParameters.isAdmin) {
+      this.isAdmin = true;
+    }
   }
 
   disconnectedCallback() {
@@ -304,6 +316,42 @@ export class CsApp extends YpBaseElement {
     this.removeListener('yp-set-pages', this._setPages, this);
   }
 
+
+  renderLiveControls() {
+    if (this.isAdmin) {
+      return html`
+      <div class="layout horizontal">
+        <mwc-formfield .label="">
+            <mwc-checkbox
+              id="liveRadio"
+              @change="${this._liveChanged}"
+              class="liveControls"
+              style="color: white;"
+              ?checked="${this.isLive}"
+              value="closed"
+              name="accessRadioButtons"
+            >
+            </mwc-checkbox>
+          </mwc-formfield>
+        <div class="liveInfoText" ?is-live="${this.isLive}">${this.isLive ? this.t('live') : this.t("offline")}</div>
+      </div>
+      `;
+    } else {
+      return nothing;
+    }
+  }
+
+  _liveChanged(event: CustomEvent) {
+    this.isLive = event.detail
+    if ((this.$$('#liveRadio') as Radio).checked) {
+      this.isLive = true;
+    } else {
+      this.isLive = false;
+    }
+
+    this.fireGlobal("cs-live", this.isLive);
+  }
+
   _setLiveStatus(event: CustomEvent) {
     this.isLive = event.detail;
   }
@@ -355,7 +403,8 @@ export class CsApp extends YpBaseElement {
   }
 
   static get styles() {
-    return [super.styles, css`
+    return [
+      super.styles, css`
       .liveIcon {
         color: #f00;
         margin-left: 8px;
@@ -363,7 +412,7 @@ export class CsApp extends YpBaseElement {
 
       .facilitatorInfo {
         font-size: 16px;
-        margin-left: 16px;
+        margin-left: 12px;
       }
 
       @media(max-width: 960px) {
@@ -372,6 +421,47 @@ export class CsApp extends YpBaseElement {
           margin-left: 16px;
         }
       }
+
+    mwc-checkbox, mwc-formfield {
+      color: #fff !important;
+      --mdc-checkbox-ink-color: #f00 !important;
+      --mdc-theme-background: #000;
+      --mdc-theme-primary: #FFF !important;
+      --mdc-theme-secondary: #fff !important;
+      --mdc-theme-surface: #000;
+      --mdc-theme-on-primary: #000;
+      --mdc-theme-on-secondary: #000;
+      --mdc-theme-on-surface: #fff;
+      --mdc-checkbox-unchecked-color: #fff;
+      --mdc-text-field-ink-color: #fff;
+      --mdc-text-field-fill-color: transparent;
+      --mdc-text-field-disabled-fill-color: transparent;
+    }
+
+    .liveInfo[is-admin] {
+      margin-top: 12px;
+      margin-left: 8px;
+    }
+
+    .facilitatorInfo {
+      margin-top: 4px;
+    }
+
+    .liveInfoText {
+      margin-top: 14px;
+      margin-left: -8px;
+    }
+
+    .liveInfoText[is-live], .liveIcon {
+      animation: color-change 5s infinite;
+    }
+
+    @keyframes color-change {
+      0% { color: red; }
+      50% { color: white; }
+      100% { color: red; }
+    }
+
    `];
   }
 
@@ -379,18 +469,15 @@ export class CsApp extends YpBaseElement {
     if (this.isLive) {
       return html`
         <div class="layout horizontal">
-          <mwc-icon class="liveIcon">record_voice_over</mwc-icon>
-          <div class="facilitatorInfo">Facilitator: Robert Bjarnason</div>
+          ${this.renderLiveControls()}
+          <div class="layout horizontal liveInfo" ?is-admin="${this.isAdmin}">
+            <mwc-icon class="liveIcon">record_voice_over</mwc-icon>
+            <div class="facilitatorInfo">Facilitator is Robert Bjarnason</div>
+          </div>
         </div>
       `;
-
-
     } else {
-      return html`<mwc-icon-button
-        title="${this.t('close')}"
-        icon="menu"
-        @click="${this._closePost}"
-      ></mwc-icon-button>`;
+      return html`${this.renderLiveControls()}`;
     }
   }
 

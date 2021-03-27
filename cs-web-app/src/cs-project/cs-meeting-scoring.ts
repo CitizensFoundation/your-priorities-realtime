@@ -470,7 +470,7 @@ export class CsMeetingScoring extends CsMeetingBase {
 
   render() {
     return html`
-      ${this.renderHeader()} ${this.renderTabs()} ${this.renderCurrentTabPage()}
+      ${this.renderTabs()} ${this.renderCurrentTabPage()}
     `;
   }
 

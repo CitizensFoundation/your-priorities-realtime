@@ -102,7 +102,7 @@ export class CsMeetingOrientation extends CsMeetingBase {
   }
 
   render() {
-    return html` ${this.renderHeader()} ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
+    return html`${this.renderTabs()} ${this.renderCurrentTabPage()} `;
   }
 
   // EVENTS
