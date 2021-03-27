@@ -37,6 +37,11 @@ const InitIssue = (sequelize) => {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
+        selected: {
+            type: sequelize_1.DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
         counterUpVotes: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,

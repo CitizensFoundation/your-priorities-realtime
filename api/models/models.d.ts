@@ -134,6 +134,7 @@ interface IssueAttributes {
   roundId: number;
   userId: number;
   projectId: number;
+  selected: boolean;
   type: number;
   state: number;
   standard: string;

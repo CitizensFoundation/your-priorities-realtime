@@ -10,6 +10,31 @@ class IssuesController {
     constructor() {
         this.path = "/api/issues";
         this.router = express_1.default.Router();
+        this.setSelectedStatus = async (req, res) => {
+            models_1.models.Issue.findOne({
+                where: {
+                    id: req.params.id
+                },
+            }).then(async (issue) => {
+                if (issue) {
+                    if (req.body.checked == true) {
+                        issue.selected = true;
+                        await issue.save();
+                        res.sendStatus(200);
+                    }
+                    else {
+                        issue.selected = false;
+                        await issue.save();
+                        res.sendStatus(200);
+                    }
+                }
+                else {
+                    res.sendStatus(404);
+                }
+            }).catch(error => {
+                res.send(error);
+            });
+        };
         this.vote = async (req, res) => {
             models_1.models.Issue.findOne({
                 where: {
@@ -107,6 +132,7 @@ class IssuesController {
         this.router.post(this.path + "/:id/vote", this.vote);
         this.router.post(this.path + "/:id/rate", this.rate);
         this.router.delete(this.path + "/:id/rate", this.deleteRating);
+        this.router.put(this.path + "/:id/setSelectedStatus", this.setSelectedStatus);
     }
 }
 exports.IssuesController = IssuesController;

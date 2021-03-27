@@ -434,7 +434,7 @@ export class CsApp extends YpBaseElement {
 
     mwc-checkbox, mwc-formfield {
       color: #fff !important;
-      --mdc-checkbox-ink-color: #f00 !important;
+      --mdc-checkbox-ink-color: #000 !important;
       --mdc-theme-background: #000;
       --mdc-theme-primary: #FFF !important;
       --mdc-theme-secondary: #fff !important;

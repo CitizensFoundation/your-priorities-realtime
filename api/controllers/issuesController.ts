@@ -15,6 +15,34 @@ export class IssuesController {
     this.router.post(this.path + "/:id/vote", this.vote);
     this.router.post(this.path + "/:id/rate", this.rate);
     this.router.delete(this.path + "/:id/rate", this.deleteRating);
+    this.router.put(this.path + "/:id/setSelectedStatus", this.setSelectedStatus);
+  }
+
+  setSelectedStatus = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Issue.findOne({
+      where: {
+        id: req.params.id
+      },
+    }).then( async issue => {
+      if (issue) {
+        if (req.body.checked == true) {
+          issue.selected = true;
+          await issue.save();
+          res.sendStatus(200);
+        } else {
+          issue.selected = false;
+          await issue.save();
+          res.sendStatus(200);
+        }
+      } else {
+        res.sendStatus(404);
+      }
+    }).catch( error => {
+      res.send(error);
+    })
   }
 
   vote = async (

@@ -64,6 +64,16 @@ export class CsMeetingBase extends YpBaseElement {
     }
   }
 
+  getIconForIssueType(issue: IssueAttributes) {
+    if (issue.type==this.IssueTypes.CoreIssue) {
+      return 'center_focus_weak';
+    } else if (issue.type==this.IssueTypes.UserIssue) {
+      return 'face';
+    } else if (issue.type==this.IssueTypes.ProviderIssue) {
+      return 'groups';
+    }
+  }
+
   sendState(state: StateAttributes) {
     console.error(state);
     this.io.emit('meetingState', state);
@@ -161,6 +171,10 @@ export class CsMeetingBase extends YpBaseElement {
           margin-top: 8px;
           margin-bottom: 8px;
         }
+
+        .issueName[has-standard] {
+          font-weight: bold;
+        }
       `,
     ];
   }
@@ -206,7 +220,8 @@ export class CsMeetingBase extends YpBaseElement {
         class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
       >
         <div class="layout vertical">
-          <div class="issueName">${issue.description}</div>
+          <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
+          <div class="issueStandard">${issue.standard}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
             <div class="layout horizontal">
               <stars-rating

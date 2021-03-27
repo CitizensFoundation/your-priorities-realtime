@@ -13,6 +13,10 @@ import '@material/mwc-button';
 import '@material/mwc-textarea';
 import { TextArea } from '@material/mwc-textarea';
 import { Snackbar } from '@material/mwc-snackbar';
+import '@material/mwc-checkbox';
+import {Checkbox} from '@material/mwc-checkbox';
+
+import '@material/mwc-formfield';
 
 import { random, sortBy } from 'lodash-es';
 
@@ -92,7 +96,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
     const element = this.$$('#addIssueInput') as HTMLInputElement;
 
-    debugger;
     if (element && element.value && element.value.length > 0) {
       const issue = {
         description: (this.$$('#addIssueInput') as HTMLInputElement).value,
@@ -156,7 +159,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin: 8px;
           width: 296px;
           margin-bottom: 24px;
-          padding-bottom: 8px;
         }
 
         .issueCardNotUsed {
@@ -174,15 +176,14 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         }
 
         .voteButton {
-          padding-bottom: 8px;
           padding-top: 0;
         }
 
         .issueName {
           padding: 16px;
-          font-weight: bold;
           padding-bottom: 4px;
           padding-top: 4px;
+          font-weight: bold;
         }
 
         .issueStandard {
@@ -336,6 +337,14 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin-left: 6px;
           color: var(--cs-avatar-color, #000);
         }
+
+        .otherContainer {
+          width:100%;
+        }
+
+        .issueConfirmation {
+          --mdc-theme-secondary: #000;
+        }
       `,
     ];
   }
@@ -413,7 +422,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           return html`
             <div class="issue shadow-elevation-2dp shadow-transition">
               <div class="layout horizontal center-center">
-                <mwc-icon class="bookmarkIcon">${ this.meeting.forUsers ? "face" : "local_hospital"}</mwc-icon>
+                <mwc-icon class="bookmarkIcon">${ this.meeting.forUsers ? "face" : "groups"}</mwc-icon>
               </div>
               <div class="issueDescription">${issue.description}</div>
             </div>
@@ -435,12 +444,17 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     await window.serverApi.voteIssue(issue.id, -1);
   }
 
+  async issueSelectionChanged(checkbox: Checkbox, issueId: number) {
+    await window.serverApi.setSelectedStatus(issueId, checkbox.checked);
+  }
+
   renderIssue(index: number) {
     let issue: IssueAttributes;
     let showVoting = false;
     let showComments = false;
     let disableVoting = false;
     let showNumbers = false;
+    let showSelectionCheckbox = false;
 
     if (this.selectedTab == CreateCardTabTypes.Voting) {
       issue = this.participantsIssues![index];
@@ -450,6 +464,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       showVoting = true;
       disableVoting = true;
       showNumbers = true;
+      showSelectionCheckbox = true;
     } else {
       issue = this.coreIssues![index];
       showComments = true;
@@ -459,16 +474,18 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       <div
         class="issueCard shadow-elevation-2dp shadow-transition layout horizontal"
       >
-        <div class="layout vertical">
+        <div class="layout vertical otherContainer">
           <div class="layout horizontal center-center">
-            <mwc-icon class="bookmarkIcon bookmarkIconStronger">center_focus_weak</mwc-icon>
+            <mwc-icon class="bookmarkIcon bookmarkIconStronger">${this.getIconForIssueType(issue)}</mwc-icon>
           </div>
           <div class="issueName">${issue.description}</div>
           <div class="issueStandard">${issue.standard}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
+            <div class="flex"></div>
             <mwc-icon-button
               icon="arrow_upward"
-              ?hidden="${disableVoting}"
+              ?hidden="${!showVoting}"
+              ?disabled="${disableVoting}"
               class="voteButton"
               @click="${this.voteIssueUp}"
               .label="${this.t('voteUp')}"
@@ -478,7 +495,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
             </div>
             <mwc-icon-button
               icon="arrow_downward"
-              ?hidden="${disableVoting}"
+              ?hidden="${!showVoting}"
+              ?disabled="${disableVoting}"
               @click="${this.voteIssueDown}"
               class="voteButton"
               .label="${this.t('voteDown')}"
@@ -487,6 +505,14 @@ export class CsMeetingCreateCard extends CsMeetingBase {
               ${issue.counterDownVotes}
             </div>
             <div class="flex"></div>
+            <mwc-checkbox ?hidden="${!this.isAdmin  || !showSelectionCheckbox}"
+                class="issueConfirmation"
+                ?checked="${issue.selected}"
+                @change="${(event: CustomEvent) => this.issueSelectionChanged(event.srcElement as Checkbox, issue.id)}"
+                value="closed"
+                name="accessRadioButtons"
+              >
+            </mwc-checkbox>
           </div>
         </div>
       </div>
@@ -637,8 +663,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   async addCoreIssueComment(comment: CommentAttributes) {
     const issue = this.coreIssues![this.coreIssueIndex];
-
-    debugger;
 
     issue.Comments!.unshift(comment);
 
@@ -803,14 +827,14 @@ export class CsMeetingCreateCard extends CsMeetingBase {
             ></mwc-tab>
             <mwc-tab
               .label="${this.t('reviewCoreIssues')}"
-              icon="pending_actions"
+              icon="center_focus_weak"
               stacked
             ></mwc-tab>
             <mwc-tab
               .label="${this.meeting.forUsers
                 ? this.t('createScoreCard')
                 : this.t('createSelfAssessment')}"
-              icon="${this.meeting.forUsers ? "face" : "local_hospital"}"
+              icon="${this.meeting.forUsers ? "face" : "groups"}"
               stacked
             ></mwc-tab>
             <mwc-tab

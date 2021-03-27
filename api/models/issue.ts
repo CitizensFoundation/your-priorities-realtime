@@ -30,6 +30,7 @@ export class Issue
   public standard!: string;
   public type!: number;
   public state!: number;
+  public selected!: boolean;
   public counterUpVotes!: number;
   public counterDownVotes!: number;
   public score!: number;
@@ -90,6 +91,11 @@ export const InitIssue = (sequelize: Sequelize) => {
       type: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      selected: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       },
       counterUpVotes: {
         type: DataTypes.INTEGER,
