@@ -41,33 +41,32 @@ export class CsStoryViewer extends YpBaseElement {
   }
 
   update(changedProperties: Map<string | number | symbol, unknown>) {
-    if (!this.isLive || this.isAdmin) {
-      // eslint-disable-next-line prefer-const
-      let { deltaX = 0, isFinal = false } = this._panData;
+    // eslint-disable-next-line prefer-const
+    let { deltaX = 0, isFinal = false } = this._panData;
 
-      // Guard against an infinite loop by looking for index.
-      if (!changedProperties.has('_index') && isFinal) {
-        deltaX > 0 ? this.previous() : this.next();
-      }
-
-      this.fire('cs-story-index', this.index);
-
-      const width = this.clientWidth;
-      const minScale = 0.8;
-      // We don't want the latent deltaX when releasing a pan.
-      deltaX = isFinal ? 0 : deltaX;
-
-      (Array.from(this.children) as Array<HTMLElement>).forEach((el: HTMLElement, i) => {
-        const x = (i - this.index) * width + deltaX;
-
-        // Piecewise scale(deltaX), looks like: __/\__
-        const u = deltaX / width + (i - this.index);
-        const v = -Math.abs(u * (1 - minScale)) + 1;
-        const scale = Math.max(v, minScale);
-
-        el.style.transform = `translate3d(${x}px,0,0) scale(${scale})`;
-      });
+    // Guard against an infinite loop by looking for index.
+    if (!changedProperties.has('_index') && isFinal) {
+      deltaX > 0 ? this.previous() : this.next();
     }
+
+    this.fire('cs-story-index', this.index);
+
+    const width = this.clientWidth;
+    const minScale = 0.8;
+    // We don't want the latent deltaX when releasing a pan.
+    deltaX = isFinal ? 0 : deltaX;
+
+    (Array.from(this.children) as Array<HTMLElement>).forEach((el: HTMLElement, i) => {
+      const x = (i - this.index) * width + deltaX;
+
+      // Piecewise scale(deltaX), looks like: __/\__
+      const u = deltaX / width + (i - this.index);
+      const v = -Math.abs(u * (1 - minScale)) + 1;
+      const scale = Math.max(v, minScale);
+
+      el.style.transform = `translate3d(${x}px,0,0) scale(${scale})`;
+    });
+
     super.update(changedProperties);
   }
 
@@ -77,7 +76,6 @@ export class CsStoryViewer extends YpBaseElement {
 
   /* Advance to the next story card if possible */
   next() {
-    debugger;
     this.index = Math.max(
       0,
       Math.min(this.children.length - 1, this.index + 1)

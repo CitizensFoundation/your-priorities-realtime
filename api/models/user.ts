@@ -27,8 +27,8 @@ export class User
   public name!: string;
   public email!: string;
   public language?: string | null;
-  public selectedAvatar?: string | null;
-  public selectedAvatarColor?: string | null;
+  public selectedAvatar!: string;
+  public selectedAvatarColor!: string;
   public encrypedPassword!: string | null;
   public ypUserId?: number;
 

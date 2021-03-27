@@ -35,7 +35,7 @@ const InitUser = (sequelize) => {
         },
         encrypedPassword: {
             type: new sequelize_1.DataTypes.STRING(2048),
-            allowNull: false,
+            allowNull: true,
         },
         ypUserId: {
             type: new sequelize_1.DataTypes.INTEGER,

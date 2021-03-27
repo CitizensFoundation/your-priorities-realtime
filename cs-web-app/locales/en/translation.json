@@ -1,6 +1,8 @@
 {
-  "createYourAvatarAndLogin": "Create your avatar and login",
+  "chooseAvatarColor": "Choose avatar color",
+  "chooseAvatar": "Choose your avatar",
   "login": "Login",
+  "loginAs": "Login as",
   "offline": "Offline",
   "coreIssueStandard": "Standard",
   "actions": "Actions",

@@ -83,7 +83,7 @@
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "socket.io-client": "^4.0.0",
-    "vanilla-picker": "^2.11.2"
+    "vanilla-colorful": "^0.5.3"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",

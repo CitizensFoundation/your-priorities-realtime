@@ -152,12 +152,24 @@ export class CsServerApi extends YpServerApi {
 
   public login(userAvatar: string, userAvatarColor: string) {
     return this.fetchWrapper(
-      this.baseUrlPath + `/user/login`,
+      this.baseUrlPath + `/users/login`,
       {
         method: 'POST',
         body: JSON.stringify({
           userAvatar,
           userAvatarColor
+        }),
+      },
+      false
+    );
+  }
+
+  public logout() {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/users/logout`,
+      {
+        method: 'DELETE',
+        body: JSON.stringify({
         }),
       },
       false

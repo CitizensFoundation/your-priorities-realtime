@@ -25,6 +25,7 @@ import '@material/mwc-drawer';
 import '@material/mwc-button';
 
 import '@material/mwc-icon-button';
+import '@material/mwc-icon';
 
 import { Menu } from '@material/mwc-menu';
 import '@material/mwc-menu';
@@ -55,6 +56,7 @@ import '../cs-project/cs-report.js';
 import '../cs-project/cs-choose-meeting-time.js';
 
 import '../cs-project/cs-score.js';
+import './cs-login.js';
 
 import '../cs-project/cs-create-issues.js';
 import { Radio } from '@material/mwc-radio';
@@ -83,10 +85,13 @@ export class CsApp extends YpBaseElement {
   page: string | undefined;
 
   @property({ type: Object })
-  user = undefined;
+  user: UserAttributes | undefined;
 
   @property({ type: String })
   backPath: string | undefined;
+
+  @property({ type: String })
+  redirectAfterLoginPath: string | undefined;
 
   @property({ type: Boolean })
   showSearch = false;
@@ -204,6 +209,8 @@ export class CsApp extends YpBaseElement {
     if (window.appGlobals.originalQueryParameters.isAdmin) {
       this.isAdmin = true;
     }
+
+    this._checkLogin();
   }
 
   disconnectedCallback() {
@@ -239,6 +246,8 @@ export class CsApp extends YpBaseElement {
     this.addGlobalListener('yp-change-header', this._onChangeHeader.bind(this));
     this.addGlobalListener('yp-user-changed', this._onUserChanged.bind(this));
     this.addGlobalListener('yp-network-error', this._netWorkError.bind(this));
+
+    this.addGlobalListener('cs-user-logged-in', this._onUserChanged.bind(this));
 
     this.addListener(
       'yp-add-back-community-override',
@@ -286,6 +295,7 @@ export class CsApp extends YpBaseElement {
     this.removeGlobalListener('yp-change-header', this._onChangeHeader);
     this.removeGlobalListener('yp-user-changed', this._onUserChanged);
     this.removeGlobalListener('yp-network-error', this._netWorkError);
+    this.removeGlobalListener('cs-user-logged-in', this._onUserChanged);
 
     this.removeListener(
       'yp-add-back-community-override',
@@ -485,6 +495,24 @@ export class CsApp extends YpBaseElement {
     (this.$$('helpMenu') as Menu).open = true;
   }
 
+  async _checkLogin() {
+    this.user = (await window.serverApi.checkLogin()) as
+      | UserAttributes
+      | undefined;
+
+    if (this.user) {
+      this._onUserChanged({detail: this.user} as CustomEvent);
+    } else {
+      this.redirectAfterLoginPath = window.location.pathname;
+      YpNavHelpers.redirectTo("/login");
+    }
+  }
+
+  async _logout() {
+    await window.serverApi.logout();
+    this._onUserChanged({detail: null} as CustomEvent);
+  }
+
   renderActionItems() {
     return html`
       <mwc-icon-button
@@ -527,24 +555,17 @@ export class CsApp extends YpBaseElement {
 
       ${this.user
         ? html`
-            <div
-              class="userImageNotificationContainer layout horizontal"
-              @click="${this._toggleUserDrawer}"
+            <mwc-icon-button  slot="actionItems"  .icon="${this.user.selectedAvatar!}" class="userIcon" style="color:${this.user.selectedAvatarColor}"></mwc-icon-button>
+            <mwc-icon-button
+              icon="login"
               slot="actionItems"
+              @click="${this._logout}"
+              title="${this.t('logout')}"
             >
-              <yp-user-image id="userImage" small .user="${this.user}">
-              </yp-user-image>
-              <paper-badge
-                id="notificationBadge"
-                class="activeBadge"
-                .label="${this.numberOfUnViewedNotifications}"
-                ?hidden="${!this.numberOfUnViewedNotifications}"
-              >
-              </paper-badge>
-            </div>
+            </mwc-icon-button>
           `
         : html`
-            <mwc-icon-button
+            <mwc-icon-button hidden
               icon="login"
               slot="actionItems"
               @click="${this._login}"
@@ -1512,6 +1533,11 @@ export class CsApp extends YpBaseElement {
   _onUserChanged(event: CustomEvent) {
     if (event.detail && event.detail.id) {
       this.user = event.detail;
+
+      if (this.redirectAfterLoginPath) {
+        YpNavHelpers.redirectTo(this.redirectAfterLoginPath);
+      }
+
     } else {
       this.user = undefined;
     }
