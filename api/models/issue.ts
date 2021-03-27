@@ -14,6 +14,7 @@ import {
 
 import { Comment } from './comment';
 import { Action } from './action';
+import { Rating } from './rating';
 
 interface IssueCreationAttributes extends Optional<IssueAttributes, "id"> {}
 
@@ -26,6 +27,7 @@ export class Issue
   public userId!: number;
   public description!: string;
   public language!: string;
+  public standard!: string;
   public type!: number;
   public state!: number;
   public counterUpVotes!: number;
@@ -34,10 +36,13 @@ export class Issue
   public publicData!: IssuePublicDataAttributes | null;
   public privateData!: IssuePrivateDataAttributes | null;
 
-  public getComment!: HasManyGetAssociationsMixin<Comment>; // Note the null assertions!
+  public getComment!: HasManyGetAssociationsMixin<Comment>;
   public addComment!: HasManyAddAssociationMixin<Comment, number>;
 
-  public getAction!: HasManyGetAssociationsMixin<Action>; // Note the null assertions!
+  public getRating!: HasManyGetAssociationsMixin<Rating>;
+  public addRating!: HasManyAddAssociationMixin<Rating, number>;
+
+  public getAction!: HasManyGetAssociationsMixin<Action>;
   public addAction!: HasManyAddAssociationMixin<Action, number>;
 
   public readonly createdAt?: Date;
@@ -48,6 +53,7 @@ export class Issue
   public static associations: {
     Comments: Association<Issue, Comment>,
     Actions: Association<Issue, Action>,
+    Ratings: Association<Issue, Rating>,
   };
 
   static TypeCoreIssue = 0;
@@ -74,6 +80,10 @@ export const InitIssue = (sequelize: Sequelize) => {
         allowNull: false,
       },
       description: {
+        type: new DataTypes.STRING,
+        allowNull: false,
+      },
+      standard: {
         type: new DataTypes.STRING,
         allowNull: false,
       },

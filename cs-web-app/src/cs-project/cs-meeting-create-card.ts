@@ -11,18 +11,16 @@ import '@material/mwc-fab';
 import '@material/mwc-icon';
 import '@material/mwc-button';
 import '@material/mwc-textarea';
+import { TextArea } from '@material/mwc-textarea';
+import { Snackbar } from '@material/mwc-snackbar';
+
+import { random, sortBy } from 'lodash-es';
 
 import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { CsMeetingBase } from './cs-meeting-base.js';
-
-import '../cs-story/cs-story.js';
 import { CsStory } from '../cs-story/cs-story.js';
-import { TextArea } from '@material/mwc-textarea';
-import { Snackbar } from '@material/mwc-snackbar';
-
-import { sortBy } from 'lodash-es';
 
 export const CreateCardTabTypes: Record<string, number> = {
   Information: 0,
@@ -48,6 +46,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   @property({ type: Array })
   orderedParticipantsIssues: Array<IssueAttributes> | undefined;
+
+  @property({ type: String })
+  currentCommentInput: string | undefined;
+
+  @property({ type: String })
+  currentIssueInput: string | undefined;
 
   constructor() {
     super();
@@ -84,22 +88,22 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   }
 
   async addIssue() {
+    this.currentIssueInput = undefined;
 
     const element = this.$$('#addIssueInput') as HTMLInputElement;
 
-    if (element && element.value && element.value.length>0) {
+    if (element && element.value && element.value.length > 0) {
       const issue = {
         description: (this.$$('#addIssueInput') as HTMLInputElement).value,
         userId: 1,
-        type: this.meeting.forUsers ? this.IssueTypes.UserIssue : this.IssueTypes.ProviderIssue,
+        type: this.meeting.forUsers
+          ? this.IssueTypes.UserIssue
+          : this.IssueTypes.ProviderIssue,
         state: 0,
-        projectId: 1 //TODO: FIX
+        projectId: 1, //TODO: FIX
       } as IssueAttributes;
 
-      await window.serverApi.postIssue(
-        1,
-        issue
-      );
+      await window.serverApi.postIssue(1, issue);
 
       this.participantsIssues?.unshift(issue);
 
@@ -147,8 +151,19 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         .issueCard {
           background-color: var(--mdc-theme-surface);
           margin: 8px;
-          width: 260px;
-          max-width: 260px;
+          width: 296px;
+          margin-bottom: 24px;
+          background-color: #fefefe;
+          background: #fefefe;
+          background: radial-gradient(
+              circle at 140px 130px,
+              transparent 35px,
+              #fefefe 0
+            )
+            0 0;
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          padding-bottom: 24px;
         }
 
         .voteButton {
@@ -158,31 +173,64 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
         .issueName {
           padding: 16px;
+          font-weight: bold;
+          padding-bottom: 4px;
+        }
+
+        .issueStandard {
+          padding: 16px;
+          padding-top: 0;
         }
 
         .addCommentInput {
-          width: 260px;
+          margin-top: 0;
+          width: 292px;
         }
 
         .issueVoting {
           width: 48px;
         }
 
+        .issue {
+          margin-top: 16px;
+          width: 280px;
+          max-width: 280px;
+          margin-bottom: 24px;
+          background-color: #fefefe;
+        }
+
+        .issueDescription {
+          z-index: 5;
+        }
+
         .comments {
-          margin-top: 32px;
+          margin-top: 16px;
         }
 
         .comment {
           margin-top: 16px;
           padding: 16px;
-          width: 228px;
-          max-width: 2228px;
-          background-color: #f7f7f7;
+          width: 280px;
+          max-width: 280px;
+          margin-bottom: 24px;
+          background-color: #fefefe;
+          background: #fefefe;
+          background: radial-gradient(
+              circle at 137px 0,
+              transparent 35px,
+              #fefefe 0
+            )
+            0 0;
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          padding-bottom: 0;
+          padding-left: 0;
+          padding-right: 0;
         }
 
         .addNewIssueButton {
           margin-top: 16px;
-          margin-bottom: 8px;
+          margin-bottom: 32px;
         }
 
         .votingNumber {
@@ -191,6 +239,82 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin-right: 0;
           padding-right: 0;
         }
+
+        .votingContainer {
+          position: relative;
+          height: 100%;
+        }
+
+        .voting {
+          position: absolute;
+          bottom: -104px;
+          right: -28px;
+          margin-right: 0;
+        }
+
+        mwc-textarea.addCommentInput,
+        mwc-textfield {
+        }
+
+        .comment {
+          margin-top: 24px;
+        }
+
+        .innerContainer {
+          position: relative;
+          width: 100%;
+        }
+
+        .commentContent {
+          font-size: 14px;
+          margin-top: 38px;
+          padding-left: 16px;
+          padding-right: 16px;
+          overflow: hidden;
+        }
+
+        .commentLikeButton {
+          margin-right: 0px;
+        }
+
+        .commentVotingNumber {
+          margin-top: 16px;
+          padding-left: 8px;
+          padding-right: 0px;
+          font-size: 15px;
+        }
+
+        .avatarIcon {
+          position: absolute;
+          top: -80px;
+          left: 110px;
+          --mdc-icon-size: 54px;
+        }
+
+        .bookmarkIcon {
+          --mdc-icon-size: 28px;
+          padding: 8px;
+          padding-top: 12px;
+        }
+
+        .largePerson {
+          width: 200px;
+          height: 100px;
+        }
+
+        .issueRel {
+          position: relative;
+        }
+
+        .issueDescription {
+          padding: 16px;
+          padding-top: 0;
+        }
+
+        .cutout {
+
+        }
+
       `,
     ];
   }
@@ -229,21 +353,25 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     return html`
       <div ?hidden="${this.isAdmin}" class="subjectHeader">
         ${this.meeting.forUsers
-                ? this.t('createScoreCard')
-                : this.t('createSelfAssessment')}
+          ? this.t('createScoreCard')
+          : this.t('createSelfAssessment')}
       </div>
 
       <div class="layout vertical center-center comments">
         <mwc-textarea
           id="addIssueInput"
           charCounter
+          outlined
           class="addCommentInput"
-          maxLength="500"
+          maxLength="250"
+          @keyup="${this.setIssueInput}"
+          rows="5"
           .label="${this.t('yourIssue')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">
           <mwc-button
             raised
+            ?disabled="${!this.currentIssueInput}"
             class="layout addNewIssueButton"
             @click="${this.addIssue}"
             .label="${this.t('addIssue')}"
@@ -254,8 +382,11 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       <div class="layout vertical center-center">
         ${this.participantsIssues?.map(issue => {
           return html`
-            <div class="comment shadow-elevation-4dp shadow-transition">
-              ${issue.description}
+            <div class="issue shadow-elevation-2dp shadow-transition">
+              <div class="layout horizontal center-center">
+                <mwc-icon class="bookmarkIcon">face</mwc-icon>
+              </div>
+              <div class="issueDescription">${issue.description}</div>
             </div>
           `;
         })}
@@ -266,19 +397,13 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   async voteIssueUp() {
     const issue = this.participantsIssues![this.votingIssueIndex];
 
-    await window.serverApi.voteIssue(
-      issue.id,
-      1
-    );
+    await window.serverApi.voteIssue(issue.id, 1);
   }
 
   async voteIssueDown() {
     const issue = this.participantsIssues![this.votingIssueIndex];
 
-    await window.serverApi.voteIssue(
-      issue.id,
-      -1
-    );
+    await window.serverApi.voteIssue(issue.id, -1);
   }
 
   renderIssue(index: number) {
@@ -303,44 +428,56 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
     return html`
       <div
-        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
+        class="issueCard shadow-elevation-2dp shadow-transition layout horizontal"
       >
         <div class="layout vertical">
           <div class="issueName">${issue.description}</div>
+          <div class="issueStandard">${issue.standard}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
             <mwc-icon-button
               icon="arrow_upward"
-              ?disabled="${disableVoting}"
+              ?hidden="${disableVoting}"
               class="voteButton"
               @click="${this.voteIssueUp}"
               .label="${this.t('voteUp')}"
             ></mwc-icon-button>
-            <div class="votingNumber" ?hidden="${!showNumbers}">${issue.counterUpVotes}</div>
+            <div class="votingNumber" ?hidden="${!showNumbers}">
+              ${issue.counterUpVotes}
+            </div>
             <mwc-icon-button
               icon="arrow_downward"
-              ?disabled="${disableVoting}"
+              ?hidden="${disableVoting}"
               @click="${this.voteIssueDown}"
               class="voteButton"
               .label="${this.t('voteDown')}"
             ></mwc-icon-button>
-            <div class="votingNumber" ?hidden="${!showNumbers}">${issue.counterDownVotes}</div>
+            <div class="votingNumber" ?hidden="${!showNumbers}">
+              ${issue.counterDownVotes}
+            </div>
             <div class="flex"></div>
           </div>
         </div>
       </div>
 
-      <div class="layout vertical center-center comments" ?hidden="${!showComments}">
+      <div
+        class="layout vertical center-center comments"
+        ?hidden="${!showComments}"
+      >
         <mwc-textarea
           id="addCommentInput"
           charCounter
           class="addCommentInput"
-          maxLength="200"
+          maxLength="300"
+          outlined
+          @keyup="${this.setCommentInput}"
+          rows="4"
           id="coreIssueInput"
           .label="${this.t('yourComment')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">
           <mwc-button
             raised
+            ?disabled="${!this.currentCommentInput}"
             class="layout addNewIssueButton"
             @click="${this.addCoreIssueCommentFromInput}"
             .label="${this.t('addComment')}"
@@ -348,16 +485,117 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         </div>
       </div>
 
-      <div class="layout vertical self-start">
+      <div class="layout vertical">
         ${issue.Comments?.map(comment => {
           return html`
-            <div class="comment shadow-elevation-4dp shadow-transition">
-              ${comment.content}
+            <div class="comment">
+              <div class="innerContainer">
+                <div class="commentContent">${comment.content}</div>
+                <mwc-icon
+                  class="avatarIcon"
+                  style="color:${this.getRandomColor()}"
+                  >${this.getRandomIcon()}</mwc-icon
+                >
+                <div class="layout horizontal self-end">
+                  <div class="flex"></div>
+                  <div class="commentVotingNumber">
+                    ${this.getRandomNumber()}
+                  </div>
+                  <mwc-icon-button
+                    icon="arrow_upward"
+                    ?disabled="${disableVoting}"
+                    @click="${this.voteIssueDown}"
+                    class="commentLikeButton"
+                    .label="${this.t('voteDown')}"
+                  ></mwc-icon-button>
+                </div>
+              </div>
             </div>
           `;
         })}
       </div>
     `;
+  }
+
+  setCommentInput() {
+    this.currentCommentInput = (this.$$(
+      '#addCommentInput'
+    ) as HTMLInputElement).value;
+  }
+
+  setIssueInput() {
+    this.currentIssueInput = (this.$$(
+      '#addIssueInput'
+    ) as HTMLInputElement).value;
+  }
+
+  hsvToRgb(h: any, s: any, v: any) {
+    var chroma = (s * v) / 10000,
+      min = v / 100 - chroma,
+      hdash = h / 60,
+      x = chroma * (1 - Math.abs((hdash % 2) - 1)),
+      r = 0,
+      g = 0,
+      b = 0;
+
+    switch (true) {
+      case hdash < 1:
+        r = chroma;
+        g = x;
+        break;
+      case hdash < 2:
+        r = x;
+        g = chroma;
+        break;
+      case hdash < 3:
+        g = chroma;
+        b = x;
+        break;
+      case hdash < 4:
+        g = x;
+        b = chroma;
+        break;
+      case hdash < 5:
+        r = x;
+        b = chroma;
+        break;
+      case hdash <= 6:
+        r = chroma;
+        b = x;
+        break;
+    }
+
+    r += min;
+    g += min;
+    b += min;
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  }
+
+  getRandomColor() {
+    var golden_ratio_conjugate = 0.618033988749895,
+      h = ((Math.random() + golden_ratio_conjugate) % 1) * 360,
+      rgb = this.hsvToRgb(h, 80, 55);
+    return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+  }
+
+  getRandomNumber() {
+    return Math.floor(Math.random() * 25) + 1;
+  }
+
+  getRandomIcon() {
+    const arr = [
+      'psychology',
+      'face',
+      'mood',
+      'science',
+      'memory',
+      'texture',
+      'ac_unit',
+      'sentiment_very_dissatisfied',
+    ];
+    let number = Math.floor(Math.random() * arr.length - 1);
+    return arr[number];
   }
 
   async addCoreIssueComment(comment: CommentAttributes) {
@@ -373,6 +611,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   }
 
   async addCoreIssueCommentFromInput() {
+    this.currentCommentInput = undefined;
     const issue = this.coreIssues![this.coreIssueIndex];
 
     const comment = {
@@ -429,7 +668,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           ${this.t('reviewCoreIssues')}
         </div>
 
-        <div class="layout horizontal center-center self-start">
+        <div class="layout horizontal center-center">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.coreIssueIndex === 0}"
@@ -463,7 +702,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           ${this.t('voting')}
         </div>
 
-        <div class="layout horizontal center-center self-start">
+        <div class="layout horizontal center-center">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.votingIssueIndex === 0}"
@@ -477,7 +716,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           </div>
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.votingIssueIndex >= this.participantsIssues!.length - 1}"
+              ?hidden="${this.votingIssueIndex >=
+              this.participantsIssues!.length - 1}"
               ?disabled="${!this.isAdmin && this.isLive}"
               icon="arrow_forward"
               @click="${this.rightVotingIssueArrow}"
@@ -491,16 +731,19 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   }
 
   renderReview() {
-    if (this.orderedParticipantsIssues && this.orderedParticipantsIssues.length > 0) {
+    if (
+      this.orderedParticipantsIssues &&
+      this.orderedParticipantsIssues.length > 0
+    ) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
         </div>
 
         <div class="layout vertical center-center">
-           ${ this.orderedParticipantsIssues.map( (issue, index) => {
-              return html`${this.renderIssue(index)}`
-           })}
+          ${this.orderedParticipantsIssues.map((issue, index) => {
+            return html`${this.renderIssue(index)}`;
+          })}
         </div>
       `;
     } else {
@@ -520,14 +763,14 @@ export class CsMeetingCreateCard extends CsMeetingBase {
             ></mwc-tab>
             <mwc-tab
               .label="${this.t('reviewCoreIssues')}"
-              icon="format_list_numbered"
+              icon="pending_actions"
               stacked
             ></mwc-tab>
             <mwc-tab
               .label="${this.meeting.forUsers
                 ? this.t('createScoreCard')
                 : this.t('createSelfAssessment')}"
-              icon="add_comment_outlined"
+              icon="face"
               stacked
             ></mwc-tab>
             <mwc-tab
@@ -567,7 +810,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       case CreateCardTabTypes.Review:
         page = this.renderReview();
         break;
-      }
+    }
 
     return page;
   }
@@ -586,15 +829,21 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     if (changedProperties.has('selectedTab')) {
       this.updateState();
 
-      if (this.selectedTab==CreateCardTabTypes.Review || this.selectedTab==CreateCardTabTypes.Voting) {
+      if (
+        this.selectedTab == CreateCardTabTypes.Review ||
+        this.selectedTab == CreateCardTabTypes.Voting
+      ) {
         this._getAnyParticipantsIssues();
       }
     }
 
-    if (changedProperties.has('participantsIssues') && this.participantsIssues) {
-      this.orderedParticipantsIssues = sortBy(this.participantsIssues,  (item) => {
-        return (item.counterDownVotes-item.counterUpVotes)
-      })
+    if (
+      changedProperties.has('participantsIssues') &&
+      this.participantsIssues
+    ) {
+      this.orderedParticipantsIssues = sortBy(this.participantsIssues, item => {
+        return item.counterDownVotes - item.counterUpVotes;
+      });
     }
   }
 

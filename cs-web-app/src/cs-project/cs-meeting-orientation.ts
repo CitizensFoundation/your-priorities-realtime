@@ -15,8 +15,6 @@ import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { CsMeetingBase } from './cs-meeting-base.js';
-
-import '../cs-story/cs-story.js';
 import { CsStory } from '../cs-story/cs-story.js';
 
 export const OrientationTabTypes: Record<string, number> = {
@@ -87,18 +85,6 @@ export class CsMeetingOrientation extends CsMeetingBase {
             stacked
           ></mwc-tab>
         </mwc-tab-bar>
-      </div>
-    `;
-  }
-
-  renderStory() {
-    return html`
-      <div class="layout horizontal center-center">
-        <cs-story
-          id="storyViewer"
-          number="1"
-          @cs-story-index="${this.setStoryIndex}"
-        ></cs-story>
       </div>
     `;
   }

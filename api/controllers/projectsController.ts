@@ -91,7 +91,7 @@ export class ProjectsController {
             model: (models.Action as any)
           }
         ]
-      }).then( project => {
+      }).then(project => {
         res.send(project);
       }).catch( error => {
         res.send(error);

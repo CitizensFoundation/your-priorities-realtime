@@ -15,6 +15,7 @@ import { InitComment } from "./comment";
 import { InitProgressReport } from "./progressReport";
 import { KeyObject } from "crypto";
 import { InitTranslationCache } from "./translationCache";
+import { InitRating } from "./rating";
 
 
 const Sequelize = require("sequelize");
@@ -59,7 +60,8 @@ export const models = {
   ScoreCard: InitScoreCard(sequelize),
   Comment: InitComment(sequelize),
   ProgressReport: InitProgressReport(sequelize),
-  TranslationCache: InitTranslationCache(sequelize)
+  TranslationCache: InitTranslationCache(sequelize),
+  Rating: InitRating(sequelize)
 };
 
 // Associations
@@ -114,6 +116,12 @@ models.Round.hasMany(models.Issue, {
   as: "Issues"
 });
 
+models.Round.hasMany(models.Rating, {
+  sourceKey: "id",
+  foreignKey: "roundId",
+  as: "Ratings"
+});
+
 // Stage
 models.Stage.belongsTo(models.Round,  { as: 'Round', foreignKey: 'roundId' });
 
@@ -158,6 +166,11 @@ models.Issue.hasMany(models.Action, {
   foreignKey: "issueId"
 });
 
+models.Issue.hasMany(models.Rating, {
+  sourceKey: "id",
+  foreignKey: "issueId"
+});
+
 // ActionPlan
 models.ActionPlan.hasMany(models.Action, {
   sourceKey: "id",
@@ -178,6 +191,9 @@ models.Comment.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' 
 
 // ProgressReport
 models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });
+
+// Rating
+models.Rating.belongsTo(models.Issue,  { as: 'Issue', foreignKey: 'issueId' });
 
 const force = true;
 

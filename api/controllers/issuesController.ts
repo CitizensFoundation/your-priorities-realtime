@@ -13,7 +13,8 @@ export class IssuesController {
     this.router.post(this.path + "/:id/addComment", this.addComment);
     this.router.post(this.path + "/:id/addAction", this.addAction);
     this.router.post(this.path + "/:id/vote", this.vote);
-    this.router.post(this.path + "/:id/score", this.score);
+    this.router.post(this.path + "/:id/rate", this.rate);
+    this.router.delete(this.path + "/:id/rate", this.deleteRating);
   }
 
   vote = async (
@@ -41,29 +42,56 @@ export class IssuesController {
     })
   }
 
-  score = async (
+  deleteRating = async (
     req: express.Request,
     res: express.Response
   ) => {
-    models.Issue.findOne({
-      where: {
-        id: req.params.id
-      },
-    }).then( async issue => {
-      if (issue) {
-        issue.score = req.body.value;
-        issue.save().then(()=>{
-          res.sendStatus(200);
-        }).catch( error => {
-          res.send(error);
+    try {
+      await models.Rating.destroy({
+        where: {
+          issueId: req.params.id,
+          roundId: req.body.roundId
+        }
+      });
+      res.sendStatus(200);
+    } catch(error) {
+      console.error(error);
+      res.send(error);
+    }
+  }
+
+
+  rate = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+
+    try {
+      let rating = await models.Rating.findOne({
+        where: {
+          issueId: req.params.id,
+          roundId: req.body.roundId
+        }
+      });
+
+      if (!rating) {
+        rating = await models.Rating.create({
+          issueId: parseInt(req.params.id!),
+          roundId: req.body.roundId,
+          userId: 1, // TODO: Add login
+          value: req.body.value
         })
       } else {
-        res.sendStatus(404);
+        rating.value = req.body.value
+        await rating.save();
       }
-    }).catch( error => {
+      res.sendStatus(200);
+    } catch(error) {
+      console.error(error);
       res.send(error);
-    })
+    }
   }
+
 
   addAction = async (
     req: express.Request,
@@ -81,8 +109,18 @@ export class IssuesController {
         res.send(error);
       })
     })
-    models.Action.findAll().then(all=>{
-      console.error(all.length);
+  }
+
+  addRating = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Rating.create(
+      req.body
+    ).then( project => {
+      res.send(project);
+    }).catch( error => {
+      res.send(error);
     })
   }
 

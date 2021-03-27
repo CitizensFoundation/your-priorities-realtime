@@ -12,18 +12,17 @@ import '@material/mwc-icon';
 import '@material/mwc-button';
 import '@material/mwc-textarea';
 import '@manufosela/stars-rating';
+import { TextArea } from '@material/mwc-textarea';
+import { Snackbar } from '@material/mwc-snackbar';
+
+import { sortBy } from 'lodash-es';
 
 import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { CsMeetingBase } from './cs-meeting-base.js';
-
-import '../cs-story/cs-story.js';
 import { CsStory } from '../cs-story/cs-story.js';
-import { TextArea } from '@material/mwc-textarea';
-import { Snackbar } from '@material/mwc-snackbar';
 
-import { sortBy } from 'lodash-es';
 
 export const ActionPlanTabTypes: Record<string, number> = {
   Information: 0,

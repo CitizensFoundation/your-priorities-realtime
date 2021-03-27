@@ -20,13 +20,19 @@ export class CsStory extends YpBaseElement {
   @property({type: Number})
   number = 1
 
+  @property({type: Boolean})
+  isLive = false
+
+  @property({type: Boolean})
+  isAdmin = false
+
   setIndex(index: number) {
     (this.$$("#viewer") as CsStoryViewer).setIndex(index);
   }
 
   renderStoryOne() {
     return html`
-      <cs-story-viewer id="viewer">
+      <cs-story-viewer id="viewer" ?isLive="${this.isLive}" ?isAdmin="${this.isAdmin}">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -229,7 +235,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryOnePlus() {
     return html`
-      <cs-story-viewer id="viewer">
+      <cs-story-viewer id="viewer" ?isLive="${this.isLive}" ?isAdmin="${this.isAdmin}">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -285,7 +291,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryTwo() {
     return html`
-      <cs-story-viewer id="viewer">
+      <cs-story-viewer id="viewer" ?isLive="${this.isLive}" ?isAdmin="${this.isAdmin}">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -338,7 +344,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryThree() {
     return html`
-      <cs-story-viewer id="viewer">
+      <cs-story-viewer id="viewer" ?isLive="${this.isLive}" ?isAdmin="${this.isAdmin}">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -391,7 +397,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryFour() {
     return html`
-      <cs-story-viewer id="viewer">
+      <cs-story-viewer id="viewer" ?isLive="${this.isLive}" ?isAdmin="${this.isAdmin}">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
@@ -444,7 +450,7 @@ export class CsStory extends YpBaseElement {
 
   renderStoryFive() {
     return html`
-      <cs-story-viewer id="viewer">
+      <cs-story-viewer id="viewer" ?isLive="${this.isLive}" ?isAdmin="${this.isAdmin}">
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">

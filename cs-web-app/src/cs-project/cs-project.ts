@@ -415,6 +415,11 @@ export class CsProject extends YpBaseElement {
         .participantsInput {
 
         }
+
+        .coreIssueHeader {
+          font-weight: bold;
+          margin-bottom: 4px;
+        }
       `,
     ];
   }
@@ -460,6 +465,7 @@ export class CsProject extends YpBaseElement {
       userId: 1,
       type: 0,
       state: 0,
+      standard: (this.$$('#coreIssueStandardInput') as HTMLInputElement).value,
       projectId: this.projectId
     } as IssueAttributes;
 
@@ -470,6 +476,7 @@ export class CsProject extends YpBaseElement {
 
     this._getIssues();
 
+    (this.$$('#coreIssueStandardInput') as HTMLInputElement).value = '';
     (this.$$('#coreIssueInput') as HTMLInputElement).value = '';
   }
 
@@ -554,13 +561,21 @@ export class CsProject extends YpBaseElement {
         ${this.t('coreIssues')}
       </div>
       <div class="layout vertical center-center">
-        <mwc-textarea
+        <mwc-textfield
           ?hidden="${this.saved}"
           charCounter
           maxLength="200"
           id="coreIssueInput"
           .label="${this.t('coreIssue')}"
+        ></mwc-textfield>
+        <mwc-textarea
+          ?hidden="${this.saved}"
+          charCounter
+          maxLength="500"
+          id="coreIssueStandardInput"
+          .label="${this.t('coreIssueStandard')}"
         ></mwc-textarea>
+
         <div class="layout horizontal center-center">
           <mwc-button
             raised
@@ -574,8 +589,9 @@ export class CsProject extends YpBaseElement {
         <div class="issues ">
           ${this.coreIssues?.map(
             (issue, index: number) => html`
-              <div class="issue shadow-elevation-2dp shadow-transition">
-                ${index + 1}. ${issue.description}
+              <div class="issue shadow-elevation-2dp shadow-transition layout vertical">
+                <div class="coreIssueHeader">${index+1}. ${issue.description}</div>
+                <div class="coreIssueStandard">${issue.standard}</div>
               </div>
             `
           )}

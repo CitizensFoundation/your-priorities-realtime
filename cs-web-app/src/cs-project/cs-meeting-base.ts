@@ -17,6 +17,7 @@ import '@material/mwc-checkbox';
 import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
+import '../cs-story/cs-story.js';
 
 @customElement('cs-meeting-base')
 export class CsMeetingBase extends YpBaseElement {
@@ -35,7 +36,7 @@ export class CsMeetingBase extends YpBaseElement {
   @property({ type: Number })
   selectedTab = 0;
 
-  roomName: string | undefined
+  roomName: string | undefined;
 
   socket: any | undefined;
 
@@ -51,7 +52,7 @@ export class CsMeetingBase extends YpBaseElement {
     CoreIssue: 0,
     UserIssue: 1,
     ProviderIssue: 2,
-    AllIssues: -1
+    AllIssues: -1,
   };
 
   _processState(state: StateAttributes) {
@@ -61,43 +62,43 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   sendState(state: StateAttributes) {
-    console.error(state)
-    this.io.emit("meetingState", (state));
+    console.error(state);
+    this.io.emit('meetingState', state);
   }
 
   //TODO: Fix storyPageIndex where you go live, then offline, move to another story page, go live and state doesn't update
   updateState() {
     this.sendState({
       tabIndex: this.selectedTab,
-      isLive: this.isLive
-    } as StateAttributes)
+      isLive: this.isLive,
+    } as StateAttributes);
   }
 
   _setupSockets() {
     this.io = io({
       query: {
-        meetingId: this.meeting.id
-      }
+        meetingId: this.meeting.id,
+      },
     });
 
-    this.io.on("meetingState", (...args: any) => {
+    this.io.on('meetingState', (...args: any) => {
       console.error(args);
       if (!this.isAdmin) {
         this._processState(args[0] as StateAttributes);
       }
     });
 
-    this.io.on("newComment", (...args: any) => {
+    this.io.on('newComment', (...args: any) => {
       console.error(args);
       this._processNewComment(args[0] as CommentAttributes);
     });
 
-    this.io.on("newAction", (...args: any) => {
+    this.io.on('newAction', (...args: any) => {
       console.error(args);
       this._processNewAction(args[0] as ActionAttributes);
     });
 
-    this.io.on("newIssue", (...args: any) => {
+    this.io.on('newIssue', (...args: any) => {
       console.error(args);
       this._processNewIssue(args[0] as IssueAttributes);
     });
@@ -107,17 +108,11 @@ export class CsMeetingBase extends YpBaseElement {
     //TODO
   }
 
-  _processNewComment(comment: CommentAttributes) {
+  _processNewComment(comment: CommentAttributes) {}
 
-  }
+  _processNewIssue(issue: IssueAttributes) {}
 
-  _processNewIssue(issue: IssueAttributes) {
-
-  }
-
-  _processNewAction(action: ActionAttributes) {
-
-  }
+  _processNewAction(action: ActionAttributes) {}
 
   setStoryIndex(event: CustomEvent) {
     if (this.isAdmin && this.isLive) {
@@ -183,13 +178,14 @@ export class CsMeetingBase extends YpBaseElement {
     this.updateState();
   }
 
-
   renderStory() {
     return html`
       <div class="layout horizontal center-center">
         <cs-story
           id="storyViewer"
           @cs-story-index="${this.setStoryIndex}"
+          ?isLive="${this.isLive}"
+          ?isAdmin="${this.isAdmin}"
         ></cs-story>
       </div>
     `;
@@ -267,7 +263,8 @@ export class CsMeetingBase extends YpBaseElement {
   renderSendEmail() {
     return html`
       <div class="layout horizontal sendEmailContainer">
-        <mwc-textarea hidden
+        <mwc-textarea
+          hidden
           maxLength="20000"
           rows="4"
           id="addParticipantsInput"
@@ -286,8 +283,8 @@ export class CsMeetingBase extends YpBaseElement {
   renderHeader() {
     if (this.isAdmin) {
       return html`
-      <div class="layout horizontal center-center liveButton">
-      <mwc-formfield .label="${this.t('live')}">
+        <div class="layout horizontal center-center liveButton">
+          <mwc-formfield .label="${this.t('live')}">
             <mwc-checkbox
               id="liveRadio"
               @change="${this._liveChanged}"
@@ -297,9 +294,9 @@ export class CsMeetingBase extends YpBaseElement {
             >
             </mwc-checkbox>
           </mwc-formfield>
-        <div class="layout vertical">${this.renderSendEmail()}</div>
-      </div>
-    `;
+          <div class="layout vertical">${this.renderSendEmail()}</div>
+        </div>
+      `;
     } else {
       return nothing;
     }

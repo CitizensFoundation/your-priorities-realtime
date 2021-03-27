@@ -134,6 +134,7 @@ interface IssueAttributes {
   projectId: number;
   type: number;
   state: number;
+  standard: string;
   counterUpVotes: number;
   counterDownVotes: number;
   score: number;
@@ -236,6 +237,16 @@ interface TranslationCacheAttributes {
   id: number;
   indexKey: string;
   content: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+interface RatingAttributes {
+  id: number;
+  value: number;
+  userId: number;
+  roundId: number;
+  issueId: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

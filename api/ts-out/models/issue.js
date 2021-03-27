@@ -29,6 +29,10 @@ const InitIssue = (sequelize) => {
             type: new sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
+        standard: {
+            type: new sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
         type: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,

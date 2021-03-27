@@ -12,6 +12,14 @@ export class CsStoryViewer extends YpBaseElement {
   @property({type: Number})
   _index = 0;
 
+  @property({type: Boolean})
+  isLive = false
+
+  @property({type: Boolean})
+  isAdmin = false
+
+  @property() _panData: { isFinal?: boolean; deltaX?: number } = {};
+
   get index() {
     return this._index;
   }
@@ -20,8 +28,6 @@ export class CsStoryViewer extends YpBaseElement {
     this.children[value].dispatchEvent(new CustomEvent('entered'));
     this._index = value;
   }
-
-  @property() _panData: { isFinal?: boolean; deltaX?: number } = {};
 
   constructor() {
     super();
@@ -35,32 +41,33 @@ export class CsStoryViewer extends YpBaseElement {
   }
 
   update(changedProperties: Map<string | number | symbol, unknown>) {
-    // eslint-disable-next-line prefer-const
-    let { deltaX = 0, isFinal = false } = this._panData;
+    if (!this.isLive || this.isAdmin) {
+      // eslint-disable-next-line prefer-const
+      let { deltaX = 0, isFinal = false } = this._panData;
 
-    // Guard against an infinite loop by looking for index.
-    if (!changedProperties.has('_index') && isFinal) {
-      deltaX > 0 ? this.previous() : this.next();
+      // Guard against an infinite loop by looking for index.
+      if (!changedProperties.has('_index') && isFinal) {
+        deltaX > 0 ? this.previous() : this.next();
+      }
+
+      this.fire('cs-story-index', this.index);
+
+      const width = this.clientWidth;
+      const minScale = 0.8;
+      // We don't want the latent deltaX when releasing a pan.
+      deltaX = isFinal ? 0 : deltaX;
+
+      (Array.from(this.children) as Array<HTMLElement>).forEach((el: HTMLElement, i) => {
+        const x = (i - this.index) * width + deltaX;
+
+        // Piecewise scale(deltaX), looks like: __/\__
+        const u = deltaX / width + (i - this.index);
+        const v = -Math.abs(u * (1 - minScale)) + 1;
+        const scale = Math.max(v, minScale);
+
+        el.style.transform = `translate3d(${x}px,0,0) scale(${scale})`;
+      });
     }
-
-    this.fire('cs-story-index', this.index);
-
-    const width = this.clientWidth;
-    const minScale = 0.8;
-    // We don't want the latent deltaX when releasing a pan.
-    deltaX = isFinal ? 0 : deltaX;
-
-    (Array.from(this.children) as Array<HTMLElement>).forEach((el: HTMLElement, i) => {
-      const x = (i - this.index) * width + deltaX;
-
-      // Piecewise scale(deltaX), looks like: __/\__
-      const u = deltaX / width + (i - this.index);
-      const v = -Math.abs(u * (1 - minScale)) + 1;
-      const scale = Math.max(v, minScale);
-
-      el.style.transform = `translate3d(${x}px,0,0) scale(${scale})`;
-    });
-
     super.update(changedProperties);
   }
 
@@ -70,6 +77,7 @@ export class CsStoryViewer extends YpBaseElement {
 
   /* Advance to the next story card if possible */
   next() {
+    debugger;
     this.index = Math.max(
       0,
       Math.min(this.children.length - 1, this.index + 1)
@@ -138,14 +146,33 @@ export class CsStoryViewer extends YpBaseElement {
  `];
   }
 
+  navClick(index: number) {
+    if (!this.isLive || this.isAdmin) {
+      this.index = index;
+    }
+  }
+
+  navClickPrevious() {
+    if (!this.isLive || this.isAdmin) {
+      this.previous()
+    }
+  }
+
+  navClickNext() {
+    if (!this.isLive || this.isAdmin) {
+      this.next();
+    }
+  }
+
+
   render() {
     return html`
       <slot></slot>
 
-      <svg id="prev" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.previous()}>
+      <svg id="prev" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickPrevious()}>
         <path d="M 6 2 L 4 5 L 6 8" stroke="#fff" fill="none" />
       </svg>
-      <svg id="next" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.next()}>
+      <svg id="next" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickNext()}>
         <path d="M 4 2 L 6 5 L 4 8" stroke="#fff" fill="none" />
       </svg>
 
@@ -153,7 +180,7 @@ export class CsStoryViewer extends YpBaseElement {
         ${Array.from(this.children).map(
           (_, i) => html` <div
             class=${classMap({ watched: i <= this.index })}
-            @click=${() => (this.index = i)}
+            @click=${() => this.navClick(i) }
           ></div>`
         )}
       </div>
