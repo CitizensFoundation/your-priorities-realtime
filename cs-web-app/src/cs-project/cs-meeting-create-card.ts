@@ -506,8 +506,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
                 <div class="commentContent">${comment.content}</div>
                 <mwc-icon
                   class="avatarIcon"
-                  style="color:${this.getRandomColor()}"
-                  >${this.getRandomIcon()}</mwc-icon
+                  style="color:${comment.User?.selectedAvatarColor}"
+                  >${comment.User?.selectedAvatar}</mwc-icon
                 >
                 <div class="layout horizontal self-end">
                   <div class="flex"></div>
@@ -634,8 +634,9 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
     const comment = {
       content: (this.$$('#addCommentInput') as HTMLInputElement).value,
-      userId: 1,
+      userId: window.app.user!.id,
       issueId: issue.id,
+      User: window.app.user!,
       type: 0,
       status: 0,
     } as CommentAttributes;

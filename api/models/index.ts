@@ -101,6 +101,11 @@ models.User.hasMany(models.Role, {
   as: "UserRoles"
 });
 
+models.User.hasMany(models.Comment, {
+  sourceKey: "id",
+  foreignKey: "userId"
+});
+
 // Round
 models.Round.belongsTo(models.Project,  { as: 'Project', foreignKey: 'projectId' });
 
@@ -188,6 +193,7 @@ models.Action.belongsTo(models.ActionPlan,  { as: 'ActionPlan', foreignKey: 'act
 
 models.Comment.belongsTo(models.Issue,  { as: 'Issue', foreignKey: 'issueId' });
 models.Comment.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });
+models.Comment.belongsTo(models.User,  { as: 'User', foreignKey: 'userId' });
 
 // ProgressReport
 models.ProgressReport.belongsTo(models.Action,  { as: 'Action', foreignKey: 'actionId' });

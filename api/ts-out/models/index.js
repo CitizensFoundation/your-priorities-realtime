@@ -84,6 +84,10 @@ exports.models.User.hasMany(exports.models.Role, {
     foreignKey: "userId",
     as: "UserRoles"
 });
+exports.models.User.hasMany(exports.models.Comment, {
+    sourceKey: "id",
+    foreignKey: "userId"
+});
 // Round
 exports.models.Round.belongsTo(exports.models.Project, { as: 'Project', foreignKey: 'projectId' });
 exports.models.Round.hasMany(exports.models.Meeting, {
@@ -151,6 +155,7 @@ exports.models.Action.belongsTo(exports.models.ActionPlan, { as: 'ActionPlan', f
 // Comment
 exports.models.Comment.belongsTo(exports.models.Issue, { as: 'Issue', foreignKey: 'issueId' });
 exports.models.Comment.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
+exports.models.Comment.belongsTo(exports.models.User, { as: 'User', foreignKey: 'userId' });
 // ProgressReport
 exports.models.ProgressReport.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
 // Rating

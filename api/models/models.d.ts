@@ -203,6 +203,7 @@ interface CommentAttributes {
   counterDownVotes: number;
   createdAt?: Date;
   updatedAt?: Date;
+  User?: UserAttributes | null;
   publicData: CommentPublicDataAttributes | null;
   privateData: CommentPrivateDataAttributes | null;
 }

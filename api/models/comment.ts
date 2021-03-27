@@ -13,6 +13,7 @@ import {
 } from "sequelize";
 
 import { Round } from './round';
+import { User } from './user';
 
 interface CommentCreationAttributes extends Optional<CommentAttributes, "id"> {}
 
@@ -37,6 +38,13 @@ export class Comment
   public readonly updatedAt?: Date;
   public readonly staredAt?: Date;
   public readonly completedAt?: Date;
+
+  public User!: User;
+
+  public static associations: {
+    users: Association<Comment, User>
+  };
+
 }
 
 export const InitComment = (sequelize: Sequelize) => {

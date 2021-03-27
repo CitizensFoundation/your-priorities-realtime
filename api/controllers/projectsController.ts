@@ -85,7 +85,14 @@ export class ProjectsController {
         },
         include: [
           {
-            model: (models.Comment as any)
+            model: (models.Comment as any),
+            include: [
+              {
+                model: (models.User as any),
+                as: "User",
+                attributes: ["id","selectedAvatar","selectedAvatarColor"]
+              }
+            ]
           },
           {
             model: (models.Action as any)
@@ -94,6 +101,7 @@ export class ProjectsController {
       }).then(project => {
         res.send(project);
       }).catch( error => {
+        console.error(error);
         res.send(error);
       })
    } else {
@@ -104,12 +112,20 @@ export class ProjectsController {
         },
         include: [
           {
-            model: (models.Comment as any)
+            model: (models.Comment as any),
+            include: [
+              {
+                model: (models.User as any),
+                as: "User",
+                attributes: ["id","selectedAvatar","selectedAvatarColor"]
+              }
+            ]
           }
         ]
       }).then( project => {
         res.send(project);
       }).catch( error => {
+        console.error(error);
         res.send(error);
       })
     }

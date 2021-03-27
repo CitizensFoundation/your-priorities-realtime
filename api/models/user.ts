@@ -16,6 +16,7 @@ import {
 
 import { Role } from './role';
 import { Project } from './project';
+import { Comment } from './comment';
 
 // Some attributes are optional in `User.build` and `User.create` calls
 interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
@@ -45,13 +46,19 @@ export class User
   public getProject!: BelongsToManyGetAssociationsMixin<Project>; // Note the null assertions!
   public addProject!: BelongsToManyAddAssociationMixin<Project, number>;
 
+  public getComment!: HasManyGetAssociationsMixin<Comment>;
+  public addComment!: HasManyAddAssociationMixin<Comment, number>;
+
   public readonly roles?: Role[];
 
   public readonly projects?: Project[];
 
+  public readonly comments?: Comment[];
+
   public static associations: {
     roles: Association<User, Role>,
-    projects: Association<User, Project>;
+    projects: Association<User, Project>,
+    comments: Association<User, Comment>
   };
 }
 
