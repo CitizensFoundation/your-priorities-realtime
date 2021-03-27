@@ -18,12 +18,20 @@ const InitUser = (sequelize) => {
         },
         email: {
             type: new sequelize_1.DataTypes.STRING(256),
-            allowNull: false,
+            allowNull: true,
             unique: true
         },
         language: {
             type: new sequelize_1.DataTypes.STRING(10),
             allowNull: false,
+        },
+        selectedAvatar: {
+            type: new sequelize_1.DataTypes.STRING(256),
+            allowNull: true,
+        },
+        selectedAvatarColor: {
+            type: new sequelize_1.DataTypes.STRING(64),
+            allowNull: true,
         },
         encrypedPassword: {
             type: new sequelize_1.DataTypes.STRING(2048),

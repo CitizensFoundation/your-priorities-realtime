@@ -75,6 +75,9 @@ io.on("connection", (socket) => {
   }
 });
 
+const session = require('express-session')
+let RedisStore = require('connect-redis')(session)
+
 export class App {
   public app: express.Application;
   public port: number;
@@ -94,6 +97,14 @@ export class App {
     this.app.use('/project*', express.static(path.join(__dirname, '/../../cs-web-app/dist')));
     this.app.use('/round*', express.static(path.join(__dirname, '/../../cs-web-app/dist')));
     this.app.use('/meeting*', express.static(path.join(__dirname, '/../../cs-web-app/dist')));
+
+    app.use(
+      session({
+        store: new RedisStore({ client: redisClient }),
+        secret: 'hmm',
+        resave: false,
+      })
+    )
 
     if (process.env.NODE_ENV !== 'development' && !process.env.DISABLE_FORCE_HTTPS) {
       this.app.enable('trust proxy');

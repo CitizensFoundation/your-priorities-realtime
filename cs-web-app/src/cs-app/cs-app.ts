@@ -598,7 +598,17 @@ export class CsApp extends YpBaseElement {
             ></cs-project>
           `);
           break;
-        case 'round':
+        case 'login':
+          pageHtml = html`
+            <cs-login
+              id="login"
+              role="main"
+              aria-label="${this.t('login')}"
+              .subRoute="${this.subRoute}"
+            ></cs-login>
+          `;
+          break;
+          case 'round':
           pageHtml = cache(html`
             <cs-round
               id="project"

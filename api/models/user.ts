@@ -27,6 +27,8 @@ export class User
   public name!: string;
   public email!: string;
   public language?: string | null;
+  public selectedAvatar?: string | null;
+  public selectedAvatarColor?: string | null;
   public encrypedPassword!: string | null;
   public ypUserId?: number;
 
@@ -67,16 +69,24 @@ export const InitUser = (sequelize: Sequelize) => {
       },
       email: {
         type: new DataTypes.STRING(256),
-        allowNull: false,
+        allowNull: true,
         unique: true
       },
       language: {
         type: new DataTypes.STRING(10),
         allowNull: false,
       },
+      selectedAvatar: {
+        type: new DataTypes.STRING(256),
+        allowNull: true,
+      },
+      selectedAvatarColor: {
+        type: new DataTypes.STRING(64),
+        allowNull: true,
+      },
       encrypedPassword: {
         type: new DataTypes.STRING(2048),
-        allowNull: false,
+        allowNull: true,
       },
       ypUserId: {
         type: new DataTypes.INTEGER,

@@ -150,6 +150,26 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public login(userAvatar: string, userAvatarColor: string) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/user/login`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          userAvatar,
+          userAvatarColor
+        }),
+      },
+      false
+    );
+  }
+
+  checkLogin() {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/users/checkLogin`
+    );
+  }
+
   public scoreIssue(issueId: number, value: number) {
     return this.fetchWrapper(
       this.baseUrlPath + `/issues/${issueId}/score`,

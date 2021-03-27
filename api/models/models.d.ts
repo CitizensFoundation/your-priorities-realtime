@@ -4,6 +4,8 @@ interface UserAttributes {
   email: string;
   language?: string | null;
   encrypedPassword: string | null;
+  selectedAvatar?: string | null;
+  selectedAvatarColor?: string | null;
   ypUserId?: number;
   createdAt?: Date;
   updatedAt?: Date;

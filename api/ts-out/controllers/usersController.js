@@ -26,6 +26,8 @@ class UsersController {
     }
     intializeRoutes() {
         this.router.get(this.path + "/:id/loginFromToken", this.loginFromToken);
+        this.router.post(this.path + "/login", this.login);
+        this.router.get(this.path + "/checkLogin", this.checkLogin);
     }
 }
 exports.UsersController = UsersController;

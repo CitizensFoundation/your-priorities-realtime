@@ -605,10 +605,15 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       'memory',
       'texture',
       'ac_unit',
-      'sentiment_very_dissatisfied',
+      'light_mode',
+      'music_note',
+      'emoji_people',
+      'self_improvement',
+      'account_circle'
     ];
-    let number = Math.floor(Math.random() * arr.length - 1);
-    return arr[number];
+    let number = Math.floor(Math.random() * arr.length)+1;
+    console.error( arr[number-1])
+    return arr[number-1];
   }
 
   async addCoreIssueComment(comment: CommentAttributes) {
