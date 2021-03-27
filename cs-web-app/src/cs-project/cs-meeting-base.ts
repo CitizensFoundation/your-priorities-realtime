@@ -27,6 +27,9 @@ export class CsMeetingBase extends YpBaseElement {
   @property({ type: Object })
   meeting!: MeetingAttributes;
 
+  @property({ type: Object })
+  user!: UserAttributes;
+
   @property({ type: Boolean })
   isAdmin = false;
 

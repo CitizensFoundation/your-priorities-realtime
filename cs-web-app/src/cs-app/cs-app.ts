@@ -472,6 +472,10 @@ export class CsApp extends YpBaseElement {
       100% { color: red; }
     }
 
+    .pageContainer {
+      margin-top: 8px;
+    }
+
    `];
   }
 
@@ -585,7 +589,7 @@ export class CsApp extends YpBaseElement {
           ${this.goForwardToPostId ? this.goForwardPostName : this.headerTitle}
         </div>
         ${this.renderActionItems()}
-        <div>
+        <div class="pageContainer">
           ${this.renderPage()}
         </div>
       </mwc-top-app-bar>
@@ -664,6 +668,7 @@ export class CsApp extends YpBaseElement {
             <cs-meeting
               id="meeting"
               role="main"
+              .user="${this.user}"
               aria-label="${this.t('meeting')}"
               .subRoute="${this.subRoute}"
             ></cs-meeting>

@@ -34,7 +34,7 @@ export class CsMeeting extends YpBaseElement {
   meeting: MeetingAttributes | undefined;
 
   @property({ type: Object })
-  loggedInUser: UserAttributes | undefined;
+  user: UserAttributes | undefined;
 
   @property({ type: String })
   loginToken: string | undefined;
@@ -91,35 +91,35 @@ export class CsMeeting extends YpBaseElement {
         case MeetingTypes.TypeOrientation:
           meetingPage = html`<cs-meeting-orientation
             ?isAdmin="${this.isAdmin}"
-            .loggedInUser="${this.loggedInUser} "
+            .user="${this.user!}"
             .meeting="${this.meeting}"
           ></cs-meeting-orientation>`;
           break;
         case MeetingTypes.TypeCreateCard:
           meetingPage = html`<cs-meeting-create-card
             ?isAdmin="${this.isAdmin}"
-            .loggedInUser="${this.loggedInUser}"
+            .user="${this.user!}"
             .meeting="${this.meeting}"
           ></cs-meeting-create-card>`;
           break;
         case MeetingTypes.TypeScoring:
           meetingPage = html`<cs-meeting-scoring
             ?isAdmin="${this.isAdmin}"
-            .loggedInUser="${this.loggedInUser}"
+            .user="${this.user!}"
             .meeting="${this.meeting}"
           ></cs-meeting-scoring>`;
           break;
         case MeetingTypes.TypeActionPlan:
           meetingPage = html`<cs-meeting-action-plan
             ?isAdmin="${this.isAdmin}"
-            .loggedInUser="${this.loggedInUser}"
+            .user="${this.user!}"
             .meeting="${this.meeting}"
           ></cs-meeting-action-plan>`;
           break;
         case MeetingTypes.TypeReporting:
           meetingPage = html`<cs-meeting-reporting
             ?isAdmin="${this.isAdmin}"
-            .loggedInUser="${this.loggedInUser}"
+            .user="${this.user!}"
             .meeting="${this.meeting}"
           ></cs-meeting-reporting>`;
           break;
@@ -137,14 +137,6 @@ export class CsMeeting extends YpBaseElement {
       | MeetingAttributes
       | undefined;
   }
-
-  async _getLoggedInUser() {
-    this.loggedInUser = undefined;
-    this.loggedInUser = (await window.serverApi.getUserFromLoginToken(
-      this.loginToken!
-    )) as UserAttributes | undefined;
-  }
-
   // EVENTS
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
@@ -157,7 +149,6 @@ export class CsMeeting extends YpBaseElement {
 
     if (changedProperties.has('meetingId') && this.meetingId) {
       this._getMeeting();
-      this._getLoggedInUser();
       //this._getCollection();
       //this._getHelpPages();
     }

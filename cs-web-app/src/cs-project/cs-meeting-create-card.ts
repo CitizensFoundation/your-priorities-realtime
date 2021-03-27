@@ -325,6 +325,17 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           padding-top: 0;
         }
 
+        mwc-button {
+          --mdc-theme-primary: #FFF;
+          --mdc-theme-on-primary: #000;
+          --mdc-typography-button-font-size: 16px;
+        }
+
+
+        .buttonIcon {
+          margin-left: 6px;
+          color: var(--cs-avatar-color, #000);
+        }
       `,
     ];
   }
@@ -359,6 +370,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     }
   }
 
+  renderAvatarButtonIcon() {
+    return html`
+      <mwc-icon class="buttonIcon" style="color:${this.user.selectedAvatarColor}">${this.user.selectedAvatar}</mwc-icon>
+    `
+  }
+
   renderCreateLocal() {
     return html`
       <div ?hidden="${this.isAdmin}" class="subjectHeader">
@@ -379,13 +396,15 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           .label="${this.t('yourIssue')}"
         ></mwc-textarea>
         <div class="layout horizontal center-center">
-          <mwc-button
-            raised
-            ?disabled="${!this.currentIssueInput}"
-            class="layout addNewIssueButton"
-            @click="${this.addIssue}"
-            .label="${this.t('addIssue')}"
-          ></mwc-button>
+          ${ this.user ? html`
+            <mwc-button
+              raised
+              ?disabled="${!this.currentIssueInput}"
+              class="layout addNewIssueButton"
+              @click="${this.addIssue}"
+              .label="${this.t('addIssue')}"
+            >${this.renderAvatarButtonIcon()}</mwc-button>
+          ` : nothing }
         </div>
       </div>
 
@@ -494,7 +513,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
             class="layout addNewIssueButton"
             @click="${this.addCoreIssueCommentFromInput}"
             .label="${this.t('addComment')}"
-          ></mwc-button>
+          >${this.renderAvatarButtonIcon()}</mwc-button>
         </div>
       </div>
 
@@ -618,6 +637,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   async addCoreIssueComment(comment: CommentAttributes) {
     const issue = this.coreIssues![this.coreIssueIndex];
+
+    debugger;
 
     issue.Comments!.unshift(comment);
 
