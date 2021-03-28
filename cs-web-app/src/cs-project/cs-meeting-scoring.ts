@@ -223,7 +223,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     }
   }
 
-  renderIssueHtml(
+  renderIssueHtmlOldAndUnused(
     issue: IssueAttributes,
     showVoting: boolean,
     disableVoting: boolean,
@@ -516,6 +516,11 @@ export class CsMeetingScoring extends CsMeetingBase {
       if (this.selectedTab == ScoringTabTypes.Results) {
         this._getAnyParticipantsIssues();
       }
+
+      if (this.selectedTab == ScoringTabTypes.RateIssues) {
+        this.coreIssueIndex = 0;
+      }
+
     }
 
     if (changedProperties.has('allIssues') && this.allIssues) {

@@ -478,6 +478,53 @@ export class CsMeetingBase extends YpBaseElement {
     button.blur();
   }
 
+  renderIssueHtml(
+    issue: IssueAttributes,
+    showVoting: boolean,
+    disableVoting: boolean,
+    showComments: boolean,
+    hideSubmitComment: boolean,
+    hideRating: boolean,
+    addCommentFunction: Function | undefined = undefined,
+    scoreIssueFunction: Function | undefined = undefined,
+    toggleCommentsMode = false
+  ) {
+    return html`
+      <div
+        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
+      >
+        <div class="layout vertical otherContainer">
+          <div class="layout horizontal center-center">
+            <mwc-icon class="bookmarkIcon bookmarkIconStronger">${this.getIconForIssueType(issue)}</mwc-icon>
+          </div>
+
+          <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
+          <div class="issueStandard">${issue.standard}</div>
+          <div class="layout horizontal" ?hidden="${!showVoting}">
+            <div class="layout horizontal center-center ratingContainer">
+              <stars-rating
+                id="emoji"
+                ?hidden="${hideRating}"
+                .rating="${issue.score}"
+                numstars="5"
+                manual
+                @rating-changed="${scoreIssueFunction}"
+              ></stars-rating>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      ${this.renderComments(
+        issue,
+        showComments,
+        disableVoting,
+        addCommentFunction!,
+        this.voteCommentUp,
+        toggleCommentsMode
+      )}`;
+  }
+
   renderComments(
     issue: IssueAttributes,
     showComments: boolean,

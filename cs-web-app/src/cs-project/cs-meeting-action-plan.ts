@@ -418,8 +418,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   renderAction(index: number, showNumbers = false, showVoting = true, disableVoting = false) {
-    let issue: IssueAttributes;
-
     const action = this.actions![index];
 
     return html`
@@ -458,8 +456,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     if (this.actions && this.actions.length > 0) {
       const issue = this.actions[this.actionIssueIndex];
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">${title}</div>
-
         <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
