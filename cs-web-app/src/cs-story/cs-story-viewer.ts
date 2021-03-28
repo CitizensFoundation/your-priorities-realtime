@@ -32,8 +32,14 @@ export class CsStoryViewer extends YpBaseElement {
   constructor() {
     super();
     // Detect pans easily with Hammer.js
-    new Hammer(this).on('pan', e => (this._panData = e));
+    new Hammer(this).on('pan', this.processPanData.bind(this));
     this.index = 0;
+  }
+
+  processPanData(event: any) {
+    if (!this.disableNav) {
+      this._panData = event;
+    }
   }
 
   firstUpdated() {
@@ -141,25 +147,32 @@ export class CsStoryViewer extends YpBaseElement {
     #progress > div.watched {
       background: white;
     }
+    [hidden] {
+      display: none !important;
+    }
  `];
   }
 
   navClick(index: number) {
-    if (!this.isLive || this.isAdmin) {
+    if (!this.disableNav) {
       this.index = index;
     }
   }
 
   navClickPrevious() {
-    if (!this.isLive || this.isAdmin) {
+    if (!this.disableNav) {
       this.previous()
     }
   }
 
   navClickNext() {
-    if (!this.isLive || this.isAdmin) {
+    if (!this.disableNav) {
       this.next();
     }
+  }
+
+  get disableNav() {
+    return (this.isLive && !this.isAdmin);
   }
 
 
@@ -167,14 +180,14 @@ export class CsStoryViewer extends YpBaseElement {
     return html`
       <slot></slot>
 
-      <svg id="prev" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickPrevious()}>
+      <svg ?hidden="${this.disableNav}" id="prev" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickPrevious()}>
         <path d="M 6 2 L 4 5 L 6 8" stroke="#fff" fill="none" />
       </svg>
-      <svg id="next" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickNext()}>
+      <svg ?hidden="${this.disableNav}" id="next" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickNext()}>
         <path d="M 4 2 L 6 5 L 4 8" stroke="#fff" fill="none" />
       </svg>
 
-      <div id="progress">
+      <div id="progress" ?hidden="${this.disableNav}">
         ${Array.from(this.children).map(
           (_, i) => html` <div
             class=${classMap({ watched: i <= this.index })}

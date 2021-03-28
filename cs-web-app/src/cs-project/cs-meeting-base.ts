@@ -465,6 +465,10 @@ export class CsMeetingBase extends YpBaseElement {
         .sliderContainer {
           align-items: flex-start !important;
         }
+
+        mwc-textarea {
+          --mdc-shape-small: 32px 32px;
+        }
       `,
     ];
   }
