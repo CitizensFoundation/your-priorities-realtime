@@ -556,7 +556,11 @@ export class CsMeetingScoring extends CsMeetingBase {
 
     if (ratings && this.allIssuesHash) {
       for (let i=0;i<ratings.length;i++)  {
-        this.allIssuesHash[ratings[i].id].score = parseFloat((ratings[i] as any).avgRating);
+        if (this.allIssuesHash[ratings[i].id]) {
+          this.allIssuesHash[ratings[i].id].score = parseFloat((ratings[i] as any).avgRating);
+        } else {
+          console.error("Can't find ratings index: ")
+        }
       }
     }
 
