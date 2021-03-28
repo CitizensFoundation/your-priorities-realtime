@@ -247,6 +247,7 @@ export class CsMeetingBase extends YpBaseElement {
 
         .issueVoting {
           width: 48px;
+          vertical-align: top;
         }
 
         .issue {
@@ -572,13 +573,13 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   renderAvatarButtonIcon() {
-    return html`
+    return this.user ? html`
       <mwc-icon
         class="buttonIcon"
         style="color:${this.user.selectedAvatarColor}"
         >${this.user.selectedAvatar}</mwc-icon
       >
-    `;
+    ` : nothing;
   }
 
   sendEmail() {}
