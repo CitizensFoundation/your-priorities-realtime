@@ -93,6 +93,9 @@ export class IssuesController {
     req: express.Request,
     res: express.Response
   ) => {
+    console.error(JSON.stringify(req.body));
+        // @ts-ignore
+    console.error(JSON.stringify(req.session.user));
     // @ts-ignore
     if (req.session.user) {
       try {
@@ -113,9 +116,13 @@ export class IssuesController {
             userId: req.session.user.id,
             value: req.body.value
           })
+          console.error("NEW RATING");
+          console.error(JSON.stringify(rating));
         } else {
           rating.value = req.body.value
           await rating.save();
+          console.error("UPDATED RATING");
+          console.error(JSON.stringify(rating));
         }
         res.sendStatus(200);
       } catch(error) {
@@ -123,6 +130,7 @@ export class IssuesController {
         res.send(error);
       }
     } else {
+      console.error("ERROR: 404 on rate")
       res.sendStatus(401);
     }
   }

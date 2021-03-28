@@ -75,6 +75,9 @@ class IssuesController {
             }
         };
         this.rate = async (req, res) => {
+            console.error(JSON.stringify(req.body));
+            // @ts-ignore
+            console.error(JSON.stringify(req.session.user));
             // @ts-ignore
             if (req.session.user) {
                 try {
@@ -94,10 +97,14 @@ class IssuesController {
                             userId: req.session.user.id,
                             value: req.body.value
                         });
+                        console.error("NEW RATING");
+                        console.error(JSON.stringify(rating));
                     }
                     else {
                         rating.value = req.body.value;
                         await rating.save();
+                        console.error("UPDATED RATING");
+                        console.error(JSON.stringify(rating));
                     }
                     res.sendStatus(200);
                 }
@@ -107,6 +114,7 @@ class IssuesController {
                 }
             }
             else {
+                console.error("ERROR: 404 on rate");
                 res.sendStatus(401);
             }
         };

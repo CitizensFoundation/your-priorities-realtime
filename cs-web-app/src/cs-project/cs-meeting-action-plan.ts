@@ -53,6 +53,12 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   @property({ type: Boolean })
   onlyShowSelected = false;
 
+
+  @property({ type: String })
+  currentAssignmentInput: string | undefined;
+
+
+
   constructor() {
     super();
   }
@@ -75,6 +81,37 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
     if (this.allIssues) {
       this._getRatings();
+    }
+  }
+
+
+  async saveAssignment() {
+    const element = this.$$('#addActionInput') as HTMLInputElement;
+    const issue = this.orderedAllIssues![this.coreIssueIndex];
+
+    if (element && element.value && element.value.length > 0) {
+      const action = {
+        description: (this.$$('#addAssignInput') as HTMLInputElement).value,
+        userId: 1,
+        counterDownVotes: 0,
+        counterUpVotes: 0,
+        state: 0,
+        completedPercent: 0,
+        selected: false,
+        completeBy: null,
+        issueId: issue.id,
+        projectId: this.meeting.Round!.projectId,
+      } as ActionAttributes;
+
+      await window.serverApi.postAction(issue.id, action);
+
+      issue!.Actions!.unshift(action);
+
+      this.allIssues = [...this.allIssues!];
+
+      this.io.emit('newAction', action);
+
+      (this.$$('#addActionInput') as HTMLInputElement).value = '';
     }
   }
 
@@ -231,6 +268,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
         .buttonContainer {
           color: #000;
+          padding-right: 8px;
         }
 
         .lessActionPadding {
@@ -436,12 +474,19 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     ) as HTMLInputElement).value;
   }
 
+  setAssignmentInput() {
+    this.currentAssignmentInput = (this.$$(
+      '#addAssignmentInput'
+    ) as HTMLInputElement).value;
+  }
+
   renderAction(
     index: number,
     showNumbers = false,
     showVoting = true,
     disableVoting = false,
-    showSelectionCheckbox = false
+    showSelectionCheckbox = false,
+    showAssignment = false
   ) {
     const action = this.actions![index];
 
@@ -451,6 +496,30 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           <div class="actionText">${this.t('action')}</div>
         </div>
         <div class="actionDescription">${action.description}</div>
+        ${showAssignment
+          ? html`
+              <mwc-textarea
+                id="addAssignmentInput"
+                charCounter
+                outlined
+                rows="3"
+                @keyup="${this.setAssignmentInput}"
+                class="addActionInput"
+                maxLength="200"
+                .label="${this.t('taskIsAssignedTo')}"
+              ></mwc-textarea>
+              <div class="layout horizontal center-center">
+                <mwc-button
+                  raised
+                  ?disabled="${!this.currentAssignmentInput}"
+                  class="layout addNewIssueButton"
+                  @click="${this.saveAssignment}"
+                  .label="${this.t('save')}"
+                  >${this.renderAvatarButtonIcon()}</mwc-button
+                >
+              </div>
+            `
+          : nothing}
         <div class="layout horizontal center-center buttonContainer">
           <mwc-checkbox
             ?hidden="${!this.isAdmin || !showSelectionCheckbox}"
@@ -596,7 +665,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     }
   }
 
-
   renderAssign() {
     if (this.actions && this.actions.length > 0) {
       return html`
@@ -610,7 +678,14 @@ export class CsMeetingActionPlan extends CsMeetingBase {
             ></mwc-icon-button>
           </div>
           <div class="layout vertical center-center">
-            ${this.renderAction(this.actionIssueIndex)}
+            ${this.renderAction(
+              this.actionIssueIndex,
+              false,
+              false,
+              true,
+              false,
+              true
+            )}
           </div>
           <div class="issueBack issueVoting">
             <mwc-icon-button
@@ -738,7 +813,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         }
       }
       if (this.onlyShowSelected) {
-        allActions = allActions.filter( action => action.selected==true);
+        allActions = allActions.filter(action => action.selected == true);
       }
 
       this.actions = [...allActions];
@@ -779,7 +854,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         this._getAllIssues();
       }
 
-      if (this.selectedTab==ActionPlanTabTypes.AssignActions) {
+      if (this.selectedTab == ActionPlanTabTypes.AssignActions) {
         this.actionIssueIndex = 0;
       }
     }

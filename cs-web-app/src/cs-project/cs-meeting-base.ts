@@ -461,6 +461,10 @@ export class CsMeetingBase extends YpBaseElement {
           cursor: pointer;
           margin-bottom: 2px;
         }
+
+        .sliderContainer {
+          align-items: flex-start !important;
+        }
       `,
     ];
   }
