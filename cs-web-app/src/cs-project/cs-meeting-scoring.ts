@@ -22,7 +22,6 @@ import { CsStory } from '../cs-story/cs-story.js';
 import { TextArea } from '@material/mwc-textarea';
 import { Snackbar } from '@material/mwc-snackbar';
 
-import { sortBy } from 'lodash-es';
 
 export const ScoringTabTypes: Record<string, number> = {
   Information: 0,
@@ -50,7 +49,7 @@ export class CsMeetingScoring extends CsMeetingBase {
   allIssues: Array<IssueAttributes> | undefined;
 
   @property({ type: Array })
-  orderedParticipantsIssues: Array<IssueAttributes> | undefined;
+  orderedAllIssues: Array<IssueAttributes> | undefined;
 
   @property({ type: Object })
   allIssuesHash: Record<number,IssueAttributes> = {};
@@ -422,14 +421,14 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   renderResults() {
-    if (this.allIssues && this.allIssues.length > 0) {
+    if (this.orderedAllIssues && this.orderedAllIssues.length > 0) {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">
           ${this.t('review')}
         </div>
 
         <div class="layout vertical center-center">
-          ${this.allIssues.map((issue, index) => {
+          ${this.orderedAllIssues.map((issue, index) => {
             return html`${this.renderIssue(index)}`;
           })}
         </div>
@@ -539,6 +538,14 @@ export class CsMeetingScoring extends CsMeetingBase {
     ) {
       this.allIssues = this.coreIssues.concat(this.participantsIssues);
       this._getRatings();
+    }
+
+
+    if (
+      changedProperties.has('allIssues') &&
+      this.allIssues
+    ) {
+      this.orderedAllIssues = this.allIssues.sort(function(a, b){return a.score - b.score});
     }
   }
 
