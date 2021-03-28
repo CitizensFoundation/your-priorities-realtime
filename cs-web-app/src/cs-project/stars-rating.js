@@ -24,7 +24,7 @@ class StarsRating extends LitElement {
         type: Number,
         value: 0
       },
-      setRating: {
+      userRating: {
         type: Number,
         value: 0
       },
@@ -128,16 +128,18 @@ class StarsRating extends LitElement {
     if (changedProperties.get('manual') !== this.manual) {
       this._manualChanged();
     }
-    if (changedProperties.get('setRating') && this.setRating!=undefined) {
-      this.rating = this.setRating;
-    }
+
     if (changedProperties.get('rating') !==  this.rating && this.rating!=this.setRating) {
       this._ratingChange();
-    } else if (this.rating==this.setRating) {
-      //his.setRating = undefined;
     }
 
-    console.error(`rating: ${this.rating} setRating: ${this.setRating}`)
+    debugger;
+
+    if (changedProperties.has('userRating') && this.userRating) {
+      this.dispatchEvent(new CustomEvent('rating-changed', { detail: this.userRating }));
+    }
+
+    console.error(`rating: ${this.rating} userRating: ${this.userRating}`)
   }
 
   _updateNumstars() {
@@ -154,7 +156,6 @@ class StarsRating extends LitElement {
     } else if (this.rating > this.numstars) {
       this.rating = this.numstars;
     }
-    this.dispatchEvent(new CustomEvent('rating-changed', { detail: this.rating }));
   }
 
   reset() {
@@ -172,6 +173,7 @@ class StarsRating extends LitElement {
   _rate(ev) {
     if (ev.target.nodeName === 'INPUT') {
       this.rating = parseInt(ev.target.value) + 1;
+      this.userRating = this.rating;
     }
   }
 

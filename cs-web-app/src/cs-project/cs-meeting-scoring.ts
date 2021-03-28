@@ -215,8 +215,13 @@ export class CsMeetingScoring extends CsMeetingBase {
 
   async _rateIssue(event: CustomEvent) {
     const issue = this.allIssues![this.coreIssueIndex];
-    //TODO: Fix
-    await window.serverApi.rateIssue(issue.id, this.meeting.roundId, (event.currentTarget as any).rating);
+    const rating = event.detail;
+
+    if (rating!=undefined) {
+      await window.serverApi.rateIssue(issue.id, this.meeting.roundId, (event.currentTarget as any).rating);
+    } else {
+      console.error("No rating found from target")
+    }
   }
 
   renderIssueHtml(
@@ -246,7 +251,7 @@ export class CsMeetingScoring extends CsMeetingBase {
               <stars-rating
                 id="emoji"
                 ?hidden="${hideRating}"
-                .setRating="${issue.score}"
+                .rating="${issue.score}"
                 numstars="5"
                 manual
                 @rating-changed="${scoreIssueFunction}"
