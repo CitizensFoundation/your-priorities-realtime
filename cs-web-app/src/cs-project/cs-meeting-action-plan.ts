@@ -133,44 +133,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           font-size: 24px;
         }
 
-        .issueCard {
-          background-color: var(--mdc-theme-surface);
-          margin: 8px;
-          width: 260px;
-          max-width: 260px;
-        }
-
-        .voteButton {
-          padding-bottom: 8px;
-          padding-top: 0;
-        }
-
-        .issueName {
-          padding: 16px;
-        }
-
-        .addCommentInput {
-          width: 260px;
-        }
-
         .addActionInput {
           width: 260px;
-        }
-
-        .issueVoting {
-          width: 48px;
-        }
-
-        .comments {
-          margin-top: 16px;
-        }
-
-        .comment {
-          margin-top: 16px;
-          padding: 16px;
-          width: 228px;
-          max-width: 2228px;
-          background-color: #f7f7f7;
         }
 
         .action {
@@ -192,8 +156,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
         #emoji,
         #emojiLarge {
-          --start-unicoder: '❤️';
-          --start-unicode: '🙂';
           --star-size: 0.9em;
           cursor: pointer;
           padding: 8px;
@@ -395,9 +357,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     if (this.allIssues && this.allIssues.length > 0) {
       const issue = this.allIssues[this.coreIssueIndex];
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">${title}</div>
-
-        <div class="layout horizontal center-center self-start">
+        <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.coreIssueIndex === 0}"
@@ -466,7 +426,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       <div
         class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
       >
-        <div class="layout vertical">
+        <div class="layout vertical sliderContainer">
           <div class="issueName"></div>${action.description}</div>
           <div class="layout horizontal">
             <mwc-icon-button
@@ -500,7 +460,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       return html`
         <div ?hidden="${this.isAdmin}" class="subjectHeader">${title}</div>
 
-        <div class="layout horizontal center-center self-start">
+        <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.actionIssueIndex === 0}"
@@ -531,10 +491,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   renderReviewScores() {
     if (this.allIssues && this.allIssues.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${this.t('review')}
-        </div>
-
         <div class="layout vertical center-center">
           ${this.allIssues.map((issue, index) => {
             return html`${this.renderIssue(index)}`;
@@ -549,10 +505,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   renderResults() {
     if (this.actions && this.actions.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${this.t('review')}
-        </div>
-
         <div class="layout vertical center-center">
           ${this.sortedActions!.map((issue, index) => {
             return html`${this.renderAction(index, true, true, true)}`;
@@ -567,11 +519,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   renderVoting() {
     if (this.actions && this.actions.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${this.t('voting')}
-        </div>
-
-        <div class="layout horizontal center-center self-start">
+        <div class="layout horizontal center-center sliderContainert">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.actionIssueIndex === 0}"
@@ -601,10 +549,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   renderReview() {
     if (this.allIssues && this.allIssues!.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${this.t('review')}
-        </div>
-
         <div class="layout vertical center-center">
            ${ this.allIssues.map( (issue, index) => {
               return html`${this.renderIssue(index, true)}`
@@ -617,47 +561,49 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   renderTabs() {
-    if (this.isAdmin) {
-      return html`
-        <div class="layout vertical center-center">
-          <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
-            <mwc-tab
-              .label="${this.t('information')}"
-              icon="info_outlined"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('reviewScorecard')}"
-              icon="format_list_numbered"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('createActionPlan')}"
-              icon="create"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('voting')}"
-              icon="how_to_vote"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('assign')}"
-              icon="assignment_outline"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('review')}"
-              icon="checklist"
-              stacked
-            ></mwc-tab>
-          </mwc-tab-bar>
-        </div>
-      `;
-    } else {
-      return nothing;
-    }
-  }
+    return html`
+    <div class="layout vertical center-center">
+      <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
+        <mwc-tab
+          ?hidden="${!this.isAdmin}"
+          .label="${this.t('information')}"
+          icon="info_outlined"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=1}"
+          .label="${this.t('reviewScorecard')}"
+          icon="format_list_numbered"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=2}"
+          .label="${this.t('createActionPlan')}"
+          icon="create"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=3}"
+          .label="${this.t('voting')}"
+          icon="how_to_vote"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=4}"
+          .label="${this.t('assign')}"
+          icon="assignment_outline"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=5}"
+          .label="${this.t('review')}"
+          icon="checklist"
+          stacked
+        ></mwc-tab>
+      </mwc-tab-bar>
+    </div>
+  `;
+}
 
   renderCurrentTabPage(): TemplateResult | undefined {
     let page: TemplateResult | undefined;

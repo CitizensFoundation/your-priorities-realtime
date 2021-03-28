@@ -133,10 +133,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin: 32px;
           font-size: 24px;
         }
-
-        .votingContainer {
-          align-items: flex-start !important;
-        }
       `,
     ];
   }
@@ -460,7 +456,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   renderReviewCoreIssues() {
     if (this.coreIssues && this.coreIssues.length > 0) {
       return html`
-        <div class="layout horizontal center-center votingContainer">
+        <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.coreIssueIndex === 0}"
@@ -490,7 +486,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
   renderVoting() {
     if (this.participantsIssues && this.participantsIssues.length > 0) {
       return html`
-        <div class="layout horizontal center-center votingContainer">
+        <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting layout horizontal">
             <mwc-icon-button
               ?hidden="${this.votingIssueIndex === 0}"

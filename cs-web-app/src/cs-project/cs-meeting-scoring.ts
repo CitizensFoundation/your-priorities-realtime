@@ -377,7 +377,7 @@ export class CsMeetingScoring extends CsMeetingBase {
   renderIssues(title: string, hideRating = false) {
     if (this.allIssues && this.allIssues.length > 0) {
       return html`
-        <div class="layout horizontal center-center self-start">
+        <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.coreIssueIndex === 0}"

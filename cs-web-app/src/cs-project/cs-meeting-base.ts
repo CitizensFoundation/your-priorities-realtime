@@ -211,6 +211,10 @@ export class CsMeetingBase extends YpBaseElement {
           margin-bottom: 24px;
         }
 
+        .sliderContainer {
+          align-items: flex-start !important;
+        }
+
         .issueCardNotUsed {
           background-color: #fefefe;
           background: #fefefe;
