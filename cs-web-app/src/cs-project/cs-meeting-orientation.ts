@@ -80,6 +80,7 @@ export class CsMeetingOrientation extends CsMeetingBase {
       <div class="layout vertical center-center">
         <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
           <mwc-tab
+            ?hidden="${!this.isAdmin}"
             .label="${this.t('orientation')}"
             icon="format_list_numbered"
             stacked

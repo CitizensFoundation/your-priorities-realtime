@@ -134,9 +134,8 @@ export class CsLogin extends YpBaseElement {
           margin-right: 16px;
         }
 
-
         .loginInfo {
-          font-size: 18px;
+          font-size: 16px;
           padding-bottom: 8px;
         }
 
@@ -157,7 +156,7 @@ export class CsLogin extends YpBaseElement {
         }
 
         .avatarColorText {
-          padding-top: 26px;
+          padding-top: 28px;
         }
 
         .buttonIcon {
@@ -169,13 +168,13 @@ export class CsLogin extends YpBaseElement {
           background-color: #fff;
           height: 100%;
           width: 720px;
-          padding-bottom: 28px;
+          padding-bottom: 30px;
           margin-top: 16px;
         }
 
         .loginButton {
           width: 175px;
-          margin-top: 32px;
+          margin-top: 38px;
         }
 
         .chooseAvatarText {
@@ -188,10 +187,18 @@ export class CsLogin extends YpBaseElement {
         }
 
         .mainTitle {
-          margin-top: 32px;
-          font-size: 26px;
-          margin-bottom: 32px;
+          margin-top:16px;
+          font-size: 28px;
+          color: #fff;
+          background-color: #000;
 
+        }
+
+        .mainTitleContainer {
+          color: #fff;
+          padding-bottom: 16px;
+          margin-bottom: 42px;
+          background-color: #000;
         }
       `,
     ];
@@ -239,7 +246,7 @@ export class CsLogin extends YpBaseElement {
         <div
           class="layout vertical wrap shadow-elevation-2dp shadow-transition container"
         >
-          <div class="layout horizontal center-center">
+          <div class="layout horizontal center-center mainTitleContainer">
             <div class="mainTitle">${this.t('welcomeToTheCommunityScoreCardApp')}</div>
           </div>
           <div class="layout horizontal center-center wrap">
