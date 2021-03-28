@@ -463,7 +463,7 @@ export class CsApp extends YpBaseElement {
     }
 
     .liveInfoText[is-live], .liveIcon {
-      animation: color-change 5s infinite;
+      animation: color-change 20s infinite;
     }
 
     @keyframes color-change {

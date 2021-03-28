@@ -526,7 +526,8 @@ export class CsMeetingBase extends YpBaseElement {
         disableVoting,
         addCommentFunction!,
         this.voteCommentUp,
-        toggleCommentsMode
+        toggleCommentsMode,
+        hideSubmitComment
       )}`;
   }
 
@@ -536,12 +537,13 @@ export class CsMeetingBase extends YpBaseElement {
     disableVoting: boolean,
     addCoreIssueCommentFromInput: Function,
     voteCommentDown: Function,
-    toggleCommentMode = false
+    toggleCommentMode = false,
+    hideSubmitComment = false
   ) {
     if (showComments) {
       return html`
 
-        ${toggleCommentMode ? html`
+        ${(toggleCommentMode && !(hideSubmitComment && issue.Comments?.length===0)) ? html`
           <div class="layout horizontal">
             <div class="commentsOpenClose">${this.t('toggleComments')}</div>
             <mwc-icon-button icon="keyboard_arrow_right" class="commentToggleIcons"
@@ -557,6 +559,7 @@ export class CsMeetingBase extends YpBaseElement {
         >
           <mwc-textarea
             id="addCommentInput"
+            ?hidden="${hideSubmitComment}"
             charCounter
             class="addCommentInput"
             maxLength="300"
@@ -566,7 +569,7 @@ export class CsMeetingBase extends YpBaseElement {
             id="coreIssueInput"
             .label="${this.t('yourComment')}"
           ></mwc-textarea>
-          <div class="layout horizontal center-center">
+          <div class="layout horizontal center-center" ?hidden="${hideSubmitComment}">
             <mwc-button
               raised
               ?disabled="${!this.currentCommentInput}"

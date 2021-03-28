@@ -260,7 +260,8 @@ export class CsMeetingScoring extends CsMeetingBase {
     }
 
     if (this.selectedTab == ScoringTabTypes.Results) {
-      showComments = false;
+      toggleCommentsMode = true;
+      hideSubmitComment = true;
     }
 
     return this.renderIssueHtml(
