@@ -167,13 +167,18 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           );
           color: #fff;
           padding: 10px;
-          width: 290px;
+          width: 285px;
           position: relative;
           min-height: 100px;
           box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
             0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
           margin-bottom: 8px;
         }
+
+        .votingNumber {
+          margin-top: 0px;
+        }
+
 
         .actionDescription {
           color: #000;
@@ -419,7 +424,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     const action = this.actions![index];
 
     return html`
-      <div class="action">
+      <div class="action lessActionPadding">
         <div class="layout horizontal actionHeader center-center">
           <mwc-icon class="actionIcons">directions_run</mwc-icon>
         </div>
