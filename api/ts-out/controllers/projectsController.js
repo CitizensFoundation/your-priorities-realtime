@@ -64,6 +64,64 @@ class ProjectsController {
                 res.send(error);
             });
         };
+        this.getSelectedIssues = async (req, res) => {
+            //TODO: DRY this up
+            console.error(req.params.issueType);
+            if (req.params.issueType == -1) {
+                models_1.models.Issue.findAll({
+                    where: {
+                        projectId: req.params.id,
+                        selected: true
+                    },
+                    include: [
+                        {
+                            model: models_1.models.Comment,
+                            include: [
+                                {
+                                    model: models_1.models.User,
+                                    as: "User",
+                                    attributes: ["id", "selectedAvatar", "selectedAvatarColor"]
+                                }
+                            ]
+                        },
+                        {
+                            model: models_1.models.Action
+                        }
+                    ]
+                }).then(project => {
+                    res.send(project);
+                }).catch(error => {
+                    console.error(error);
+                    res.send(error);
+                });
+            }
+            else {
+                models_1.models.Issue.findAll({
+                    where: {
+                        projectId: req.params.id,
+                        type: req.params.issueType != "-1" ? req.params.issueType : undefined,
+                        selected: true
+                    },
+                    include: [
+                        {
+                            model: models_1.models.Comment,
+                            include: [
+                                {
+                                    model: models_1.models.User,
+                                    as: "User",
+                                    attributes: ["id", "selectedAvatar", "selectedAvatarColor"]
+                                }
+                            ]
+                        }
+                    ]
+                }).then(project => {
+                    res.send(project);
+                }).catch(error => {
+                    console.error(error);
+                    res.send(error);
+                });
+            }
+        };
         this.getIssues = async (req, res) => {
             console.error(req.params.issueType);
             if (req.params.issueType == -1) {
@@ -157,6 +215,7 @@ class ProjectsController {
         this.router.get(this.path + "/:id", this.getProject);
         this.router.get(this.path + "/:id/participants", this.getParticipants);
         this.router.get(this.path + "/:id/issues/:issueType", this.getIssues);
+        this.router.get(this.path + "/:id/selectedIssues/:issueType", this.getSelectedIssues);
         this.router.get(this.path + "/:id/getRatings", this.getRatings);
     }
 }

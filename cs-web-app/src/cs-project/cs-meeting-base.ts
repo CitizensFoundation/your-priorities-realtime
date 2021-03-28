@@ -211,6 +211,10 @@ export class CsMeetingBase extends YpBaseElement {
           margin-bottom: 24px;
         }
 
+        .issueCard[comments-hidden] {
+          margin-bottom: 16px;
+        }
+
         .sliderContainer {
           align-items: flex-start !important;
         }
@@ -492,6 +496,7 @@ export class CsMeetingBase extends YpBaseElement {
     return html`
       <div
         class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
+        ?comments-hidden="${!showComments}"
       >
         <div class="layout vertical otherContainer">
           <div class="layout horizontal center-center">

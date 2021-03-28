@@ -82,8 +82,8 @@ export class CsMeetingScoring extends CsMeetingBase {
 
   async _getParticipantsIssues(issueType: number) {
     this.participantsIssues = undefined;
-    this.participantsIssues = (await window.serverApi.getIssues(
-      1 /*this.meeting.Round.projectId*/,
+    this.participantsIssues = (await window.serverApi.getSelectedIssues(
+      this.meeting.Round!.projectId,
       issueType
     )) as Array<IssueAttributes> | undefined;
   }
@@ -223,54 +223,6 @@ export class CsMeetingScoring extends CsMeetingBase {
     }
   }
 
-  renderIssueHtmlOldAndUnused(
-    issue: IssueAttributes,
-    showVoting: boolean,
-    disableVoting: boolean,
-    showComments: boolean,
-    hideSubmitComment: boolean,
-    hideRating: boolean,
-    addCommentFunction: Function | undefined = undefined,
-    scoreIssueFunction: Function | undefined = undefined,
-    toggleCommentsMode = false
-  ) {
-    return html`
-      <div
-        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
-      >
-        <div class="layout vertical otherContainer">
-          <div class="layout horizontal center-center">
-            <mwc-icon class="bookmarkIcon bookmarkIconStronger">${this.getIconForIssueType(issue)}</mwc-icon>
-          </div>
-
-          <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
-          <div class="issueStandard">${issue.standard}</div>
-          <div class="layout horizontal" ?hidden="${!showVoting}">
-            <div class="layout horizontal center-center ratingContainer">
-              <stars-rating
-                id="emoji"
-                ?hidden="${hideRating}"
-                .rating="${issue.score}"
-                numstars="5"
-                manual
-                @rating-changed="${scoreIssueFunction}"
-              ></stars-rating>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      ${this.renderComments(
-        issue,
-        showComments,
-        disableVoting,
-        this.addCoreIssueCommentFromInput,
-        this.voteCommentUp,
-        toggleCommentsMode
-      )}`;
-  }
-
-
   async voteIssueDown() {
     const issue = this.allIssues![this.coreIssueIndex];
 
@@ -308,7 +260,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     }
 
     if (this.selectedTab == ScoringTabTypes.Results) {
-      toggleCommentsMode = true;
+      showComments = false;
     }
 
     return this.renderIssueHtml(

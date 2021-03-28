@@ -16,6 +16,7 @@ export class ProjectsController {
     this.router.get(this.path+"/:id", this.getProject);
     this.router.get(this.path+"/:id/participants", this.getParticipants);
     this.router.get(this.path+"/:id/issues/:issueType", this.getIssues);
+    this.router.get(this.path+"/:id/selectedIssues/:issueType", this.getSelectedIssues);
     this.router.get(this.path+"/:id/getRatings", this.getRatings);
   }
 
@@ -98,6 +99,67 @@ export class ProjectsController {
       console.error(error);
       res.send(error);
     })
+  }
+
+  getSelectedIssues = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    //TODO: DRY this up
+    console.error(req.params.issueType)
+    if ((req.params.issueType as unknown as number) == -1) {
+      models.Issue.findAll({
+        where: {
+          projectId: req.params.id,
+          selected: true
+        },
+        include: [
+          {
+            model: (models.Comment as any),
+            include: [
+              {
+                model: (models.User as any),
+                as: "User",
+                attributes: ["id","selectedAvatar","selectedAvatarColor"]
+              }
+            ]
+          },
+          {
+            model: (models.Action as any)
+          }
+        ]
+      }).then(project => {
+        res.send(project);
+      }).catch( error => {
+        console.error(error);
+        res.send(error);
+      })
+   } else {
+      models.Issue.findAll({
+        where: {
+          projectId: req.params.id,
+          type: req.params.issueType!="-1" ? req.params.issueType : undefined,
+          selected: true
+        },
+        include: [
+          {
+            model: (models.Comment as any),
+            include: [
+              {
+                model: (models.User as any),
+                as: "User",
+                attributes: ["id","selectedAvatar","selectedAvatarColor"]
+              }
+            ]
+          }
+        ]
+      }).then( project => {
+        res.send(project);
+      }).catch( error => {
+        console.error(error);
+        res.send(error);
+      })
+    }
   }
 
   getIssues = async (
