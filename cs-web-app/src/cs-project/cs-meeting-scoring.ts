@@ -307,6 +307,10 @@ export class CsMeetingScoring extends CsMeetingBase {
       toggleCommentsMode = true;
     }
 
+    if (this.selectedTab == ScoringTabTypes.Results) {
+      toggleCommentsMode = true;
+    }
+
     return this.renderIssueHtml(
       issue,
       showVoting,
@@ -373,8 +377,6 @@ export class CsMeetingScoring extends CsMeetingBase {
   renderIssues(title: string, hideRating = false) {
     if (this.allIssues && this.allIssues.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">${title}</div>
-
         <div class="layout horizontal center-center self-start">
           <div class="issueBack issueVoting">
             <mwc-icon-button
@@ -405,10 +407,6 @@ export class CsMeetingScoring extends CsMeetingBase {
   renderReviewScoreCard() {
     if (this.allIssues && this.allIssues.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${this.t('review')}
-        </div>
-
         <div class="layout vertical center-center">
           ${this.allIssues.map((issue, index) => {
             return html`${this.renderIssue(index, true)}`;
@@ -423,10 +421,6 @@ export class CsMeetingScoring extends CsMeetingBase {
   renderResults() {
     if (this.orderedAllIssues && this.orderedAllIssues.length > 0) {
       return html`
-        <div ?hidden="${this.isAdmin}" class="subjectHeader">
-          ${this.t('review')}
-        </div>
-
         <div class="layout vertical center-center">
           ${this.orderedAllIssues.map((issue, index) => {
             return html`${this.renderIssue(index)}`;
@@ -439,46 +433,47 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   renderTabs() {
-    if (this.isAdmin) {
-      return html`
-        <div class="layout vertical center-center">
-          <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
-            <mwc-tab
-              .label="${this.t('information')}"
-              icon="info_outlined"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('reviewScorecard')}"
-              icon="format_list_numbered"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.meeting.forUsers
-                ? this.t('viewIssues')
-                : this.t('viewIssues')}"
-              icon="how_to_vote"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.meeting.forUsers
-                ? this.t('scoreIssues')
-                : this.t('scoreIssues')}"
-              icon="rate_review_outline"
-              stacked
-            ></mwc-tab>
-            <mwc-tab
-              .label="${this.t('results')}"
-              icon="checklist"
-              stacked
-            ></mwc-tab>
-          </mwc-tab-bar>
-        </div>
-      `;
-    } else {
-      return nothing;
-    }
-  }
+    return html`
+      <div class="layout vertical center-center">
+        <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
+        <mwc-tab
+          ?hidden="${!this.isAdmin}"
+          .label="${this.t('information')}"
+          icon="info_outlined"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=1}"
+          .label="${this.t('reviewScorecard')}"
+          icon="format_list_numbered"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=2}"
+          .label="${this.meeting.forUsers
+            ? this.t('viewIssues')
+            : this.t('viewIssues')}"
+          icon="how_to_vote"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=3}"
+          .label="${this.meeting.forUsers
+            ? this.t('scoreIssues')
+            : this.t('scoreIssues')}"
+          icon="rate_review_outline"
+          stacked
+        ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=4}"
+          .label="${this.t('results')}"
+          icon="checklist"
+          stacked
+        ></mwc-tab>
+      </mwc-tab-bar>
+    </div>
+  `;
+}
 
   renderCurrentTabPage(): TemplateResult | undefined {
     let page: TemplateResult | undefined;
