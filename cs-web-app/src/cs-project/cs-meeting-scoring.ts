@@ -11,7 +11,7 @@ import '@material/mwc-fab';
 import '@material/mwc-icon';
 import '@material/mwc-button';
 import '@material/mwc-textarea';
-import '@manufosela/stars-rating';
+import './stars-rating.js';
 
 import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
@@ -145,58 +145,29 @@ export class CsMeetingScoring extends CsMeetingBase {
           font-size: 24px;
         }
 
-        .issueCard {
-          background-color: var(--mdc-theme-surface);
-          margin: 8px;
-          width: 260px;
-          max-width: 260px;
-        }
-
-        .voteButton {
-          padding-bottom: 8px;
-          padding-top: 0;
-        }
-
-        .issueName {
-          padding: 16px;
-        }
-
-        .addCommentInput {
-          width: 260px;
-        }
-
-        .issueVoting {
-          width: 48px;
-        }
-
-        .comments {
-          margin-top: 32px;
-        }
-
-        .comment {
-          margin-top: 16px;
-          padding: 16px;
-          width: 228px;
-          max-width: 2228px;
-          background-color: #f7f7f7;
-        }
-
-        .addNewIssueButton {
-          margin-top: 16px;
-          margin-bottom: 8px;
-        }
-
         #emoji,
         #emojiLarge {
-          --start-unicoder: '❤️';
-          --start-unicode: '🙂';
           --star-size: 0.9em;
           cursor: pointer;
-          padding: 8px;
+          padding: 2px;
         }
 
         #emojiLarge {
           --star-size: 1.1em;
+        }
+
+        .ratingContainer {
+          margin-left: 32px;
+          padding-left: 4px;
+          padding-right: 4px;
+          border-radius: 20px;
+          margin-bottom: 14px;
+          background-color: #eeeeee;
+          border: 2px solid #eeeeee;
+        }
+
+        stars-rating {
+          margin-bottom: 2px;
         }
       `,
     ];
@@ -240,6 +211,60 @@ export class CsMeetingScoring extends CsMeetingBase {
     await window.serverApi.scoreIssue(issue.id, randomScore);
   }
 
+  renderIssueHtml(
+    issue: IssueAttributes,
+    showVoting: boolean,
+    disableVoting: boolean,
+    showComments: boolean,
+    hideSubmitComment: boolean,
+    hideRating: boolean,
+    addCommentFunction: Function | undefined = undefined,
+    scoreIssueFunction: Function | undefined = undefined,
+    toggleCommentsMode = false
+  ) {
+    return html`
+      <div
+        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
+      >
+        <div class="layout vertical otherContainer">
+          <div class="layout horizontal center-center">
+            <mwc-icon class="bookmarkIcon bookmarkIconStronger">${this.getIconForIssueType(issue)}</mwc-icon>
+          </div>
+
+          <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
+          <div class="issueStandard">${issue.standard}</div>
+          <div class="layout horizontal" ?hidden="${!showVoting}">
+            <div class="layout horizontal center-center ratingContainer">
+              <stars-rating
+                id="emoji"
+                ?hidden="${hideRating}"
+                .rating="${issue.score ? issue.score : 0}"
+                numstars="5"
+                ?manual="${!disableVoting}"
+                @click="${scoreIssueFunction}"
+              ></stars-rating>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      ${this.renderComments(
+        issue,
+        showComments,
+        disableVoting,
+        this.addCoreIssueCommentFromInput,
+        this.voteCommentUp,
+        toggleCommentsMode
+      )}`;
+  }
+
+
+  async voteIssueDown() {
+    const issue = this.allIssues![this.coreIssueIndex];
+
+    await window.serverApi.voteIssue(issue.id, -1);
+  }
+
   renderIssue(index: number, hideRating = false) {
     let issue: IssueAttributes;
     let showVoting = true;
@@ -247,6 +272,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     let disableVoting = false;
     let hideSubmitComment = false;
     let showNumbers = false;
+    let toggleCommentsMode = false;
 
     issue = this.allIssues![index];
     showComments = true;
@@ -260,6 +286,15 @@ export class CsMeetingScoring extends CsMeetingBase {
       hideSubmitComment = true;
     }
 
+    if (this.selectedTab == ScoringTabTypes.ViewIssues) {
+      hideRating = true;
+      toggleCommentsMode = true;
+    }
+
+    if (this.selectedTab == ScoringTabTypes.RateIssues) {
+      toggleCommentsMode = true;
+    }
+
     return this.renderIssueHtml(
       issue,
       showVoting,
@@ -268,7 +303,8 @@ export class CsMeetingScoring extends CsMeetingBase {
       hideSubmitComment,
       hideRating,
       this.addCoreIssueCommentFromInput,
-      this._scoreIssue
+      this._scoreIssue,
+      toggleCommentsMode
     );
   }
 
@@ -285,23 +321,11 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   async addCoreIssueCommentFromInput() {
+    this.currentCommentInput = undefined;
+
     const issue = this.allIssues![this.coreIssueIndex];
 
-    const comment = {
-      content: (this.$$('#addCommentInput') as HTMLInputElement).value,
-      userId: 1,
-      issueId: issue.id,
-      type: 0,
-      status: 0,
-    } as CommentAttributes;
-
-    await window.serverApi.postIssueComment(issue.id, comment);
-
-    this.addCoreIssueComment(comment);
-
-    this.io.emit('newComment', comment);
-
-    (this.$$('#addCommentInput') as HTMLInputElement).value = '';
+    this.completeAddingIssueComment(issue);
   }
 
   leftCoreIssueArrow() {

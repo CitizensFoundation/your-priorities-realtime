@@ -156,6 +156,7 @@ export class IssuesController {
     req: express.Request,
     res: express.Response
   ) => {
+    console.error(req.body);
     models.Comment.create(
       req.body
     ).then( project => {

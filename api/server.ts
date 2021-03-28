@@ -6,6 +6,7 @@ import { MeetingsController } from './controllers/meetingsController';
 import { UsersController } from './controllers/usersController';
 import { IssuesController } from './controllers/issuesController';
 import { ActionsController } from './controllers/actionsController';
+import { CommentsController } from './controllers/commentsController';
 
 const app = new App(
   [
@@ -14,7 +15,8 @@ const app = new App(
     new MeetingsController(),
     new UsersController(),
     new IssuesController(),
-    new ActionsController()
+    new ActionsController(),
+    new CommentsController()
   ],
   8000,
 );

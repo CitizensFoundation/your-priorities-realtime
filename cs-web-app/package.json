@@ -50,7 +50,6 @@
   "license": "LGPL",
   "dependencies": {
     "@kano/twemoji": "^1.0.0",
-    "@manufosela/stars-rating": "^3.3.6",
     "@material/mwc-button": "^0.20.0",
     "@material/mwc-circular-progress-four-color": "^0.20.0",
     "@material/mwc-dialog": "^0.20.0",

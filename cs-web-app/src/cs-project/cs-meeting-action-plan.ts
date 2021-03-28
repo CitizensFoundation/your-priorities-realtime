@@ -11,7 +11,6 @@ import '@material/mwc-fab';
 import '@material/mwc-icon';
 import '@material/mwc-button';
 import '@material/mwc-textarea';
-import '@manufosela/stars-rating';
 import { TextArea } from '@material/mwc-textarea';
 import { Snackbar } from '@material/mwc-snackbar';
 
@@ -243,6 +242,75 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     await window.serverApi.voteIssue(issue.id, 1);
   }
 
+  renderIssueHtml(
+    issue: IssueAttributes,
+    showVoting: boolean,
+    disableVoting: boolean,
+    showComments: boolean,
+    hideSubmitComment: boolean,
+    hideRating: boolean,
+    addCommentFunction: Function | undefined = undefined,
+    scoreIssueFunction: Function | undefined = undefined
+  ) {
+    return html`
+      <div
+        class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
+      >
+        <div class="layout vertical">
+          <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
+          <div class="issueStandard">${issue.standard}</div>
+          <div class="layout horizontal" ?hidden="${!showVoting}">
+            <div class="layout horizontal">
+              <stars-rating
+                id="emoji"
+                ?hidden="${hideRating}"
+                .rating="${issue.score}"
+                numstars="5"
+                ?manual="${!disableVoting}"
+                @click="${scoreIssueFunction}"
+              ></stars-rating>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="layout vertical center-center comments"
+        ?hidden="${!showComments}"
+      >
+        <mwc-textarea
+          id="addCommentInput"
+          ?hidden="${hideSubmitComment}"
+          charCounter
+          class="addCommentInput"
+          maxLength="200"
+          id="coreIssueInput"
+          .label="${this.t('yourComment')}"
+        ></mwc-textarea>
+        <div class="layout horizontal center-center">
+          <mwc-button
+            ?hidden="${hideSubmitComment}"
+            raised
+            class="layout addNewIssueButton"
+            @click="${addCommentFunction}"
+            .label="${this.t('addComment')}"
+          ></mwc-button>
+        </div>
+      </div>
+
+      <div class="layout vertical self-start" ?hidden="${!showComments}">
+        ${issue.Comments?.map(comment => {
+          return html`
+            <div class="comment shadow-elevation-4dp shadow-transition">
+              ${comment.content}
+            </div>
+          `;
+        })}
+      </div>
+    `;
+  }
+
+
   renderIssue(index: number, hideRating = false) {
     let issue: IssueAttributes;
     let showVoting = true;
@@ -399,7 +467,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
       >
         <div class="layout vertical">
-          <div class="issueName">${action.description}</div>
+          <div class="issueName"></div>${action.description}</div>
           <div class="layout horizontal">
             <mwc-icon-button
               icon="arrow_upward"

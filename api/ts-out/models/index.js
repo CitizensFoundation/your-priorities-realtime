@@ -23,12 +23,12 @@ const env = process.env.NODE_ENV || "development";
 let sequelize;
 if (process.env.DATABASE_URL) {
     sequelize = new Sequelize(process.env.DATABASE_URL, {
-        dialect: 'postgres',
+        dialect: "postgres",
         dialectOptions: {
             ssl: {
-                rejectUnauthorized: false
-            }
-        }
+                rejectUnauthorized: false,
+            },
+        },
     });
 }
 else {
@@ -54,7 +54,7 @@ exports.models = {
     Comment: comment_1.InitComment(sequelize),
     ProgressReport: progressReport_1.InitProgressReport(sequelize),
     TranslationCache: translationCache_1.InitTranslationCache(sequelize),
-    Rating: rating_1.InitRating(sequelize)
+    Rating: rating_1.InitRating(sequelize),
 };
 // Associations
 // Project
@@ -65,7 +65,7 @@ exports.models.Project.hasMany(exports.models.Round, {
 });
 //models.Project.belongsTo(models.User,  { as: 'User', foreignKey: 'userId' });
 exports.models.Project.belongsToMany(exports.models.User, {
-    through: 'ProjectUsers'
+    through: "ProjectUsers",
 });
 // User
 /*models.User.hasMany(models.Project, {
@@ -74,92 +74,110 @@ exports.models.Project.belongsToMany(exports.models.User, {
   as: "Projects"
 });*/
 exports.models.User.belongsToMany(exports.models.Role, {
-    through: 'UserRoles'
+    through: "UserRoles",
 });
 exports.models.User.belongsToMany(exports.models.Project, {
-    through: 'ProjectUsers'
+    through: "ProjectUsers",
 });
 exports.models.User.hasMany(exports.models.Role, {
     sourceKey: "id",
     foreignKey: "userId",
-    as: "UserRoles"
+    as: "UserRoles",
 });
 exports.models.User.hasMany(exports.models.Comment, {
     sourceKey: "id",
-    foreignKey: "userId"
+    foreignKey: "userId",
 });
 // Round
-exports.models.Round.belongsTo(exports.models.Project, { as: 'Project', foreignKey: 'projectId' });
+exports.models.Round.belongsTo(exports.models.Project, {
+    as: "Project",
+    foreignKey: "projectId",
+});
 exports.models.Round.hasMany(exports.models.Meeting, {
     sourceKey: "id",
     foreignKey: "roundId",
-    as: "Meetings"
+    as: "Meetings",
 });
 exports.models.Round.hasMany(exports.models.Issue, {
     sourceKey: "id",
     foreignKey: "roundId",
-    as: "Issues"
+    as: "Issues",
 });
 exports.models.Round.hasMany(exports.models.Rating, {
     sourceKey: "id",
     foreignKey: "roundId",
-    as: "Ratings"
+    as: "Ratings",
 });
 // Stage
-exports.models.Stage.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 'roundId' });
+exports.models.Stage.belongsTo(exports.models.Round, { as: "Round", foreignKey: "roundId" });
 // Story
-exports.models.Stage.belongsTo(exports.models.Project, { as: 'Project', foreignKey: 'projectId' });
+exports.models.Stage.belongsTo(exports.models.Project, {
+    as: "Project",
+    foreignKey: "projectId",
+});
 exports.models.Story.belongsToMany(exports.models.EmailCampaign, {
-    through: 'EmailCampaignStories'
+    through: "EmailCampaignStories",
 });
 exports.models.Story.belongsToMany(exports.models.Stage, {
-    through: 'StageStories'
+    through: "StageStories",
 });
 // Meeting
-exports.models.Meeting.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 'roundId' });
+exports.models.Meeting.belongsTo(exports.models.Round, { as: "Round", foreignKey: "roundId" });
 // EmailCampaign
 exports.models.EmailCampaign.hasMany(exports.models.SentEmail, {
     sourceKey: "id",
     foreignKey: "emailCampaignId",
-    as: "SentEmails"
+    as: "SentEmails",
 });
 // SentEmail
-exports.models.SentEmail.belongsTo(exports.models.EmailCampaign, { as: 'EmailCampaign', foreignKey: 'emailCampaignId' });
+exports.models.SentEmail.belongsTo(exports.models.EmailCampaign, {
+    as: "EmailCampaign",
+    foreignKey: "emailCampaignId",
+});
 // Issue
-exports.models.Issue.belongsTo(exports.models.Round, { as: 'Round', foreignKey: 'roundId' });
+exports.models.Issue.belongsTo(exports.models.Round, { as: "Round", foreignKey: "roundId" });
 exports.models.Issue.belongsToMany(exports.models.ScoreCard, {
-    through: 'ScoreCardIssues'
+    through: "ScoreCardIssues",
 });
 exports.models.Issue.hasMany(exports.models.Comment, {
     sourceKey: "id",
-    foreignKey: "issueId"
+    foreignKey: "issueId",
 });
 exports.models.Issue.hasMany(exports.models.Action, {
     sourceKey: "id",
-    foreignKey: "issueId"
+    foreignKey: "issueId",
 });
 exports.models.Issue.hasMany(exports.models.Rating, {
     sourceKey: "id",
-    foreignKey: "issueId"
+    foreignKey: "issueId",
 });
 // ActionPlan
 exports.models.ActionPlan.hasMany(exports.models.Action, {
     sourceKey: "id",
     foreignKey: "actionPlanId",
-    as: "Actions"
+    as: "Actions",
 });
 // Action
-exports.models.Action.belongsTo(exports.models.Issue, { as: 'Issue', foreignKey: 'issueId' });
-exports.models.Action.belongsTo(exports.models.ActionPlan, { as: 'ActionPlan', foreignKey: 'actionPlanId' });
+exports.models.Action.belongsTo(exports.models.Issue, { as: "Issue", foreignKey: "issueId" });
+exports.models.Action.belongsTo(exports.models.ActionPlan, {
+    as: "ActionPlan",
+    foreignKey: "actionPlanId",
+});
 // ScoreCard
 // Comment
-exports.models.Comment.belongsTo(exports.models.Issue, { as: 'Issue', foreignKey: 'issueId' });
-exports.models.Comment.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
-exports.models.Comment.belongsTo(exports.models.User, { as: 'User', foreignKey: 'userId' });
+exports.models.Comment.belongsTo(exports.models.Issue, { as: "Issue", foreignKey: "issueId" });
+exports.models.Comment.belongsTo(exports.models.Action, {
+    as: "Action",
+    foreignKey: "actionId",
+});
+exports.models.Comment.belongsTo(exports.models.User, { as: "User", foreignKey: "userId" });
 // ProgressReport
-exports.models.ProgressReport.belongsTo(exports.models.Action, { as: 'Action', foreignKey: 'actionId' });
+exports.models.ProgressReport.belongsTo(exports.models.Action, {
+    as: "Action",
+    foreignKey: "actionId",
+});
 // Rating
-exports.models.Rating.belongsTo(exports.models.Issue, { as: 'Issue', foreignKey: 'issueId' });
+exports.models.Rating.belongsTo(exports.models.Issue, { as: "Issue", foreignKey: "issueId" });
 const force = true;
 if (force) {
     sequelize.sync({ force });
@@ -170,7 +188,7 @@ if (force) {
                     name: "Robert Bjarnason",
                     email: "robert@citizens.is",
                     encrypedPassword: "dsDSDJWD)dw9jdw9d92",
-                    language: "en"
+                    language: "en",
                 });
                 const roleNames = ["users", "providers", "workingGroup", "facilitator"];
                 const allRoles = [];
@@ -190,16 +208,50 @@ if (force) {
                         service: "Health services",
                         locations: "Bosnia",
                         keyContacts: "somebody@somewhere.bi",
-                        languages: "Bosnian, Croatian, Serbian & English"
-                    }
+                        languages: "Bosnian, Croatian, Serbian & English",
+                    },
                 });
                 await user.addProject(project);
                 const round = await exports.models.Round.create({
                     projectId: project.id,
-                    userId: user.id
+                    userId: user.id,
                 });
+                const coreIssues = [
+                    "Attitude of staff",
+                    "Affordability of services",
+                    "Availability of medicine",
+                    "Distance to health centre",
+                    "Equal access to health services for all community members",
+                    "Punctuality of staff",
+                    "Polite behavior",
+                    "Listening to patients' problems",
+                    "Honest and transparent staff (in terms of dealing with drugs, food, etc)",
+                ];
+                const standards = [
+                    "Staff on duty (XX per population) during working hours to provide you with the care that meets your needs",
+                    "Staff attending the health center on time and being present all dayOut of hours standards: 24 hour standby duty for emergencies with publicly posted contact information and schedule",
+                    "Access to medicines: 12 drug deliveries per year to your health center ensure there is enough medicine for treatment",
+                    "Care for women: Pregnancy and newborn screening",
+                    "Care for the elderly",
+                    "Staff attending the health center on time and being present all dayOut of hours standards: 24 hour standby duty for emergencies with publicly posted contact information and schedule",
+                    "Access to medicines: 12 drug deliveries per year to your health center ensure there is enough medicine for treatment",
+                    "Care for women: Pregnancy and newborn screening",
+                    "Care for the elderly",
+                ];
+                for (let i = 0; i < coreIssues.length; i++) {
+                    const issue = {
+                        description: coreIssues[i],
+                        standard: standards[i],
+                        userId: 1,
+                        type: 0,
+                        state: 0,
+                        roundId: round.id,
+                        projectId: project.id,
+                    };
+                    await exports.models.Issue.create(issue);
+                }
                 const roundPublicData = {
-                    meetings: {}
+                    meetings: {},
                 };
                 const userOrentationMeeting = await exports.models.Meeting.create({
                     roundId: round.id,
@@ -208,9 +260,10 @@ if (force) {
                     subState: 0,
                     forUsers: true,
                     forServiceProviders: false,
-                    userId: user.id
+                    userId: user.id,
                 });
-                roundPublicData.meetings["userOrentationMeeting"] = userOrentationMeeting.id;
+                roundPublicData.meetings["userOrentationMeeting"] =
+                    userOrentationMeeting.id;
                 const providerOrentationMeeting = await exports.models.Meeting.create({
                     roundId: round.id,
                     type: exports.models.Meeting.TypeOrientation,
@@ -218,9 +271,10 @@ if (force) {
                     subState: 0,
                     forUsers: false,
                     forServiceProviders: true,
-                    userId: user.id
+                    userId: user.id,
                 });
-                roundPublicData.meetings["providerOrentationMeeting"] = providerOrentationMeeting.id;
+                roundPublicData.meetings["providerOrentationMeeting"] =
+                    providerOrentationMeeting.id;
                 const userCreateCardMeeting = await exports.models.Meeting.create({
                     roundId: round.id,
                     type: exports.models.Meeting.TypeCreateCard,
@@ -228,9 +282,10 @@ if (force) {
                     subState: 0,
                     forUsers: true,
                     forServiceProviders: false,
-                    userId: user.id
+                    userId: user.id,
                 });
-                roundPublicData.meetings["userCreateCardMeeting"] = userCreateCardMeeting.id;
+                roundPublicData.meetings["userCreateCardMeeting"] =
+                    userCreateCardMeeting.id;
                 const providerCreateCardMeeting = await exports.models.Meeting.create({
                     roundId: round.id,
                     type: exports.models.Meeting.TypeCreateCard,
@@ -238,9 +293,10 @@ if (force) {
                     subState: 0,
                     forUsers: false,
                     forServiceProviders: true,
-                    userId: user.id
+                    userId: user.id,
                 });
-                roundPublicData.meetings["providerCreateCardMeeting"] = providerCreateCardMeeting.id;
+                roundPublicData.meetings["providerCreateCardMeeting"] =
+                    providerCreateCardMeeting.id;
                 const userScoringMeeting = await exports.models.Meeting.create({
                     roundId: round.id,
                     type: exports.models.Meeting.TypeScoring,
@@ -248,7 +304,7 @@ if (force) {
                     subState: 0,
                     forUsers: true,
                     forServiceProviders: false,
-                    userId: user.id
+                    userId: user.id,
                 });
                 roundPublicData.meetings["userScoringMeeting"] = userScoringMeeting.id;
                 const providerScoringMeeting = await exports.models.Meeting.create({
@@ -258,9 +314,10 @@ if (force) {
                     subState: 0,
                     forUsers: false,
                     forServiceProviders: true,
-                    userId: user.id
+                    userId: user.id,
                 });
-                roundPublicData.meetings["providerScoringMeeting"] = providerScoringMeeting.id;
+                roundPublicData.meetings["providerScoringMeeting"] =
+                    providerScoringMeeting.id;
                 const actionPlanMeeting = await exports.models.Meeting.create({
                     roundId: round.id,
                     type: exports.models.Meeting.TypeActionPlan,
@@ -268,7 +325,7 @@ if (force) {
                     subState: 0,
                     forUsers: true,
                     forServiceProviders: true,
-                    userId: user.id
+                    userId: user.id,
                 });
                 roundPublicData.meetings["actionPlanMeeting"] = actionPlanMeeting.id;
                 round.publicData = roundPublicData;

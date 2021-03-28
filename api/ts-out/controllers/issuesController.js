@@ -118,6 +118,7 @@ class IssuesController {
             });
         };
         this.addComment = async (req, res) => {
+            console.error(req.body);
             models_1.models.Comment.create(req.body).then(project => {
                 res.send(project);
             }).catch(error => {

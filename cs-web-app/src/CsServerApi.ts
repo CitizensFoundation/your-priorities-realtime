@@ -150,6 +150,20 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+
+  public voteComment(commentId: number, value: number) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/comments/${commentId}/vote`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          value
+        }),
+      },
+      false
+    );
+  }
+
   public login(userAvatar: string, userAvatarColor: string) {
     return this.fetchWrapper(
       this.baseUrlPath + `/users/login`,
