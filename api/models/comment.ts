@@ -72,7 +72,7 @@ export const InitComment = (sequelize: Sequelize) => {
         allowNull: true,
       },
       content: {
-        type: new DataTypes.STRING,
+        type: new DataTypes.TEXT,
         allowNull: false,
       },
       type: {

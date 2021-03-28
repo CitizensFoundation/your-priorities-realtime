@@ -153,17 +153,17 @@ exports.models.Issue.hasMany(exports.models.Rating, {
     as: "Ratings"
 });
 // ActionPlan
-exports.models.ActionPlan.hasMany(exports.models.Action, {
-    sourceKey: "id",
-    foreignKey: "actionPlanId",
-    as: "Actions",
-});
+/*models.ActionPlan.hasMany(models.Action, {
+  sourceKey: "id",
+  foreignKey: "actionPlanId",
+  as: "Actions",
+});*/
 // Action
 exports.models.Action.belongsTo(exports.models.Issue, { as: "Issue", foreignKey: "issueId" });
-exports.models.Action.belongsTo(exports.models.ActionPlan, {
-    as: "ActionPlan",
-    foreignKey: "actionPlanId",
-});
+/*models.Action.belongsTo(models.ActionPlan, {
+  as: "ActionPlan",
+  foreignKey: "actionPlanId",
+});*/
 // ScoreCard
 // Comment
 exports.models.Comment.belongsTo(exports.models.Issue, { as: "Issue", foreignKey: "issueId" });

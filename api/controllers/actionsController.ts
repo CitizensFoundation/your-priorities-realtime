@@ -34,6 +34,7 @@ export class ActionsController {
         res.sendStatus(404);
       }
     }).catch( error => {
+      console.error(error);
       res.send(error);
     })
   }
@@ -47,6 +48,7 @@ export class ActionsController {
     ).then( action => {
       res.send(action);
     }).catch( error => {
+      console.error(error);
       res.send(error);
     })
   }
@@ -60,6 +62,7 @@ export class ActionsController {
     ).then( project => {
       res.send(project);
     }).catch( error => {
+      console.error(error)
       res.send(error);
     })
   }

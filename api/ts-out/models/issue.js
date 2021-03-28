@@ -6,6 +6,12 @@ class Issue extends sequelize_1.Model {
 }
 exports.Issue = Issue;
 Issue.TypeCoreIssue = 0;
+Issue.IssueTypes = {
+    CoreIssue: 0,
+    UserIssue: 1,
+    ProviderIssue: 2,
+    AllIssues: -1,
+};
 const InitIssue = (sequelize) => {
     Issue.init({
         id: {
@@ -26,11 +32,11 @@ const InitIssue = (sequelize) => {
             allowNull: false,
         },
         description: {
-            type: new sequelize_1.DataTypes.STRING,
+            type: sequelize_1.DataTypes.TEXT,
             allowNull: false,
         },
         standard: {
-            type: new sequelize_1.DataTypes.STRING,
+            type: sequelize_1.DataTypes.TEXT,
             allowNull: false,
         },
         type: {

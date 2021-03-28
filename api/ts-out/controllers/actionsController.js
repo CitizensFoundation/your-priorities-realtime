@@ -30,6 +30,7 @@ class ActionsController {
                     res.sendStatus(404);
                 }
             }).catch(error => {
+                console.error(error);
                 res.send(error);
             });
         };
@@ -37,6 +38,7 @@ class ActionsController {
             models_1.models.Action.create(req.body).then(action => {
                 res.send(action);
             }).catch(error => {
+                console.error(error);
                 res.send(error);
             });
         };
@@ -44,6 +46,7 @@ class ActionsController {
             models_1.models.Comment.create(req.body).then(project => {
                 res.send(project);
             }).catch(error => {
+                console.error(error);
                 res.send(error);
             });
         };

@@ -111,7 +111,14 @@ export class ProjectsController {
       models.Issue.findAll({
         where: {
           projectId: req.params.id,
-          selected: true
+          [models.Sequelize.Op.or]: [
+            {
+              selected: true
+            },
+            {
+              type: models.Issue.IssueTypes.CoreIssue
+            }
+          ]
         },
         include: [
           {
@@ -139,7 +146,14 @@ export class ProjectsController {
         where: {
           projectId: req.params.id,
           type: req.params.issueType!="-1" ? req.params.issueType : undefined,
-          selected: true
+          [models.Sequelize.Op.or]: [
+            {
+              selected: true
+            },
+            {
+              type: models.Issue.IssueTypes.CoreIssue
+            }
+          ]
         },
         include: [
           {

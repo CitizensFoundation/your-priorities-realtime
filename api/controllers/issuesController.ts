@@ -132,16 +132,13 @@ export class IssuesController {
     res: express.Response
   ) => {
 
-    models.ActionPlan.create().then(actionPlan => {
-      req.body.actionPlanId=actionPlan.id;
-
-      models.Action.create(
-        req.body
-      ).then( action => {
-        res.send(action);
-      }).catch( error => {
-        res.send(error);
-      })
+    models.Action.create(
+      req.body
+    ).then( action => {
+      res.send(action);
+    }).catch( error => {
+      console.error(error);
+      res.send(error);
     })
   }
 
@@ -163,11 +160,16 @@ export class IssuesController {
     res: express.Response
   ) => {
     console.error(req.body);
+    if (req.body.User) {
+      delete req.body.User;
+    }
     models.Comment.create(
-      req.body
+      // @ts-ignore
+      {...req.body, ...{userId: req.session!.user!.id} }
     ).then( project => {
       res.send(project);
     }).catch( error => {
+      console.error(error)
       res.send(error);
     })
   }

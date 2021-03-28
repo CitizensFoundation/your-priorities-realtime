@@ -28,6 +28,7 @@ export class Action
   public actionPlanId!: number;
   public userId!: number;
   public state!: number;
+  public selected!: boolean;
   public completeBy!: Date;
   public completedPercent!: number;
   public assignedToType?: number;
@@ -52,10 +53,10 @@ export const InitAction = (sequelize: Sequelize) => {
       },
       actionPlanId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       description: {
-        type: new DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       state: {
@@ -80,6 +81,11 @@ export const InitAction = (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0
+      },
+      selected: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       },
       language: {
         type: new DataTypes.STRING(10),

@@ -58,6 +58,14 @@ export class Issue
   };
 
   static TypeCoreIssue = 0;
+
+
+  static IssueTypes: Record<string, number> = {
+    CoreIssue: 0,
+    UserIssue: 1,
+    ProviderIssue: 2,
+    AllIssues: -1,
+  };
 }
 
 export const InitIssue = (sequelize: Sequelize) => {
@@ -81,11 +89,11 @@ export const InitIssue = (sequelize: Sequelize) => {
         allowNull: false,
       },
       description: {
-        type: new DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       standard: {
-        type: new DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       type: {

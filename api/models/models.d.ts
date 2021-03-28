@@ -162,6 +162,7 @@ interface ActionAttributes {
   actionPlanId?: number;
   userId: number;
   state: number;
+  selected: boolean;
   counterUpVotes: number;
   counterDownVotes: number;
   completeBy: Date | null;

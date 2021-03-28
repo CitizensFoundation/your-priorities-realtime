@@ -18,10 +18,10 @@ const InitAction = (sequelize) => {
         },
         actionPlanId: {
             type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
         description: {
-            type: new sequelize_1.DataTypes.STRING,
+            type: sequelize_1.DataTypes.TEXT,
             allowNull: false,
         },
         state: {
@@ -46,6 +46,11 @@ const InitAction = (sequelize) => {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
+        },
+        selected: {
+            type: sequelize_1.DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         },
         language: {
             type: new sequelize_1.DataTypes.STRING(10),

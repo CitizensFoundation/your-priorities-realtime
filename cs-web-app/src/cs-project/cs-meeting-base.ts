@@ -61,6 +61,16 @@ export class CsMeetingBase extends YpBaseElement {
   @property({ type: String })
   currentIssueInput: string | undefined;
 
+  @property({ type: Array })
+  orderedAllIssues: Array<IssueAttributes> | undefined;
+
+  @property({ type: Object })
+  allIssuesHash: Record<number,IssueAttributes> = {};
+
+  @property({ type: Array })
+  allIssues: Array<IssueAttributes> | undefined;
+
+
   roomName: string | undefined;
 
   socket: any | undefined;
@@ -100,6 +110,24 @@ export class CsMeetingBase extends YpBaseElement {
     } else if (issue.type == this.IssueTypes.ProviderIssue) {
       return 'groups';
     }
+  }
+
+  async _getRatings() {
+    const ratings = (await window.serverApi.getRatings(
+      this.meeting.Round!.projectId
+    )) as Array<IssueAttributes> | undefined;
+
+    if (ratings && this.allIssuesHash) {
+      for (let i=0;i<ratings.length;i++)  {
+        if (this.allIssuesHash[ratings[i].id]) {
+          this.allIssuesHash[ratings[i].id].score = parseFloat((ratings[i] as any).avgRating);
+        } else {
+          console.error("Can't find ratings index: ")
+        }
+      }
+    }
+
+    this.allIssues = [...this.allIssues!];
   }
 
   sendState(state: StateAttributes) {
@@ -409,6 +437,33 @@ export class CsMeetingBase extends YpBaseElement {
         .commentsOpenClose {
           padding-top: 16px;
           padding-right: 4px;
+        }
+
+
+        #emoji,
+        #emojiLarge {
+          --star-size: 0.9em;
+          cursor: pointer;
+          padding: 2px;
+        }
+
+        #emojiLarge {
+          --star-size: 1.1em;
+        }
+
+        .ratingContainer {
+          margin-left: 32px;
+          padding-left: 4px;
+          padding-right: 4px;
+          border-radius: 20px;
+          margin-bottom: 14px;
+          background-color: #eeeeee;
+          border: 2px solid #eeeeee;
+        }
+
+        stars-rating {
+          cursor: pointer;
+          margin-bottom: 2px;
         }
       `,
     ];

@@ -186,18 +186,19 @@ models.Issue.hasMany(models.Rating, {
 });
 
 // ActionPlan
-models.ActionPlan.hasMany(models.Action, {
+/*models.ActionPlan.hasMany(models.Action, {
   sourceKey: "id",
   foreignKey: "actionPlanId",
   as: "Actions",
-});
+});*/
 
 // Action
 models.Action.belongsTo(models.Issue, { as: "Issue", foreignKey: "issueId" });
-models.Action.belongsTo(models.ActionPlan, {
+
+/*models.Action.belongsTo(models.ActionPlan, {
   as: "ActionPlan",
   foreignKey: "actionPlanId",
-});
+});*/
 
 // ScoreCard
 

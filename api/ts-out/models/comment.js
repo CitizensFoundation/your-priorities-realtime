@@ -29,7 +29,7 @@ const InitComment = (sequelize) => {
             allowNull: true,
         },
         content: {
-            type: new sequelize_1.DataTypes.STRING,
+            type: new sequelize_1.DataTypes.TEXT,
             allowNull: false,
         },
         type: {
