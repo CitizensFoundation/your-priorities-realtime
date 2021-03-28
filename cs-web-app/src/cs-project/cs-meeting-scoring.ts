@@ -295,7 +295,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     }
 
     if (this.selectedTab == ScoringTabTypes.Results) {
-      hideSubmitComment = true;
+      hideSubmitComment = false;
     }
 
     if (this.selectedTab == ScoringTabTypes.ViewIssues) {
