@@ -24,6 +24,10 @@ const InitAction = (sequelize) => {
             type: sequelize_1.DataTypes.TEXT,
             allowNull: false,
         },
+        assignedTo: {
+            type: sequelize_1.DataTypes.TEXT,
+            allowNull: true,
+        },
         selected: {
             type: sequelize_1.DataTypes.BOOLEAN,
             allowNull: false,

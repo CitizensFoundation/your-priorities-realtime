@@ -32,7 +32,7 @@ export class Action
   public completeBy!: Date;
   public completedPercent!: number;
   public assignedToType?: number;
-  public assignedToName?: string;
+  public assignedTo?: string;
 
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
@@ -58,6 +58,10 @@ export const InitAction = (sequelize: Sequelize) => {
       description: {
         type: DataTypes.TEXT,
         allowNull: false,
+      },
+      assignedTo: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       selected: {
         type: DataTypes.BOOLEAN,

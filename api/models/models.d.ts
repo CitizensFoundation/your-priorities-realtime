@@ -168,7 +168,7 @@ interface ActionAttributes {
   completeBy: Date | null;
   completedPercent: number;
   assignedToType?: number;
-  assignedToName?: string;
+  assignedTo?: string;
   createdAt?: Date | null;
   updatedAt?: Date | null;
   completedAt?: Date | null;

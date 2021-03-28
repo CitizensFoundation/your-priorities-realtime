@@ -1,4 +1,8 @@
 {
+  "assignedTo":"Assigned to:",
+  "welcomeToTheCommunityScoreCardApp": "Welcome to the Community Score Card app",
+  "taskIsAssignedTo": "Task is assigned to",
+  "saveAssignment": "Save",
   "vote": "Vote",
   "action": "Action",
   "toggleComments": "Toggle comments",

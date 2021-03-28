@@ -85,33 +85,14 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
 
-  async saveAssignment() {
-    const element = this.$$('#addActionInput') as HTMLInputElement;
-    const issue = this.orderedAllIssues![this.coreIssueIndex];
+  async saveAssignment(action: ActionAttributes) {
+    const element = this.$$('#addAssignmentInput') as HTMLInputElement;
 
     if (element && element.value && element.value.length > 0) {
-      const action = {
-        description: (this.$$('#addAssignInput') as HTMLInputElement).value,
-        userId: 1,
-        counterDownVotes: 0,
-        counterUpVotes: 0,
-        state: 0,
-        completedPercent: 0,
-        selected: false,
-        completeBy: null,
-        issueId: issue.id,
-        projectId: this.meeting.Round!.projectId,
-      } as ActionAttributes;
 
-      await window.serverApi.postAction(issue.id, action);
+      await window.serverApi.updateAssignmentForAction(action.id!, element.value);
 
-      issue!.Actions!.unshift(action);
-
-      this.allIssues = [...this.allIssues!];
-
-      this.io.emit('newAction', action);
-
-      (this.$$('#addActionInput') as HTMLInputElement).value = '';
+      (this.$$('#addAssignmentInput') as HTMLInputElement).value = '';
     }
   }
 
@@ -235,6 +216,14 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           margin-top: -4px;
         }
 
+        .assignedTo {
+          color: #444;
+          padding: 16px;
+          padding-top: 0;
+          overflow: hidden;
+          margin-top: -4px;
+        }
+
         .actionDescriptionLessPadding {
           padding-bottom: 4px;
         }
@@ -278,6 +267,15 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         .sliderContainer {
           align-items: flex-start !important;
         }
+
+        #addAssignmentInput {
+          margin-left: 14px;
+          margin-right: 16px;
+          margin-top: 8px;
+          width: 258px;
+        }
+
+
       `,
     ];
   }
@@ -480,6 +478,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     ) as HTMLInputElement).value;
   }
 
+
   renderAction(
     index: number,
     showNumbers = false,
@@ -496,6 +495,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           <div class="actionText">${this.t('action')}</div>
         </div>
         <div class="actionDescription">${action.description}</div>
+        <div class="assignedTo layout vertical" ?hidden="${!action.assignedTo}">
+          <div>${this.t('assignedTo')}</div>
+          <div>${action.assignedTo}</div>
+        </div>
+
         ${showAssignment
           ? html`
               <mwc-textarea
@@ -512,10 +516,10 @@ export class CsMeetingActionPlan extends CsMeetingBase {
                 <mwc-button
                   raised
                   ?disabled="${!this.currentAssignmentInput}"
-                  class="layout addNewIssueButton"
-                  @click="${this.saveAssignment}"
-                  .label="${this.t('save')}"
-                  >${this.renderAvatarButtonIcon()}</mwc-button
+                  class="layout addNewIssueButton saveAssignment"
+                  @click="${() => this.saveAssignment(action)}"
+                  .label="${this.t('saveAssignment')}"
+                  ></mwc-button
                 >
               </div>
             `

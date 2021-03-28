@@ -164,6 +164,19 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public updateAssignmentForAction(actionId: number, assignedTo: string) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/actions/${actionId}/updateAssignment`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          assignedTo
+        }),
+      },
+      false
+    );
+  }
+
   public login(userAvatar: string, userAvatarColor: string) {
     return this.fetchWrapper(
       this.baseUrlPath + `/users/login`,

@@ -60,7 +60,7 @@ export class CsLogin extends YpBaseElement {
   firstUpdated(changedProperties: any) {
     const picker = this.$$('hex-color-picker');
     if (picker) {
-      picker.addEventListener('color-changed', (event) => {
+      picker.addEventListener('color-changed', event => {
         // @ts-ignore
         const newColor = event.detail.value;
         this.userAvatarColor = newColor;
@@ -108,44 +108,56 @@ export class CsLogin extends YpBaseElement {
       ShadowStyles,
       css`
         .avatarIcon {
-          --mdc-icon-size: 64px;
-          padding: 24px;
+          --mdc-icon-size: 38px;
+          padding: 12px;
           color: var(--cs-avatar-color, #000);
         }
 
-        .avatarContainer, .chooseAvatarColor {
+        .avatarContainer,
+        .chooseAvatarColor {
           background-color: #fefefe;
           max-width: 300px;
           width: 300px;
           color: #000;
-          padding: 16px;
-          margin: 16px;
+          margin: 0;
           height: 100%;
           padding-top: 0;
           margin-left: 0;
           margin-right: 0;
-        }
-
-        .loginInfo {
-          font-size: 22px;
+          margin-top: 0;
         }
 
         .chooseAvatarColor {
-          margin-top: 48px;
+          margin-left: 20px;
+        }
+        .avatarContainer {
+          margin-right: 16px;
+        }
+
+
+        .loginInfo {
+          font-size: 18px;
+          padding-bottom: 8px;
+        }
+
+        .chooseAvatarColor {
         }
 
         mwc-button {
           margin-top: 24px;
           margin-top: 16px;
-          --mdc-theme-primary: #FFF;
+          --mdc-theme-primary: #fff;
           --mdc-theme-on-primary: #000;
           --mdc-typography-button-font-size: 16px;
         }
 
-        .avatarColor {
-          margin-bottom: 16px;
-          margin-top: -8px;
-          padding-top: 0;
+        hex-color-picker {
+          padding-bottom: 0px;
+          padding-top: 0px;
+        }
+
+        .avatarColorText {
+          padding-top: 26px;
         }
 
         .buttonIcon {
@@ -154,17 +166,32 @@ export class CsLogin extends YpBaseElement {
         }
 
         .container {
-          background-color: #FFF;
+          background-color: #fff;
           height: 100%;
-          padding-bottom: 42px;
-          position: relative;
-          margin-top: 32px;
+          width: 720px;
+          padding-bottom: 28px;
+          margin-top: 16px;
         }
 
         .loginButton {
-          position: absolute;
-          bottom: 24px;
-          right: 24px;
+          width: 175px;
+          margin-top: 32px;
+        }
+
+        .chooseAvatarText {
+          padding-top: 18px;
+        }
+
+        .avatarContainer {
+          margin-top: 0;
+          padding-top: 0;
+        }
+
+        .mainTitle {
+          margin-top: 32px;
+          font-size: 26px;
+          margin-bottom: 32px;
+
         }
       `,
     ];
@@ -188,8 +215,7 @@ export class CsLogin extends YpBaseElement {
 
     return html`
       <div class="layout vertical center-center wrap avatarContainer">
-        <div class="loginInfo">${this.t("chooseAvatar")}</div>
-        <div class="layout horizontal center-center wrap">
+        <div class="layout horizontal center-center wrap avatarWrapper">
           ${arr.map(icon => {
             return html`
               <mwc-icon-button
@@ -202,6 +228,7 @@ export class CsLogin extends YpBaseElement {
             `;
           })}
         </div>
+        <div class="loginInfo chooseAvatarText">${this.t('chooseAvatar')}</div>
       </div>
     `;
   }
@@ -209,15 +236,34 @@ export class CsLogin extends YpBaseElement {
   render() {
     return html`
       <div class="layout vertical center-center">
-        <div class="layout horizontal wrap shadow-elevation-2dp shadow-transition container">
-          <div class="chooseAvatar layoutself-start">${this.renderChooseAvatar()}</div>
-          <div class="layout vertical center-center wrap chooseAvatarColor">
-            <div class="loginInfo avatarColor">${this.t("chooseAvatarColor")}</div>
-            <hex-color-picker color="#000"></hex-color-picker>
+        <div
+          class="layout vertical wrap shadow-elevation-2dp shadow-transition container"
+        >
+          <div class="layout horizontal center-center">
+            <div class="mainTitle">${this.t('welcomeToTheCommunityScoreCardApp')}</div>
           </div>
-          <div class="layout horizontal self-end">
-            <mwc-button @click="${this.login}" class="loginButton" ?disabled="${!this.userAvatar || !this.userAvatarColor}" raised .label="${this.userAvatar ? this.t("loginAs") : this.t('login')}">
-              <mwc-icon class="buttonIcon" ?hidden="${!this.userAvatar}">${this.userAvatar}</mwc-icon>
+          <div class="layout horizontal center-center wrap">
+            <div class="chooseAvatar layoutself-start">
+              ${this.renderChooseAvatar()}
+            </div>
+            <div class="layout vertical center-center wrap chooseAvatarColor">
+              <hex-color-picker color="#000"></hex-color-picker>
+              <div class="loginInfo avatarColorText">
+                ${this.t('chooseAvatarColor')}
+              </div>
+            </div>
+          </div>
+          <div class="layout horizontal center-center">
+            <mwc-button
+              @click="${this.login}"
+              class="loginButton"
+              ?disabled="${!this.userAvatar || !this.userAvatarColor}"
+              raised
+              .label="${this.userAvatar ? this.t('loginAs') : this.t('login')}"
+            >
+              <mwc-icon class="buttonIcon" ?hidden="${!this.userAvatar}"
+                >${this.userAvatar}</mwc-icon
+              >
             </mwc-button>
           </div>
         </div>

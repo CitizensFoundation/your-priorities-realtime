@@ -12,6 +12,33 @@ export class ActionsController {
   public intializeRoutes() {
     this.router.post(this.path + "/:id/vote", this.vote);
     this.router.put(this.path + "/:id/setSelectedStatus", this.setSelectedStatus);
+    this.router.put(this.path + "/:id/updateAssignment", this.updateAssignment);
+  }
+
+  updateAssignment = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Action.findOne({
+      where: {
+        id: req.params.id
+      },
+    }).then( async action => {
+      if (action) {
+        if (req.body.assignedTo) {
+          action.assignedTo = req.body.assignedTo;
+          await action.save();
+          res.sendStatus(200);
+        } else {
+          res.sendStatus(402);
+        }
+      } else {
+        res.sendStatus(404);
+      }
+    }).catch( error => {
+      console.error(error);
+      res.send(error);
+    })
   }
 
   setSelectedStatus = async (
@@ -41,6 +68,7 @@ export class ActionsController {
       res.send(error);
     })
   }
+
 
   vote = async (
     req: express.Request,
