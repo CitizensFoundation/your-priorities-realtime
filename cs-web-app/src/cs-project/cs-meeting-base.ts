@@ -467,7 +467,7 @@ export class CsMeetingBase extends YpBaseElement {
         }
 
         mwc-textarea {
-          --mdc-shape-small: 24px;
+          --mdc-shape-small: 35px;
         }
       `,
     ];

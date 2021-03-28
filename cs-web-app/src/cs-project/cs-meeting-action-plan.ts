@@ -189,7 +189,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
         .action {
           color: #000;
-          border-top-left-radius:30px;
+          border-top-left-radius: 35px;
           color: #fff;
           padding: 10px;
           width: 285px;
