@@ -32,6 +32,7 @@ class IssuesController {
                     res.sendStatus(404);
                 }
             }).catch(error => {
+                console.error(error);
                 res.send(error);
             });
         };

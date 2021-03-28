@@ -59,6 +59,11 @@ export const InitAction = (sequelize: Sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      selected: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       state: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -81,11 +86,6 @@ export const InitAction = (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0
-      },
-      selected: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
       },
       language: {
         type: new DataTypes.STRING(10),

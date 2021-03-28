@@ -1,4 +1,5 @@
 {
+  "vote": "Vote",
   "action": "Action",
   "toggleComments": "Toggle comments",
   "chooseAvatarColor": "Choose avatar color",

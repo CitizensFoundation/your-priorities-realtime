@@ -191,6 +191,19 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public setActionSelectedStatus(actionId: number, checked: boolean) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/actions/${actionId}/setSelectedStatus`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          checked
+        }),
+      },
+      false
+    );
+  }
+
   public logout() {
     return this.fetchWrapper(
       this.baseUrlPath + `/users/logout`,

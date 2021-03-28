@@ -21,14 +21,19 @@ import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { CsMeetingBase } from './cs-meeting-base.js';
 import { CsStory } from '../cs-story/cs-story.js';
+import '@material/mwc-checkbox';
+import { Checkbox } from '@material/mwc-checkbox';
+
+import '@material/mwc-formfield';
 
 export const ActionPlanTabTypes: Record<string, number> = {
   Information: 0,
   ReviewScores: 1,
   CreationActions: 2,
   Voting: 3,
-  AssignActions: 4,
-  FinalReview: 5,
+  Confirm: 4,
+  AssignActions: 5,
+  FinalReview: 6,
 };
 
 @customElement('cs-meeting-action-plan')
@@ -45,6 +50,9 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   @property({ type: String })
   currentActionInput: string | undefined;
 
+  @property({ type: Boolean })
+  onlyShowSelected = false;
+
   constructor() {
     super();
   }
@@ -52,6 +60,10 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   connectedCallback() {
     super.connectedCallback();
     this._getAllIssues();
+  }
+
+  async actionSelectionChanged(checkbox: Checkbox, actionId: number) {
+    await window.serverApi.setActionSelectedStatus(actionId, checkbox.checked);
   }
 
   async _getAllIssues() {
@@ -161,17 +173,16 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           color: #000;
           background: linear-gradient(
             225deg,
-            #ffb241 40px,
-            transparent 30px,
+            transparent 35px,
+            transparent 35px,
             #fefefe 30px
           );
           color: #fff;
           padding: 10px;
           width: 285px;
           position: relative;
-          min-height: 100px;
-          box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
-            0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+          min-height: 120px;
+
           margin-bottom: 8px;
         }
 
@@ -179,9 +190,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           margin-top: 0px;
         }
 
-
         .actionDescription {
-          color: #000;
+          color: #444;
           padding: 16px;
           padding-top: 0;
           overflow: hidden;
@@ -193,10 +203,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         }
 
         .actionIcons {
-          color: #fff;
+          color: #000;
           --mdc-icon-size: 28px;
-          margin-right: -282px;
           margin-top: -5px;
+          padding-top: 8px;
+          padding-bottom: 12px;
         }
 
         .actionsHeader {
@@ -206,6 +217,16 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         .actionSign {
           display: none;
           color: transparent;
+        }
+
+        .actionText {
+          color: #111;
+          font-size: 18px;
+          padding-bottom: 16px;
+          padding-top: 8px;
+          text-align: left;
+          margin-left: 16px;
+          width: 100%;
         }
 
         .buttonContainer {
@@ -395,8 +416,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           ${issue.Actions?.map(action => {
             return html`
               <div class="action">
-                <div class="layout horizontal actionHeader center-center">
-                  <mwc-icon class="actionIcons">directions_run</mwc-icon>
+                <div class="layout horizontal actionHeader">
+                  <div class="actionText">${this.t('action')}</div>
                 </div>
                 <div class="actionDescription">${action.description}</div>
               </div>
@@ -419,17 +440,32 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     index: number,
     showNumbers = false,
     showVoting = true,
-    disableVoting = false
+    disableVoting = false,
+    showSelectionCheckbox = false
   ) {
     const action = this.actions![index];
 
     return html`
-      <div class="action lessActionPadding">
+      <div class="action lessActionPadding layout vertical">
         <div class="layout horizontal actionHeader center-center">
-          <mwc-icon class="actionIcons">directions_run</mwc-icon>
+          <div class="actionText">${this.t('action')}</div>
         </div>
         <div class="actionDescription">${action.description}</div>
         <div class="layout horizontal center-center buttonContainer">
+          <mwc-checkbox
+            ?hidden="${!this.isAdmin || !showSelectionCheckbox}"
+            class="issueConfirmation self-start start"
+            ?checked="${action.selected}"
+            @change="${(event: CustomEvent) =>
+              this.actionSelectionChanged(
+                event.srcElement as Checkbox,
+                action.id as number
+              )}"
+            value="closed"
+            name="accessRadioButtons"
+          >
+          </mwc-checkbox>
+          <div class="flex"></div>
           <mwc-icon-button
             icon="arrow_upward"
             ?hidden="${!showVoting}"
@@ -516,7 +552,52 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     }
   }
 
+  renderConfirm() {
+    if (this.actions && this.actions.length > 0) {
+      return html`
+        <div class="layout vertical center-center">
+          ${this.sortedActions!.map((issue, index) => {
+            return html`${this.renderAction(index, true, true, true, true)}`;
+          })}
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
   renderVoting() {
+    if (this.actions && this.actions.length > 0) {
+      return html`
+        <div class="layout horizontal center-center sliderContainer">
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.actionIssueIndex === 0}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_back"
+              @click="${this.leftActionArrow}"
+            ></mwc-icon-button>
+          </div>
+          <div class="layout vertical center-center">
+            ${this.renderAction(this.actionIssueIndex)}
+          </div>
+          <div class="issueBack issueVoting">
+            <mwc-icon-button
+              ?hidden="${this.actionIssueIndex >= this.actions!.length - 1}"
+              ?disabled="${!this.isAdmin && this.isLive}"
+              icon="arrow_forward"
+              @click="${this.rightActionArrow}"
+            ></mwc-icon-button>
+          </div>
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
+
+  renderAssign() {
     if (this.actions && this.actions.length > 0) {
       return html`
         <div class="layout horizontal center-center sliderContainer">
@@ -578,24 +659,30 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           ></mwc-tab>
           <mwc-tab
             ?hidden="${!this.isAdmin && this.selectedTab != 2}"
-            .label="${this.t('createActionPlan')}"
+            .label="${this.t('actionPlan')}"
             icon="create"
             stacked
           ></mwc-tab>
           <mwc-tab
             ?hidden="${!this.isAdmin && this.selectedTab != 3}"
-            .label="${this.t('voting')}"
+            .label="${this.t('vote')}"
             icon="how_to_vote"
             stacked
           ></mwc-tab>
           <mwc-tab
             ?hidden="${!this.isAdmin && this.selectedTab != 4}"
+            .label="${this.t('confirm')}"
+            icon="check_circle_outline"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 5}"
             .label="${this.t('assign')}"
             icon="assignment_outline"
             stacked
           ></mwc-tab>
           <mwc-tab
-            ?hidden="${!this.isAdmin && this.selectedTab != 5}"
+            ?hidden="${!this.isAdmin && this.selectedTab != 6}"
             .label="${this.t('review')}"
             icon="checklist"
             stacked
@@ -621,8 +708,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       case ActionPlanTabTypes.Voting:
         page = this.renderVoting();
         break;
+      case ActionPlanTabTypes.Confirm:
+        page = this.renderConfirm();
+        break;
       case ActionPlanTabTypes.AssignActions:
-        page = this.renderIssues(this.t('assignActions'));
+        page = this.renderAssign();
         break;
       case ActionPlanTabTypes.FinalReview:
         page = this.renderResults();
@@ -647,7 +737,12 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           allActions = allActions.concat(this.allIssues[i].Actions!);
         }
       }
-      this.actions = allActions;
+      if (this.onlyShowSelected) {
+        allActions = allActions.filter( action => action.selected==true);
+      }
+
+      this.actions = [...allActions];
+      this.setupSortedActions();
     } else {
       this.actions = undefined;
     }
@@ -655,14 +750,37 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
   // EVENTS
 
+  setupSortedActions() {
+    this.sortedActions = this.actions?.sort(function (a, b) {
+      return (
+        b.counterUpVotes -
+        b.counterDownVotes -
+        (a.counterUpVotes - a.counterDownVotes)
+      );
+    });
+  }
+
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
 
     if (changedProperties.has('selectedTab')) {
       this.updateState();
 
-      if (this.selectedTab == ActionPlanTabTypes.FinalReview) {
+      if (
+        [
+          ActionPlanTabTypes.FinalReview,
+          ActionPlanTabTypes.AssignActions,
+        ].indexOf(this.selectedTab) > -1
+      ) {
+        this.onlyShowSelected = true;
         this._getAllIssues();
+      } else {
+        this.onlyShowSelected = false;
+        this._getAllIssues();
+      }
+
+      if (this.selectedTab==ActionPlanTabTypes.AssignActions) {
+        this.actionIssueIndex = 0;
       }
     }
 
@@ -679,9 +797,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     }
 
     if (changedProperties.has('actions') && this.actions) {
-      this.sortedActions = sortBy(this.actions, item => {
-        return item.counterDownVotes - item.counterUpVotes;
-      });
+      this.setupSortedActions();
     }
   }
 
