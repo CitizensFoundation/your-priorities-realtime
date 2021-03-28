@@ -173,7 +173,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           padding: 16px;
           width: 296px;
           max-width: 2228px;
-          background-color: #f7f7f7;
+          background-color: #fefefe;
           margin-left: 8px;
           margin-right: 8px;
         }
@@ -189,12 +189,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
         .action {
           color: #000;
-          background: linear-gradient(
-            225deg,
-            transparent 35px,
-            transparent 35px,
-            #fefefe 30px
-          );
+          border-top-left-radius:30px;
           color: #fff;
           padding: 10px;
           width: 285px;
@@ -451,7 +446,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         <div class="layout vertical center-center">
           ${issue.Actions?.map(action => {
             return html`
-              <div class="action">
+              <div class="action shadow-elevation-2dp shadow-transition">
                 <div class="layout horizontal actionHeader">
                   <div class="actionText">${this.t('action')}</div>
                 </div>
@@ -490,7 +485,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     const action = this.actions![index];
 
     return html`
-      <div class="action lessActionPadding layout vertical">
+      <div class="action lessActionPadding layout vertical shadow-elevation-2dp shadow-transition">
         <div class="layout horizontal actionHeader center-center">
           <div class="actionText">${this.t('action')}</div>
         </div>

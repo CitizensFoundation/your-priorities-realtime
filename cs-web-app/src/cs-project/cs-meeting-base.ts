@@ -407,7 +407,7 @@ export class CsMeetingBase extends YpBaseElement {
         mwc-button {
           --mdc-theme-primary: #fff;
           --mdc-theme-on-primary: #000;
-          --mdc-typography-button-font-size: 16px;
+          --mdc-typography-button-font-size: 15px;
         }
 
         .buttonIcon {
@@ -467,7 +467,7 @@ export class CsMeetingBase extends YpBaseElement {
         }
 
         mwc-textarea {
-          --mdc-shape-small: 32px 32px;
+          --mdc-shape-small: 24px;
         }
       `,
     ];
