@@ -182,6 +182,7 @@ models.Issue.hasMany(models.Action, {
 models.Issue.hasMany(models.Rating, {
   sourceKey: "id",
   foreignKey: "issueId",
+  as: "Ratings"
 });
 
 // ActionPlan

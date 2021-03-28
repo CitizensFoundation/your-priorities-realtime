@@ -44,6 +44,26 @@ class ProjectsController {
                 res.send(error);
             });
         };
+        this.getRatings = async (req, res) => {
+            models_1.models.Issue.findAll({
+                where: {
+                    projectId: req.params.id
+                },
+                attributes: ["id", [models_1.models.sequelize.fn('AVG', models_1.models.sequelize.col('Ratings.value')), 'avgRating']],
+                include: [
+                    {
+                        model: models_1.models.Rating,
+                        as: "Ratings"
+                    }
+                ],
+                group: ["Issue.id", "Ratings.id"]
+            }).then(issues => {
+                res.send(issues);
+            }).catch(error => {
+                console.error(error);
+                res.send(error);
+            });
+        };
         this.getIssues = async (req, res) => {
             console.error(req.params.issueType);
             if (req.params.issueType == -1) {
@@ -137,6 +157,7 @@ class ProjectsController {
         this.router.get(this.path + "/:id", this.getProject);
         this.router.get(this.path + "/:id/participants", this.getParticipants);
         this.router.get(this.path + "/:id/issues/:issueType", this.getIssues);
+        this.router.get(this.path + "/:id/getRatings", this.getRatings);
     }
 }
 exports.ProjectsController = ProjectsController;

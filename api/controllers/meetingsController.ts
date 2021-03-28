@@ -18,12 +18,19 @@ export class MeetingsController {
       where: {
         id: req.params.id,
       },
+      include: [
+        {
+          model: (models.Round as any),
+          as: "Round"
+        }
+      ],
       attributes: { exclude: ["privateData"] },
     })
       .then((meeting) => {
         res.send(meeting);
       })
       .catch((error) => {
+        console.error(error);
         res.send(error);
       });
   };

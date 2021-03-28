@@ -150,6 +150,7 @@ exports.models.Issue.hasMany(exports.models.Action, {
 exports.models.Issue.hasMany(exports.models.Rating, {
     sourceKey: "id",
     foreignKey: "issueId",
+    as: "Ratings"
 });
 // ActionPlan
 exports.models.ActionPlan.hasMany(exports.models.Action, {

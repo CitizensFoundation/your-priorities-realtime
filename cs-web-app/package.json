@@ -70,6 +70,7 @@
     "@vaadin/vaadin-grid": "^6.0.1",
     "app-datepicker": "^4.1.0",
     "chart.js": "^2.9.3",
+    "emoji-rating": "^0.3.0",
     "hammerjs": "^2.0.8",
     "i18next-http-backend": "^1.1.1",
     "koa-proxies": "^0.11.0",

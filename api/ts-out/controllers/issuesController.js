@@ -74,30 +74,39 @@ class IssuesController {
             }
         };
         this.rate = async (req, res) => {
-            try {
-                let rating = await models_1.models.Rating.findOne({
-                    where: {
-                        issueId: req.params.id,
-                        roundId: req.body.roundId
-                    }
-                });
-                if (!rating) {
-                    rating = await models_1.models.Rating.create({
-                        issueId: parseInt(req.params.id),
-                        roundId: req.body.roundId,
-                        userId: 1,
-                        value: req.body.value
+            // @ts-ignore
+            if (req.session.user) {
+                try {
+                    let rating = await models_1.models.Rating.findOne({
+                        where: {
+                            issueId: req.params.id,
+                            roundId: req.body.roundId,
+                            // @ts-ignore
+                            userId: req.session.user ? req.session.user.id : -1
+                        }
                     });
+                    if (!rating) {
+                        rating = await models_1.models.Rating.create({
+                            issueId: parseInt(req.params.id),
+                            roundId: req.body.roundId,
+                            // @ts-ignore
+                            userId: req.session.user.id,
+                            value: req.body.value
+                        });
+                    }
+                    else {
+                        rating.value = req.body.value;
+                        await rating.save();
+                    }
+                    res.sendStatus(200);
                 }
-                else {
-                    rating.value = req.body.value;
-                    await rating.save();
+                catch (error) {
+                    console.error(error);
+                    res.send(error);
                 }
-                res.sendStatus(200);
             }
-            catch (error) {
-                console.error(error);
-                res.send(error);
+            else {
+                res.sendStatus(401);
             }
         };
         this.addAction = async (req, res) => {

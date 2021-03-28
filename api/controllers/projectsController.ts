@@ -16,6 +16,7 @@ export class ProjectsController {
     this.router.get(this.path+"/:id", this.getProject);
     this.router.get(this.path+"/:id/participants", this.getParticipants);
     this.router.get(this.path+"/:id/issues/:issueType", this.getIssues);
+    this.router.get(this.path+"/:id/getRatings", this.getRatings);
   }
 
   createProject = async (
@@ -69,6 +70,32 @@ export class ProjectsController {
     }).then( project => {
       res.send(project);
     }).catch( error => {
+      res.send(error);
+    })
+  }
+
+  getRatings = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+
+    models.Issue.findAll({
+      where: {
+        projectId: req.params.id
+      },
+
+      attributes: ["id",[models.sequelize.fn('AVG', models.sequelize.col('Ratings.value')), 'avgRating']],
+      include: [
+        {
+          model: (models.Rating as any),
+          as: "Ratings"
+        }
+      ],
+      group: ["Issue.id","Ratings.id"]
+    }).then(issues => {
+      res.send(issues);
+    }).catch( error => {
+      console.error(error);
       res.send(error);
     })
   }

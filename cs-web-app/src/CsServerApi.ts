@@ -209,16 +209,23 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
-  public scoreIssue(issueId: number, value: number) {
+  public rateIssue(issueId: number, roundId: number, value: number) {
     return this.fetchWrapper(
-      this.baseUrlPath + `/issues/${issueId}/score`,
+      this.baseUrlPath + `/issues/${issueId}/rate`,
       {
         method: 'POST',
         body: JSON.stringify({
-          value
+          value,
+          roundId
         }),
       },
       false
+    );
+  }
+
+  getRatings(projectId: number) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/projects/${projectId}/getRatings`
     );
   }
 

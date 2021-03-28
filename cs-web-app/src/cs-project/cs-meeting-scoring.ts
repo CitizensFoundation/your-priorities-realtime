@@ -52,6 +52,9 @@ export class CsMeetingScoring extends CsMeetingBase {
   @property({ type: Array })
   orderedParticipantsIssues: Array<IssueAttributes> | undefined;
 
+  @property({ type: Object })
+  allIssuesHash: Record<number,IssueAttributes> = {};
+
   constructor() {
     super();
   }
@@ -167,6 +170,7 @@ export class CsMeetingScoring extends CsMeetingBase {
         }
 
         stars-rating {
+          cursor: pointer;
           margin-bottom: 2px;
         }
       `,
@@ -182,6 +186,12 @@ export class CsMeetingScoring extends CsMeetingBase {
         votingIssueIndex: this.votingIssueIndex,
         coreIssueIndex: this.coreIssueIndex,
       } as StateAttributes);
+    }
+
+    const rating = this.$$("#emoji") as any;
+
+    if (rating) {
+//      rating.reset();
     }
   }
 
@@ -203,12 +213,10 @@ export class CsMeetingScoring extends CsMeetingBase {
     }
   }
 
-  async _scoreIssue(event: CustomEvent) {
-    const issue = this.participantsIssues![this.votingIssueIndex];
-
+  async _rateIssue(event: CustomEvent) {
+    const issue = this.allIssues![this.coreIssueIndex];
     //TODO: Fix
-    const randomScore = Math.floor(Math.random() * 5) + 1;
-    await window.serverApi.scoreIssue(issue.id, randomScore);
+    await window.serverApi.rateIssue(issue.id, this.meeting.roundId, (event.currentTarget as any).rating);
   }
 
   renderIssueHtml(
@@ -238,10 +246,10 @@ export class CsMeetingScoring extends CsMeetingBase {
               <stars-rating
                 id="emoji"
                 ?hidden="${hideRating}"
-                .rating="${issue.score ? issue.score : 0}"
+                .setRating="${issue.score}"
                 numstars="5"
-                ?manual="${!disableVoting}"
-                @click="${scoreIssueFunction}"
+                manual
+                @rating-changed="${scoreIssueFunction}"
               ></stars-rating>
             </div>
           </div>
@@ -303,7 +311,7 @@ export class CsMeetingScoring extends CsMeetingBase {
       hideSubmitComment,
       hideRating,
       this.addCoreIssueCommentFromInput,
-      this._scoreIssue,
+      this._rateIssue,
       toggleCommentsMode
     );
   }
@@ -352,7 +360,7 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   rightVotingIssueArrow() {
-    if (this.votingIssueIndex < this.participantsIssues!.length - 1) {
+    if (this.votingIssueIndex < this.allIssues!.length - 1) {
       this.votingIssueIndex += 1;
     }
     this.updateState();
@@ -511,6 +519,13 @@ export class CsMeetingScoring extends CsMeetingBase {
       }
     }
 
+    if (changedProperties.has('allIssues') && this.allIssues) {
+      this.allIssuesHash = {};
+      for (let i=0;i<this.allIssues.length;i++)  {
+        this.allIssuesHash[this.allIssues[i].id] = this.allIssues[i];
+      }
+    }
+
     if (
       (changedProperties.has('participantsIssues') ||
         changedProperties.has('coreIssues')) &&
@@ -518,7 +533,22 @@ export class CsMeetingScoring extends CsMeetingBase {
       this.coreIssues
     ) {
       this.allIssues = this.coreIssues.concat(this.participantsIssues);
+      this._getRatings();
     }
+  }
+
+  async _getRatings() {
+    const ratings = (await window.serverApi.getRatings(
+      this.meeting.Round!.projectId
+    )) as Array<IssueAttributes> | undefined;
+
+    if (ratings && this.allIssuesHash) {
+      for (let i=0;i<ratings.length;i++)  {
+        this.allIssuesHash[ratings[i].id].score = parseFloat((ratings[i] as any).avgRating);
+      }
+    }
+
+    this.allIssues = [...this.allIssues!];
   }
 
   _selectTab(event: CustomEvent) {
