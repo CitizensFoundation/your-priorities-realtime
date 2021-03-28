@@ -138,8 +138,6 @@ class StarsRating extends LitElement {
     if (changedProperties.has('userRating') && this.userRating) {
       this.dispatchEvent(new CustomEvent('rating-changed', { detail: this.userRating }));
     }
-
-    console.error(`rating: ${this.rating} userRating: ${this.userRating}`)
   }
 
   _updateNumstars() {
