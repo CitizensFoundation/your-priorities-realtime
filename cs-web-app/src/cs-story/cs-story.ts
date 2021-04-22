@@ -150,7 +150,7 @@ export class CsStory extends YpBaseElement {
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
-            <h1 style="font-family: serif; font-size: 30px;">YOUR RESPONSIBILITIES</h1>
+            <h1>YOUR RESPONSIBILITIES</h1>
             <p style="color: white">You have responsibilities as a client at the Health Center to ensure you receive good quality care and treatment</p>
           </div>
         </cs-story-card>
@@ -177,7 +177,7 @@ export class CsStory extends YpBaseElement {
         <cs-story-card>
           <img slot="media" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/shutterstock_1147582w93.png" />
           <div class="bottom">
-            <h1 style="font-family: serif; font-size: 28px;">CHECK YOUR HEALTH CENTER’S PERFORMANCE COMPARED WITH NATIONAL SERVICE STANDARDS</h1>
+            <h1>CHECK YOUR HEALTH CENTER’S PERFORMANCE COMPARED WITH NATIONAL SERVICE STANDARDS</h1>
             <p style="color: white">Does your Health Center provide the services according to national service standards?</p>
           </div>
         </cs-story-card>
@@ -552,10 +552,44 @@ export class CsStory extends YpBaseElement {
           margin-bottom: 16px;
         }
 
+        h1 {
+          font-size: 26px;
+        }
+
         ul {
           color: black;
           font-size: 16px;
         }
+
+        @media (max-width: 600px) {
+          cs-story-viewer {
+            overflow-y: scroll;
+          }
+
+          p {
+            font-size: 18px;
+            margin-bottom: 16px;
+          }
+
+          ol {
+            font-size: 14px;
+          }
+
+          h1 {
+            font-size: 24px;
+          }
+
+          h3 {
+            font-size: 14px;
+            margin-bottom: 16px;
+          }
+
+          ul {
+            font-size: 14px;
+          }
+        }
+
+
 
         li {
           margin-bottom: 16px;

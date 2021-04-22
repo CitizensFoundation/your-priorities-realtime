@@ -114,6 +114,7 @@ export class CsLogin extends YpBaseElement {
         }
 
         .avatarContainer,
+
         .chooseAvatarColor {
           background-color: #fefefe;
           max-width: 300px;
@@ -130,6 +131,7 @@ export class CsLogin extends YpBaseElement {
         .chooseAvatarColor {
           margin-left: 20px;
         }
+
         .avatarContainer {
           margin-right: 16px;
         }
@@ -156,7 +158,7 @@ export class CsLogin extends YpBaseElement {
         }
 
         .avatarColorText {
-          padding-top: 28px;
+          padding-bottom: 24px;
         }
 
         .buttonIcon {
@@ -177,10 +179,6 @@ export class CsLogin extends YpBaseElement {
           margin-top: 38px;
         }
 
-        .chooseAvatarText {
-          padding-top: 18px;
-        }
-
         .avatarContainer {
           margin-top: 0;
           padding-top: 0;
@@ -197,8 +195,39 @@ export class CsLogin extends YpBaseElement {
         .mainTitleContainer {
           color: #fff;
           padding-bottom: 16px;
-          margin-bottom: 42px;
+          margin-bottom: 16px;
           background-color: #000;
+        }
+
+
+        .subContainer {
+          height: 250px;
+        }
+
+        @media (max-width: 720px) {
+          .container {
+            width: 100%;
+          }
+
+          .subContainer {
+            height: 100%;
+          }
+
+          .chooseAvatarColor {
+            width: 100%;
+          }
+
+          .chooseAvatarText {
+            margin-top: 16px;
+          }
+
+          .avatarColorText {
+            margin-top: 16px;
+          }
+
+          .mainTitleContainer {
+            text-align: center;
+          }
         }
       `,
     ];
@@ -222,6 +251,7 @@ export class CsLogin extends YpBaseElement {
 
     return html`
       <div class="layout vertical center-center wrap avatarContainer">
+        <div class="loginInfo chooseAvatarText">${this.t('chooseAvatar')}</div>
         <div class="layout horizontal center-center wrap avatarWrapper">
           ${arr.map(icon => {
             return html`
@@ -235,7 +265,6 @@ export class CsLogin extends YpBaseElement {
             `;
           })}
         </div>
-        <div class="loginInfo chooseAvatarText">${this.t('chooseAvatar')}</div>
       </div>
     `;
   }
@@ -246,20 +275,24 @@ export class CsLogin extends YpBaseElement {
         <div
           class="layout vertical wrap shadow-elevation-2dp shadow-transition container"
         >
+
           <div class="layout horizontal center-center mainTitleContainer">
             <div class="mainTitle">${this.t('welcomeToTheCommunityScoreCardApp')}</div>
           </div>
+
           <div class="layout horizontal center-center wrap">
-            <div class="chooseAvatar layoutself-start">
+            <div class="chooseAvatar layoutself-start subContainer">
               ${this.renderChooseAvatar()}
             </div>
-            <div class="layout vertical center-center wrap chooseAvatarColor">
-              <hex-color-picker color="#000"></hex-color-picker>
+
+            <div class="layout vertical center-center wrap chooseAvatarColor subContainer">
               <div class="loginInfo avatarColorText">
                 ${this.t('chooseAvatarColor')}
               </div>
+              <hex-color-picker color="#000"></hex-color-picker>
             </div>
           </div>
+
           <div class="layout horizontal center-center">
             <mwc-button
               @click="${this.login}"

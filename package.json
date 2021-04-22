@@ -5,10 +5,10 @@
   "license": "GPL",
   "scripts": {
     "start": "nodemon -e ts api/out-ts/server.js",
-    "watch-start": "tsc --project ./api/ --outDir ./api/ts-out -w & nodemon -q api/out-ts/server.js",
+    "watch-start": "tsc --project ./api/ --outDir ./api/ts-out -w & nodemon -q api/out-tsc/server.js",
     "dev": "nodemon --config nodemon.json api/out-ts/server.js",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk server.ts",
-    "build": "tsc --project ./api/ --outDir ./api/ts-out"
+    "build": "tsc --project ./api/ --outDir ./api/out-tsc"
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.0",

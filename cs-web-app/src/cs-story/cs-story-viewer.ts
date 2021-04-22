@@ -109,6 +109,18 @@ export class CsStoryViewer extends YpBaseElement {
       width: 400px;
       height: 711px;
     }
+
+    @media (max-width: 600px) {
+      :host {
+        display: block;
+        position: absolute;
+        top: 48px;
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 48px);
+      }
+    }
+
     ::slotted(*) {
       position: absolute;
       width: 100%;
@@ -149,6 +161,12 @@ export class CsStoryViewer extends YpBaseElement {
     }
     [hidden] {
       display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      #progress {
+        display: none !important;
+      }
     }
  `];
   }

@@ -476,6 +476,10 @@ export class CsApp extends YpBaseElement {
       margin-top: 8px;
     }
 
+    mwc-top-app-bar {
+      --mdc-theme-primary: #656565;
+    }
+
    `];
   }
 
