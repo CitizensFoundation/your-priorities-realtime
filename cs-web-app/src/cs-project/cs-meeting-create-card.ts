@@ -133,6 +133,11 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin: 32px;
           font-size: 24px;
         }
+        @media (max-width: 400px) {
+          .issueForwardBack {
+            display: none !important;
+          }
+        }
       `,
     ];
   }
@@ -457,7 +462,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     if (this.coreIssues && this.coreIssues.length > 0) {
       return html`
         <div class="layout horizontal center-center sliderContainer">
-          <div class="issueBack issueVoting">
+          <div class="issueForwardBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.coreIssueIndex === 0}"
               ?disabled="${!this.isAdmin && this.isLive}"
@@ -468,7 +473,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           <div class="layout vertical center-center">
             ${this.renderIssue(this.coreIssueIndex)}
           </div>
-          <div class="issueBack issueVoting">
+          <div class="issueForwardBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.coreIssueIndex >= this.coreIssues!.length - 1}"
               ?disabled="${!this.isAdmin && this.isLive}"
@@ -487,7 +492,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     if (this.participantsIssues && this.participantsIssues.length > 0) {
       return html`
         <div class="layout horizontal center-center sliderContainer">
-          <div class="issueBack issueVoting layout horizontal">
+          <div class="issueForwardBack issueVoting layout horizontal">
             <mwc-icon-button
               ?hidden="${this.votingIssueIndex === 0}"
               ?disabled="${!this.isAdmin && this.isLive}"
@@ -498,7 +503,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           <div class="layout vertical center-center">
             ${this.renderIssue(this.votingIssueIndex)}
           </div>
-          <div class="issueBack issueVoting">
+          <div class="issueForwardBack issueVoting">
             <mwc-icon-button
               ?hidden="${this.votingIssueIndex >=
               this.participantsIssues!.length - 1}"

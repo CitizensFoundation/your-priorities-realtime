@@ -131,7 +131,7 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   sendState(state: StateAttributes) {
-    console.error(state);
+    //console.error(state);
     this.io.emit('meetingState', state);
   }
 
@@ -151,24 +151,24 @@ export class CsMeetingBase extends YpBaseElement {
     });
 
     this.io.on('meetingState', (...args: any) => {
-      console.error(args);
+      //console.error(args);
       if (!this.isAdmin) {
         this._processState(args[0] as StateAttributes);
       }
     });
 
     this.io.on('newComment', (...args: any) => {
-      console.error(args);
+      //console.error(args);
       this._processNewComment(args[0] as CommentAttributes);
     });
 
     this.io.on('newAction', (...args: any) => {
-      console.error(args);
+      //console.error(args);
       this._processNewAction(args[0] as ActionAttributes);
     });
 
     this.io.on('newIssue', (...args: any) => {
-      console.error(args);
+      //console.error(args);
       this._processNewIssue(args[0] as IssueAttributes);
     });
   }

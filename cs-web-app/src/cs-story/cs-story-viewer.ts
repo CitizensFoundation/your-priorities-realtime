@@ -167,6 +167,10 @@ export class CsStoryViewer extends YpBaseElement {
       #progress {
         display: none !important;
       }
+
+      ::slotted(*) {
+        height: 100%;
+      }
     }
  `];
   }
