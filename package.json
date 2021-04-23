@@ -1,6 +1,6 @@
 {
-  "name": "pace-website",
-  "version": "1.0.0",
+  "name": "community-scorecard",
+  "version": "1.0.1",
   "main": "api/ts-out/server.js",
   "license": "GPL",
   "scripts": {
