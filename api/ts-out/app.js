@@ -104,8 +104,9 @@ class App {
         this.app.use('/meeting*', express_1.default.static(path.join(__dirname, '/../../cs-web-app/dist')));
         app.use(session({
             store: new RedisStore({ client: redisClient }),
-            secret: 'hmm',
+            secret: process.env.SESSION_SECRET ? process.env.SESSION_SECRET : 'not so secret... use env var.',
             resave: false,
+            saveUninitialized: false
         }));
         if (process.env.NODE_ENV !== 'development' && !process.env.DISABLE_FORCE_HTTPS) {
             this.app.enable('trust proxy');

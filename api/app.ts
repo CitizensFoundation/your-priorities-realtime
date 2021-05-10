@@ -101,8 +101,9 @@ export class App {
     app.use(
       session({
         store: new RedisStore({ client: redisClient }),
-        secret: 'hmm',
+        secret: process.env.SESSION_SECRET ? process.env.SESSION_SECRET : 'not so secret... use env var.',
         resave: false,
+        saveUninitialized: false
       })
     )
 
