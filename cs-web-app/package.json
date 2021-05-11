@@ -73,7 +73,7 @@
     "emoji-rating": "^0.3.0",
     "hammerjs": "^2.0.8",
     "i18next-http-backend": "^1.1.1",
-    "koa-proxies": "^0.11.0",
+    "koa-proxies": "^0.12.1",
     "linkifyjs": "^2.1.9",
     "lit-element": "^2.4.0",
     "lit-flexbox-literals": "0.0.7",

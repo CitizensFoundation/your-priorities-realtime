@@ -288,7 +288,6 @@ export class CsStory extends YpBaseElement {
     `;
   }
 
-
   renderStoryTwo() {
     return html`
       <cs-story-viewer id="viewer" ?isLive="${this.isLive}" ?isAdmin="${this.isAdmin}">

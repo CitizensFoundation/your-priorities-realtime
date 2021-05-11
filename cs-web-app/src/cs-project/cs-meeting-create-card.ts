@@ -18,8 +18,6 @@ import { Checkbox } from '@material/mwc-checkbox';
 
 import '@material/mwc-formfield';
 
-import { random, sortBy } from 'lodash-es';
-
 import { CsServerApi } from '../CsServerApi.js';
 import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
@@ -32,6 +30,7 @@ export const CreateCardTabTypes: Record<string, number> = {
   CreateLocal: 2,
   Voting: 3,
   Review: 4,
+  Preview: 5
 };
 
 @customElement('cs-meeting-create-card')
@@ -234,7 +233,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     await window.serverApi.setSelectedStatus(issueId, checkbox.checked);
   }
 
-  renderIssueHtml(
+  renderCreateIssueHtml(
     issue: IssueAttributes,
     showVoting: boolean,
     disableVoting: boolean,
@@ -326,7 +325,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       showComments = true;
     }
 
-    return this.renderIssueHtml(
+    return this.renderCreateIssueHtml(
       issue,
       showVoting,
       disableVoting,
@@ -536,6 +535,32 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     }
   }
 
+  renderPreview() {
+    if (
+      this.coreIssues &&
+      this.orderedParticipantsIssues &&
+      this.orderedParticipantsIssues.length > 0
+    ) {
+      const allIssues = [...this.coreIssues, ...this.orderedParticipantsIssues];
+      return html`
+        <div class="layout vertical center-center">
+          ${allIssues.map((issue, index) => {
+            return this.renderIssueHtml(
+              issue,
+              true,
+              true,
+              false,
+              false,
+              false
+            );;
+          })}
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
   renderTabs() {
     return html`
     <div class="layout vertical center-center">
@@ -572,6 +597,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           icon="checklist"
           stacked
         ></mwc-tab>
+        <mwc-tab
+          ?hidden="${!this.isAdmin && this.selectedTab!=4}"
+          .label="${this.t('preview')}"
+          icon="preview"
+          stacked
+        ></mwc-tab>
       </mwc-tab-bar>
     </div>
   `;
@@ -596,7 +627,10 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       case CreateCardTabTypes.Review:
         page = this.renderReview();
         break;
-    }
+      case CreateCardTabTypes.Preview:
+        page = this.renderPreview();
+        break;
+      }
 
     return page;
   }
@@ -625,7 +659,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       changedProperties.has('participantsIssues') &&
       this.participantsIssues
     ) {
-      this.orderedParticipantsIssues = sortBy(this.participantsIssues, item => {
+      this.orderedParticipantsIssues = this.participantsIssues.sort(item => {
         return item.counterDownVotes - item.counterUpVotes;
       });
     }

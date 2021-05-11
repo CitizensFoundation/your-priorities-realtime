@@ -667,6 +667,17 @@ export class CsApp extends YpBaseElement {
             ></cs-create-issues>
           `);
           break;
+        case 'info':
+          pageHtml = cache(html`
+            <cs-story
+              id="meeting"
+              role="main"
+              .user="${this.user}"
+              aria-label="${this.t('information')}"
+              .subRoute="${this.subRoute}"
+            ></cs-story>
+          `);
+          break;
         case 'meeting':
           pageHtml = cache(html`
             <cs-meeting
@@ -678,7 +689,7 @@ export class CsApp extends YpBaseElement {
             ></cs-meeting>
           `);
           break;
-          case 'score':
+        case 'score':
           pageHtml = cache(html`
             <cs-score
               id="project"
@@ -699,18 +710,18 @@ export class CsApp extends YpBaseElement {
           `);
           break;
         case 'report':
-            pageHtml = cache(html`
-              <cs-report
-                id="report"
-                role="main"
-                aria-label="${this.t('report')}"
-                .subRoute="${this.subRoute}"
-              ></cs-report>
-            `);
-            break;
-          default:
-          pageHtml = cache(html` <yp-view-404 name="view-404"></yp-view-404> `);
+          pageHtml = cache(html`
+            <cs-report
+              id="report"
+              role="main"
+              aria-label="${this.t('report')}"
+              .subRoute="${this.subRoute}"
+            ></cs-report>
+          `);
           break;
+        default:
+        pageHtml = cache(html` <yp-view-404 name="view-404"></yp-view-404> `);
+        break;
       }
     } else {
       pageHtml = nothing;

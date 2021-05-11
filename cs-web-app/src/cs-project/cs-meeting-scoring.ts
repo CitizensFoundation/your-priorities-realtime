@@ -315,7 +315,7 @@ export class CsMeetingScoring extends CsMeetingBase {
         </div>
       `;
     } else {
-      return html``;
+      return nothing;
     }
   }
 
@@ -329,7 +329,7 @@ export class CsMeetingScoring extends CsMeetingBase {
         </div>
       `;
     } else {
-      return html``;
+      return nothing;
     }
   }
 
@@ -343,7 +343,7 @@ export class CsMeetingScoring extends CsMeetingBase {
         </div>
       `;
     } else {
-      return html``;
+      return nothing;
     }
   }
 
