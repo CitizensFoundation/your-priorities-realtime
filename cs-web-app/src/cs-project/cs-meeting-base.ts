@@ -70,6 +70,8 @@ export class CsMeetingBase extends YpBaseElement {
   @property({ type: Array })
   allIssues: Array<IssueAttributes> | undefined;
 
+  @property({ type: Number })
+  storyNumber!: number;
 
   roomName: string | undefined;
 
@@ -682,6 +684,7 @@ export class CsMeetingBase extends YpBaseElement {
       <div class="layout horizontal center-center">
         <cs-story
           id="storyViewer"
+          number="${this.storyNumber}"
           @cs-story-index="${this.setStoryIndex}"
           ?isLive="${this.isLive}"
           ?isAdmin="${this.isAdmin}"

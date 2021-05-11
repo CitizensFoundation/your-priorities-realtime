@@ -390,8 +390,8 @@ export class CsMeetingScoring extends CsMeetingBase {
   `;
 }
 
-  renderCurrentTabPage(): TemplateResult | undefined {
-    let page: TemplateResult | undefined;
+  renderCurrentTabPage(): TemplateResult | {} | undefined {
+    let page: TemplateResult | {} | undefined;
 
     switch (this.selectedTab) {
       case ScoringTabTypes.Information:

@@ -38,6 +38,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   constructor() {
     super();
+    this.storyNumber = 2;
   }
 
   connectedCallback() {

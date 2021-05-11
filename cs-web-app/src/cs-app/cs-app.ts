@@ -286,8 +286,12 @@ export class CsApp extends YpBaseElement {
     window.addEventListener('popstate', this.updateLocation.bind(this));
     this._setupTouchEvents();
 
-    this.addListener('yp-hide-app-bar', () => { this.hideAppBar = true });
-    this.addListener('yp-unhide-app-bar', () => { this.hideAppBar = false });
+    this.addListener('yp-hide-app-bar', () => {
+      this.hideAppBar = true;
+    });
+    this.addListener('yp-unhide-app-bar', () => {
+      this.hideAppBar = false;
+    });
   }
 
   _removeEventListeners() {
@@ -326,12 +330,11 @@ export class CsApp extends YpBaseElement {
     this.removeListener('yp-set-pages', this._setPages, this);
   }
 
-
   renderLiveControls() {
     if (this.isAdmin) {
       return html`
-      <div class="layout horizontal">
-        <mwc-formfield .label="">
+        <div class="layout horizontal">
+          <mwc-formfield .label="">
             <mwc-checkbox
               id="liveRadio"
               @change="${this._liveChanged}"
@@ -343,8 +346,10 @@ export class CsApp extends YpBaseElement {
             >
             </mwc-checkbox>
           </mwc-formfield>
-        <div class="liveInfoText" ?is-live="${this.isLive}">${this.isLive ? this.t('live') : this.t("offline")}</div>
-      </div>
+          <div class="liveInfoText" ?is-live="${this.isLive}">
+            ${this.isLive ? this.t('live') : this.t('offline')}
+          </div>
+        </div>
       `;
     } else {
       return nothing;
@@ -352,14 +357,14 @@ export class CsApp extends YpBaseElement {
   }
 
   _liveChanged(event: CustomEvent) {
-    this.isLive = event.detail
+    this.isLive = event.detail;
     if ((this.$$('#liveRadio') as Radio).checked) {
       this.isLive = true;
     } else {
       this.isLive = false;
     }
 
-    this.fireGlobal("cs-live", this.isLive);
+    this.fireGlobal('cs-live', this.isLive);
   }
 
   _setLiveStatus(event: CustomEvent) {
@@ -414,73 +419,82 @@ export class CsApp extends YpBaseElement {
 
   static get styles() {
     return [
-      super.styles, css`
-      .liveIcon {
-        color: #f00;
-        margin-left: 8px;
-      }
-
-      .facilitatorInfo {
-        font-size: 16px;
-        margin-left: 12px;
-      }
-
-      @media(max-width: 960px) {
-        .facilitatorInfo {
-          font-size: 14px;
-          margin-left: 16px;
+      super.styles,
+      css`
+        .liveIcon {
+          color: #f00;
+          margin-left: 8px;
         }
-      }
 
-    mwc-checkbox, mwc-formfield {
-      color: #fff !important;
-      --mdc-checkbox-ink-color: #000 !important;
-      --mdc-theme-background: #000;
-      --mdc-theme-primary: #FFF !important;
-      --mdc-theme-secondary: #fff !important;
-      --mdc-theme-surface: #000;
-      --mdc-theme-on-primary: #000;
-      --mdc-theme-on-secondary: #000;
-      --mdc-theme-on-surface: #fff;
-      --mdc-checkbox-unchecked-color: #fff;
-      --mdc-text-field-ink-color: #fff;
-      --mdc-text-field-fill-color: transparent;
-      --mdc-text-field-disabled-fill-color: transparent;
-    }
+        .facilitatorInfo {
+          font-size: 16px;
+          margin-left: 12px;
+        }
 
-    .liveInfo[is-admin] {
-      margin-top: 12px;
-      margin-left: 8px;
-    }
+        @media (max-width: 960px) {
+          .facilitatorInfo {
+            font-size: 14px;
+            margin-left: 16px;
+          }
+        }
 
-    .facilitatorInfo {
-      margin-top: 4px;
-    }
+        mwc-checkbox,
+        mwc-formfield {
+          color: #fff !important;
+          --mdc-checkbox-ink-color: #000 !important;
+          --mdc-theme-background: #000;
+          --mdc-theme-primary: #fff !important;
+          --mdc-theme-secondary: #fff !important;
+          --mdc-theme-surface: #000;
+          --mdc-theme-on-primary: #000;
+          --mdc-theme-on-secondary: #000;
+          --mdc-theme-on-surface: #fff;
+          --mdc-checkbox-unchecked-color: #fff;
+          --mdc-text-field-ink-color: #fff;
+          --mdc-text-field-fill-color: transparent;
+          --mdc-text-field-disabled-fill-color: transparent;
+        }
 
-    .liveInfoText {
-      margin-top: 14px;
-      margin-left: -8px;
-    }
+        .liveInfo[is-admin] {
+          margin-top: 12px;
+          margin-left: 8px;
+        }
 
-    .liveInfoText[is-live], .liveIcon {
-      animation: color-change 20s infinite;
-    }
+        .facilitatorInfo {
+          margin-top: 4px;
+        }
 
-    @keyframes color-change {
-      0% { color: red; }
-      50% { color: white; }
-      100% { color: red; }
-    }
+        .liveInfoText {
+          margin-top: 14px;
+          margin-left: -8px;
+        }
 
-    .pageContainer {
-      margin-top: 8px;
-    }
+        .liveInfoText[is-live],
+        .liveIcon {
+          animation: color-change 20s infinite;
+        }
 
-    mwc-top-app-bar {
-      --mdc-theme-primary: #494949;
-    }
+        @keyframes color-change {
+          0% {
+            color: red;
+          }
+          50% {
+            color: white;
+          }
+          100% {
+            color: red;
+          }
+        }
 
-   `];
+        .pageContainer {
+          margin-top: 8px;
+        }
+
+        mwc-top-app-bar {
+          --mdc-theme-primary: #494949;
+        }
+      `,
+    ];
   }
 
   renderNavigationIcon() {
@@ -509,16 +523,19 @@ export class CsApp extends YpBaseElement {
       | undefined;
 
     if (this.user) {
-      this._onUserChanged({detail: this.user} as CustomEvent);
-    } else {
+      this._onUserChanged({ detail: this.user } as CustomEvent);
+    } else if (
+      window.location.href.indexOf('/info/') == -1 &&
+      window.location.href.indexOf('/meeting/3') == -1
+    ) {
       this.redirectAfterLoginPath = window.location.pathname;
-      YpNavHelpers.redirectTo("/login");
+      YpNavHelpers.redirectTo('/login');
     }
   }
 
   async _logout() {
     await window.serverApi.logout();
-    this._onUserChanged({detail: null} as CustomEvent);
+    this._onUserChanged({ detail: null } as CustomEvent);
   }
 
   renderActionItems() {
@@ -563,7 +580,12 @@ export class CsApp extends YpBaseElement {
 
       ${this.user
         ? html`
-            <mwc-icon-button  slot="actionItems"  .icon="${this.user.selectedAvatar!}" class="userIcon" style="color:${this.user.selectedAvatarColor}"></mwc-icon-button>
+            <mwc-icon-button
+              slot="actionItems"
+              .icon="${this.user.selectedAvatar!}"
+              class="userIcon"
+              style="color:${this.user.selectedAvatarColor}"
+            ></mwc-icon-button>
             <mwc-icon-button
               icon="login"
               slot="actionItems"
@@ -573,7 +595,8 @@ export class CsApp extends YpBaseElement {
             </mwc-icon-button>
           `
         : html`
-            <mwc-icon-button hidden
+            <mwc-icon-button
+              hidden
               icon="login"
               slot="actionItems"
               @click="${this._login}"
@@ -586,20 +609,20 @@ export class CsApp extends YpBaseElement {
 
   renderAppBar() {
     return html`
-      ${ !this.hideAppBar ? html`
-      <mwc-top-app-bar dense>
-        <div slot="navigationIcon">${this.renderNavigationIcon()}</div>
-        <div slot="title">
-          ${this.goForwardToPostId ? this.goForwardPostName : this.headerTitle}
-        </div>
-        ${this.renderActionItems()}
-        <div class="pageContainer">
-          ${this.renderPage()}
-        </div>
-      </mwc-top-app-bar>
-      ` : html`
-      ${this.renderPage()}
-        `}
+      ${!this.hideAppBar
+        ? html`
+            <mwc-top-app-bar dense>
+              <div slot="navigationIcon">${this.renderNavigationIcon()}</div>
+              <div slot="title">
+                ${this.goForwardToPostId
+                  ? this.goForwardPostName
+                  : this.headerTitle}
+              </div>
+              ${this.renderActionItems()}
+              <div class="pageContainer">${this.renderPage()}</div>
+            </mwc-top-app-bar>
+          `
+        : html` ${this.renderPage()} `}
     `;
   }
 
@@ -637,7 +660,7 @@ export class CsApp extends YpBaseElement {
             ></cs-login>
           `;
           break;
-          case 'round':
+        case 'round':
           pageHtml = cache(html`
             <cs-round
               id="project"
@@ -672,6 +695,7 @@ export class CsApp extends YpBaseElement {
             <cs-story
               id="meeting"
               role="main"
+              number="3"
               .user="${this.user}"
               aria-label="${this.t('information')}"
               .subRoute="${this.subRoute}"
@@ -720,8 +744,8 @@ export class CsApp extends YpBaseElement {
           `);
           break;
         default:
-        pageHtml = cache(html` <yp-view-404 name="view-404"></yp-view-404> `);
-        break;
+          pageHtml = cache(html` <yp-view-404 name="view-404"></yp-view-404> `);
+          break;
       }
     } else {
       pageHtml = nothing;
@@ -732,7 +756,7 @@ export class CsApp extends YpBaseElement {
 
   render() {
     return html`
-      ${ this.renderAppBar() }
+      ${this.renderAppBar()}
 
       <yp-dialog-container id="dialogContainer"></yp-dialog-container>
 
@@ -1557,7 +1581,6 @@ export class CsApp extends YpBaseElement {
       if (this.redirectAfterLoginPath) {
         YpNavHelpers.redirectTo(this.redirectAfterLoginPath);
       }
-
     } else {
       this.user = undefined;
     }
