@@ -220,7 +220,7 @@ models.ProgressReport.belongsTo(models.Action, {
 // Rating
 models.Rating.belongsTo(models.Issue, { as: "Issue", foreignKey: "issueId" });
 
-const force = true;
+const force = process.env.FORCE_DB_SYNC ? true : true;
 
 if (force) {
   sequelize.sync({ force });
@@ -404,7 +404,7 @@ if (force) {
         console.error(error);
       }
     })();
-  }, 700);
+  }, 900);
 } else {
   sequelize.sync({});
 }

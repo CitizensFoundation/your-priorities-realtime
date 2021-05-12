@@ -491,7 +491,7 @@ export class CsApp extends YpBaseElement {
         }
 
         mwc-top-app-bar {
-          --mdc-theme-primary: #494949;
+          --mdc-theme-primary: #000;
         }
       `,
     ];
@@ -504,7 +504,7 @@ export class CsApp extends YpBaseElement {
           ${this.renderLiveControls()}
           <div class="layout horizontal liveInfo" ?is-admin="${this.isAdmin}">
             <mwc-icon class="liveIcon">record_voice_over</mwc-icon>
-            <div class="facilitatorInfo">Facilitator is Robert Bjarnason</div>
+            <div class="facilitatorInfo">Facilitator: Bev Jones</div>
           </div>
         </div>
       `;
