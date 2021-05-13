@@ -65,7 +65,7 @@ export class CsMeetingBase extends YpBaseElement {
   orderedAllIssues: Array<IssueAttributes> | undefined;
 
   @property({ type: Object })
-  allIssuesHash: Record<number,IssueAttributes> = {};
+  allIssuesHash: Record<number, IssueAttributes> = {};
 
   @property({ type: Array })
   allIssues: Array<IssueAttributes> | undefined;
@@ -118,11 +118,13 @@ export class CsMeetingBase extends YpBaseElement {
     )) as Array<IssueAttributes> | undefined;
 
     if (ratings && this.allIssuesHash) {
-      for (let i=0;i<ratings.length;i++)  {
+      for (let i = 0; i < ratings.length; i++) {
         if (this.allIssuesHash[ratings[i].id]) {
-          this.allIssuesHash[ratings[i].id].score = parseFloat((ratings[i] as any).avgRating);
+          this.allIssuesHash[ratings[i].id].score = parseFloat(
+            (ratings[i] as any).avgRating
+          );
         } else {
-          console.error("Can't find ratings index: ")
+          console.error("Can't find ratings index: ");
         }
       }
     }
@@ -173,6 +175,12 @@ export class CsMeetingBase extends YpBaseElement {
       //console.error(args);
       this._processNewIssue(args[0] as IssueAttributes);
     });
+
+    this.io.on('newCommentVote', (...args: any) => {
+      //console.error(args);
+      debugger;
+      this._processNewCommentVote(args[0] as CommentAttributes);
+    });
   }
 
   _closeSockets() {
@@ -189,6 +197,38 @@ export class CsMeetingBase extends YpBaseElement {
     if (this.isAdmin && this.isLive) {
       this.storyPageIndex = event.detail as number;
       this.updateState();
+    }
+  }
+
+  _processNewCommentVote(comment: CommentAttributes) {
+    debugger;
+    if (this.coreIssues) {
+      loop1:
+        for (let i=0;i<this.coreIssues.length;i++) {
+          if (this.coreIssues[i].Comments) {
+            for (let n=0;n<this.coreIssues[i].Comments!.length;n++) {
+              if (this.coreIssues[i].Comments![n].id==comment.id) {
+                this.coreIssues[i].Comments![n] = comment;
+                this.coreIssues = [...this.coreIssues];
+                break loop1;
+              }
+            }
+          }
+        }
+    }
+    if (this.participantsIssues) {
+      loop2:
+        for (let i=0;i<this.participantsIssues.length;i++) {
+          if (this.participantsIssues[i].Comments) {
+            for (let n=0;i<this.participantsIssues[i].Comments!.length;n++) {
+              if (this.participantsIssues[i].Comments![n].id==comment.id) {
+                this.participantsIssues[i].Comments![n] = comment;
+                this.participantsIssues = [...this.participantsIssues];
+                break loop2;
+              }
+            }
+          }
+        }
     }
   }
 
@@ -437,7 +477,6 @@ export class CsMeetingBase extends YpBaseElement {
           padding-right: 4px;
         }
 
-
         #emoji,
         #emojiLarge {
           --star-size: 0.9em;
@@ -517,27 +556,23 @@ export class CsMeetingBase extends YpBaseElement {
 
   async voteCommentUp(comment: CommentAttributes) {
     await window.serverApi.voteComment(comment.id, 1);
-  }
-
-  async voteCommentDown(comment: CommentAttributes) {
-    await window.serverApi.voteComment(comment.id, -1);
+    comment.counterUpVotes+=1;
+    this.io.emit('newCommentVote', comment);
   }
 
   _toggleCommentsForIssue(issueId: number, button: IconButton) {
     const input = this.$$(`#issue${issueId}inputComments`);
 
-    if (input)
-      input.hidden = !input.hidden;
+    if (input) input.hidden = !input.hidden;
 
-      const output = this.$$(`#issue${issueId}outputComments`);
+    const output = this.$$(`#issue${issueId}outputComments`);
 
-      if (output)
-        output.hidden = !output.hidden;
+    if (output) output.hidden = !output.hidden;
 
-    if (button.icon=="keyboard_arrow_right") {
-      button.icon="keyboard_arrow_down";
+    if (button.icon == 'keyboard_arrow_right') {
+      button.icon = 'keyboard_arrow_down';
     } else {
-      button.icon="keyboard_arrow_right";
+      button.icon = 'keyboard_arrow_right';
     }
 
     button.blur();
@@ -554,17 +589,20 @@ export class CsMeetingBase extends YpBaseElement {
     scoreIssueFunction: Function | undefined = undefined,
     toggleCommentsMode = false
   ) {
-    return html`
-      <div
+    return html` <div
         class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
         ?comments-hidden="${!showComments}"
       >
         <div class="layout vertical otherContainer">
           <div class="layout horizontal center-center">
-            <mwc-icon class="bookmarkIcon bookmarkIconStronger">${this.getIconForIssueType(issue)}</mwc-icon>
+            <mwc-icon class="bookmarkIcon bookmarkIconStronger"
+              >${this.getIconForIssueType(issue)}</mwc-icon
+            >
           </div>
 
-          <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
+          <div class="issueName" ?has-standard="${issue.standard}">
+            ${issue.description}
+          </div>
           <div class="issueStandard">${issue.standard}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
             <div class="layout horizontal center-center ratingContainer">
@@ -586,7 +624,7 @@ export class CsMeetingBase extends YpBaseElement {
         showComments,
         disableVoting,
         addCommentFunction!,
-        this.voteCommentUp,
+        this.voteCommentUp.bind(this),
         toggleCommentsMode,
         hideSubmitComment
       )}`;
@@ -597,22 +635,30 @@ export class CsMeetingBase extends YpBaseElement {
     showComments: boolean,
     disableVoting: boolean,
     addCoreIssueCommentFromInput: Function,
-    voteCommentDown: Function,
+    voteCommentUp: Function,
     toggleCommentMode = false,
     hideSubmitComment = false
   ) {
     if (showComments) {
       return html`
-
-        ${(toggleCommentMode && !(hideSubmitComment && issue.Comments?.length===0)) ? html`
-          <div class="layout horizontal">
-            <div class="commentsOpenClose">${this.t('toggleComments')}</div>
-            <mwc-icon-button icon="keyboard_arrow_right" class="commentToggleIcons"
-              @click="${(event: CustomEvent) => this._toggleCommentsForIssue(issue.id,event.srcElement as IconButton)}"
-            >
-            </mwc-icon-button>
-          </div>
-        ` : nothing}
+        ${toggleCommentMode &&
+        !(hideSubmitComment && issue.Comments?.length === 0)
+          ? html`
+              <div class="layout horizontal">
+                <div class="commentsOpenClose">${this.t('toggleComments')}</div>
+                <mwc-icon-button
+                  icon="keyboard_arrow_right"
+                  class="commentToggleIcons"
+                  @click="${(event: CustomEvent) =>
+                    this._toggleCommentsForIssue(
+                      issue.id,
+                      event.srcElement as IconButton
+                    )}"
+                >
+                </mwc-icon-button>
+              </div>
+            `
+          : nothing}
         <div
           id="issue${issue.id}inputComments"
           class="layout vertical center-center comments"
@@ -630,7 +676,10 @@ export class CsMeetingBase extends YpBaseElement {
             id="coreIssueInput"
             .label="${this.t('yourComment')}"
           ></mwc-textarea>
-          <div class="layout horizontal center-center" ?hidden="${hideSubmitComment}">
+          <div
+            class="layout horizontal center-center"
+            ?hidden="${hideSubmitComment}"
+          >
             <mwc-button
               raised
               ?disabled="${!this.currentCommentInput}"
@@ -642,8 +691,12 @@ export class CsMeetingBase extends YpBaseElement {
           </div>
         </div>
 
-        <div id="issue${issue.id}outputComments" class="layout vertical" ?hidden="${toggleCommentMode}">
-          ${issue.Comments?.map(comment => {
+        <div
+          id="issue${issue.id}outputComments"
+          class="layout vertical"
+          ?hidden="${toggleCommentMode}"
+        >
+          ${issue.Comments?.sort(c=>c.counterUpVotes).map(comment => {
             return html`
               <div class="comment">
                 <div class="innerContainer">
@@ -658,12 +711,14 @@ export class CsMeetingBase extends YpBaseElement {
                     <div class="commentVotingNumber">
                       ${comment.counterUpVotes && comment.counterDownVotes
                         ? comment.counterUpVotes - comment.counterDownVotes
+                        : comment.counterUpVotes
+                        ? comment.counterUpVotes
                         : 0}
                     </div>
                     <mwc-icon-button
                       icon="arrow_upward"
                       ?disabled="${disableVoting}"
-                      @click="${voteCommentDown}"
+                      @click="${() => this.voteCommentUp(comment)}"
                       class="commentLikeButton"
                       .label="${this.t('voteDown')}"
                     ></mwc-icon-button>
@@ -694,13 +749,15 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   renderAvatarButtonIcon() {
-    return this.user ? html`
-      <mwc-icon
-        class="buttonIcon"
-        style="color:${this.user.selectedAvatarColor}"
-        >${this.user.selectedAvatar}</mwc-icon
-      >
-    ` : nothing;
+    return this.user
+      ? html`
+          <mwc-icon
+            class="buttonIcon"
+            style="color:${this.user.selectedAvatarColor}"
+            >${this.user.selectedAvatar}</mwc-icon
+          >
+        `
+      : nothing;
   }
 
   sendEmail() {}

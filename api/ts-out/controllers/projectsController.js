@@ -159,7 +159,6 @@ class ProjectsController {
                         }
                     ]
                 }).then(project => {
-                    console.error(JSON.stringify(project));
                     res.send(project);
                 }).catch(error => {
                     console.error(error);
@@ -185,7 +184,6 @@ class ProjectsController {
                         }
                     ]
                 }).then(project => {
-                    console.error(JSON.stringify(project));
                     res.send(project);
                 }).catch(error => {
                     console.error(error);
