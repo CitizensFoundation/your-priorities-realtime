@@ -24,7 +24,7 @@ export class CsStoryCard extends LitElement {
           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
         if (!isiOs) {
-          //this._slottedMedia.play();
+          this._slottedMedia.play();
         }
       }
     });
