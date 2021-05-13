@@ -102,6 +102,7 @@ class App {
         this.app.use('/project*', express_1.default.static(path.join(__dirname, '/../../cs-web-app/dist')));
         this.app.use('/round*', express_1.default.static(path.join(__dirname, '/../../cs-web-app/dist')));
         this.app.use('/meeting*', express_1.default.static(path.join(__dirname, '/../../cs-web-app/dist')));
+        this.app.use('/info*', express_1.default.static(path.join(__dirname, '/../../cs-web-app/dist')));
         app.use(session({
             store: new RedisStore({ client: redisClient }),
             secret: process.env.SESSION_SECRET ? process.env.SESSION_SECRET : 'not so secret... use env var.',

@@ -40,7 +40,7 @@ export class CsStoryCard extends LitElement {
       right: 0;
       bottom: 0;
       left: 0;
-      padding: 42px;
+      padding: 48px;
       font-family: sans-serif;
       color: white;
       font-size: 24px;
@@ -52,7 +52,7 @@ export class CsStoryCard extends LitElement {
 
     @media (max-width: 600px) {
       #content {
-        padding: 32px;
+        padding: 34px;
       }
     }
 

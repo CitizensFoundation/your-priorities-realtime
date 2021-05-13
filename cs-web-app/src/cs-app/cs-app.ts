@@ -692,16 +692,18 @@ export class CsApp extends YpBaseElement {
           break;
         case 'info':
           pageHtml = cache(html`
-            <cs-story
-              id="meeting"
-              role="main"
-              number="3"
-              .isAdmin="${this.isAdmin}"
-              .isLive="${this.isLive}"
-              .user="${this.user}"
-              aria-label="${this.t('information')}"
-              .subRoute="${this.subRoute}"
-            ></cs-story>
+            <div class="layout vertical center-center">
+              <cs-story
+                id="meeting"
+                role="main"
+                number="1"
+                .isAdmin="${this.isAdmin}"
+                .isLive="${this.isLive}"
+                .user="${this.user}"
+                aria-label="${this.t('information')}"
+                .subRoute="${this.subRoute}"
+              ></cs-story>
+            </div>
           `);
           break;
         case 'meeting':

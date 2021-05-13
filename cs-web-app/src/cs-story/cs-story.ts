@@ -21,7 +21,7 @@ export class CsStory extends YpBaseElement {
   number = 1;
 
   @property({ type: Boolean })
-  isLive = false;
+  isLive!: boolean;
 
   @property({ type: Boolean })
   isAdmin = false;
@@ -30,8 +30,9 @@ export class CsStory extends YpBaseElement {
     (this.$$('#viewer') as CsStoryViewer).setIndex(index);
   }
 
-  stories: Record<number, TemplateResult> = {
-    1: html`
+  renderStoryNumber(id: number ) {
+    if (id==1) {
+      return html`
       <cs-story-viewer
         id="viewer"
         ?isLive="${this.isLive}"
@@ -382,8 +383,9 @@ export class CsStory extends YpBaseElement {
           </p>
         </cs-story-card>
       </cs-story-viewer>
-    `,
-  };
+    `
+    }
+  }
 
   static get styles() {
     return [
@@ -650,7 +652,7 @@ export class CsStory extends YpBaseElement {
   }
 
   renderStory() {
-    return this.stories[1 /*this.number*/];
+    return this.renderStoryNumber(1 /*this.number*/);
   }
 
   render() {

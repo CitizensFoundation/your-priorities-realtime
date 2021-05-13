@@ -13,7 +13,7 @@ export class CsStoryViewer extends YpBaseElement {
   _index = 0;
 
   @property({type: Boolean})
-  isLive = false
+  isLive!: boolean;
 
   @property({type: Boolean})
   isAdmin = false
@@ -132,10 +132,32 @@ export class CsStoryViewer extends YpBaseElement {
 
     svg {
       position: absolute;
-      top: calc(50% - 25px);
-      height: 50px;
+      top: calc(50% - 16px);
+      height: 42px;
+      width: 42px;
       cursor: pointer;
     }
+
+    @media (max-width: 600px) {
+      svg {
+        position: absolute;
+        top: calc(50% - 25px);
+        height: 32px;
+        width: 32px;
+        cursor: pointer;
+      }
+    }
+
+    @media (max-width: 340px) {
+      svg {
+        position: absolute;
+        top: calc(50% - 25px);
+        height: 30px;
+        width: 30px;
+        cursor: pointer;
+      }
+    }
+
     #next {
       right: 0;
     }
@@ -199,16 +221,16 @@ export class CsStoryViewer extends YpBaseElement {
     return (this.isLive && !this.isAdmin);
   }
 
-
   render() {
     return html`
       <slot></slot>
 
-      <svg ?hidden="${this.disableNav}" id="prev" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickPrevious()}>
-        <path d="M 6 2 L 4 5 L 6 8" stroke="#fff" fill="none" />
+      <svg ?hidden="${this.disableNav || this.index==0}" id="prev" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickPrevious()}>
+        <path d="M 6 2 L 4 5 L 6 8" stroke="#eee" fill="none" />
       </svg>
-      <svg ?hidden="${this.disableNav}" id="next" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickNext()}>
-        <path d="M 4 2 L 6 5 L 4 8" stroke="#fff" fill="none" />
+
+      <svg ?hidden="${this.disableNav || this.index==this.children.length-1}" id="next" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickNext()}>
+        <path d="M 4 2 L 6 5 L 4 8" stroke="#eee" fill="none" />
       </svg>
 
       <div id="progress" ?hidden="${this.disableNav}">
