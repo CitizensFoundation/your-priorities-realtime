@@ -528,7 +528,7 @@ export class CsMeetingBase extends YpBaseElement {
 
     this.addCoreIssueComment(newComment);
 
-    this.io.emit('newComment', newComment);
+    //this.io.emit('newComment', newComment);
 
     (this.$$('#addCommentInput') as HTMLInputElement).value = '';
   }
@@ -759,7 +759,7 @@ export class CsMeetingBase extends YpBaseElement {
     const oldComments = [];
 
     for (let i=0;i<byTime.length;i++) {
-      const date = new Date(byTime[i].createdAt!);
+      const date = new Date(byTime[i].updatedAt!);
       //@ts-ignore
       if (date > tenSeconds) {
         newComments.push(byTime[i]);
@@ -768,7 +768,7 @@ export class CsMeetingBase extends YpBaseElement {
       }
     }
 
-    const oldByVotes = comments.sort( (a: CommentAttributes,b:CommentAttributes)=>{
+    const oldByVotes = oldComments.sort( (a: CommentAttributes,b:CommentAttributes)=>{
       //@ts-ignore
       return b.counterUpVotes - a.counterUpVotes;
     })
