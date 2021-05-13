@@ -590,7 +590,7 @@ export class CsStory extends YpBaseElement {
             </div>
             <p>
                - What more would you like to know about these rights?<br>
-              - Why do you think #3 is of national interest?
+              - Why do you think #4 is of national interest?
             </p>
             <table>
               <tr class="headerTr">
