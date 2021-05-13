@@ -125,7 +125,7 @@ export class CsStory extends YpBaseElement {
             <p>
               Three of these standards/rights have been identified as
               <b>national priorities for feedback</b> (called ‘core’). These are
-              highlighted with a (*) and will automatically be included in the
+              <u>highlighted</u> with a (*) and will automatically be included in the
               Score Card
             </p>
             <p>
@@ -426,7 +426,7 @@ export class CsStory extends YpBaseElement {
         >
           <cs-story-card style="background: white;color: black">
 
-            <div class="bigHeader">
+            <div class="bigHeader extraBottom">
               Welcome to Orientation!
             </div>
             <div class="layout vertical center-center">
@@ -453,9 +453,9 @@ export class CsStory extends YpBaseElement {
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">Find out more before Thursday…</div>
+            <div class="bigHeader">A quick reminder of what we’re doing today</div>
 
-            <p>Here’s some information about :</p>
+            <p>We’ll run through the information already provided:</p>
             <ul>
               <li>
                 the <span class="standardsTextColor">Standards</span> you can
@@ -470,25 +470,34 @@ export class CsStory extends YpBaseElement {
             </ul>
             <p>
               Three of these standards/rights have been identified as
-              <b>national priorities for feedback</b> (called ‘core’). These are
-              highlighted with a (*) and will automatically be included in the
-              Score Card
+              <b>national priorities for feedback</b> (called ‘core’). These are:
+            </p>
+            <ol>
+              <li>Staff punctuality</li>
+              <li>Medicines supplies</li>
+              <li>Fee charges</li>
+            </ol>
+            <p>
+              These are <u>highlighted</u> with a (*) and will automatically be included in the Score Card.
             </p>
             <p>
-              In addition, you will be able to discuss and select
-              <b>three additional issues</b> that are most relevant to your
-              local experience.
+              In addition, you will be able to discuss and select <b>three additional issues</b> that are
+              most relevant to your local experience.
+            </p>
+
+            <p>
+            Let’s start with <span class="standardsTextColor">Standards</span>.
             </p>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
-              What <span class="standardsTextColor">standards</span> can you
-              expect?
+              Here are the <span class="standardsTextColor">standards</span> you
+              expect
             </div>
             <p>
-              Your Health Centre should perform to these National Standards set
-              by the Ministry of Health for all Health Centres.
+            - What more would you like to know about thee standards?<br>
+            - Why do you think #2 and #5 are core issues of interest at national level?
             </p>
             <table>
               <tr class="headerTr">
@@ -561,32 +570,21 @@ export class CsStory extends YpBaseElement {
                   that there is adequate medicine for treatment. (*)
                 </td>
               </tr>
-              <tr>
-                <td colspan="2" class="tableFooter standardsFooterBackground">
-                  For more detail,
-                  <a
-                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
-                    target="_blank"
-                    >click on this link to find a PDF of the full set of
-                    standards, rights and responsibilities.</a
-                  >
-                </td>
-              </tr>
             </table>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
-              What are your <span class="rightsTextColor">rights</span>?
+              Here are your <span class="rightsTextColor">rights</span> as users.
             </div>
             <p>
-              In relation to your Health Centre and local health service, you
-              have the following rights:
+               - What more would you like to know about these rights?<br>
+              - Why do you think #3 is of national interest?
             </p>
             <table>
               <tr class="headerTr">
                 <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
-                  1. Your Health Centre staff
+                  Your Health Centre staff
                 </td>
               </tr>
               <tr class="topFeatureTr">
@@ -597,7 +595,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Should treat you equally and with <b>respect</b>.
+                  1. Should treat you equally and with <b>respect</b>.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -608,7 +606,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Will <b>display</b> service information about the Health
+                  2. Will <b>display</b> service information about the Health
                   Centre
                 </td>
               </tr>
@@ -620,7 +618,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsHighlightBackground">
-                  Will <b>help</b> you and your family understand your health
+                  3. Will <b>help</b> you and your family understand your health
                   needs, and treat this information <b>confidentially</b>.
                 </td>
               </tr>
@@ -632,18 +630,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Will charge you only <b>listed fees.</b>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="tableFooter rightsFooterBackground">
-                  For more detail,
-                  <a
-                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
-                    target="_blank"
-                    >click on this link to find a PDF of the full set of rights,
-                    rights and responsibilities.</a
-                  >
+                  4. Will charge you only <b><u>listed fees</u>.(*)</b>
                 </td>
               </tr>
             </table>
@@ -651,12 +638,13 @@ export class CsStory extends YpBaseElement {
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
-              What are your
-              <span class="responsibilitiesTextColor">responsibilities</span>?
+              Here are your
+              <span class="responsibilitiesTextColor">responsibilities</span> as users.
             </div>
             <p>
-              You have responsibilities as a user of the Health Centre to ensure
-              you receive good quality care and treatment.
+              - What do you think of these responsibilities?<br>
+              - Which is the most important?<br>
+              - Which is the most challenging to do?<br>
             </p>
             <table>
               <tr class="headerTr">
@@ -714,27 +702,13 @@ export class CsStory extends YpBaseElement {
                   Treat the Health Centre staff with respect and courtesy.
                 </td>
               </tr>
-              <tr>
-                <td
-                  colspan="2"
-                  class="tableFooter responsibilitiesFooterBackground"
-                >
-                  For more detail,
-                  <a
-                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
-                    target="_blank"
-                    >click on this link to find a PDF of the full set of
-                    responsibilities, responsibilities and responsibilities.</a
-                  >
-                </td>
-              </tr>
+
             </table>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
             <div class="smallHeader">
-              If you have the time, here’s some more information about Community
-              Score Card
+              More on the Score Card Process
             </div>
             <p>
               It’s a constructive <b>5-step process</b> that helps citizens give
@@ -760,6 +734,30 @@ export class CsStory extends YpBaseElement {
                 src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
               />
             </div>
+            <div class="moreQuestionsBox">
+              Do you have any questions about the process and how it works?
+            </div>
+
+          </cs-story-card>
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              For tomorrow
+            </div>
+            <p>
+              At our meeting tomorrow, we’ll be doing three things:
+            </p>
+            <ol>
+              <li><b>Discussing your experience</b> of your local Health Center –
+                what works well, and what does not.</li>
+              <li><b>Identifying the key issues</b> that matter to you locally
+                (including what you think about the three ‘core’ issues already identified).</li>
+              <li><b>Prioritising the three most important</b> ones for you (in addition to the core ones).</li>
+            </ol>
+            <p>
+              These will then be added to the Score Card so that there will be 5 areas of
+              assessment in the next part of the process.
+            </p>
+
           </cs-story-card>
         </cs-story-viewer>
       `;
@@ -808,6 +806,14 @@ export class CsStory extends YpBaseElement {
           margin-top: 0;
         }
 
+        .moreQuestionsBox {
+          padding: 8px;
+          margin-top: 16px;
+          background-color: #c55a11;
+          color: #fff;
+          font-size: 14px;
+        }
+
         p {
           color: black;
           font-size: 14px;
@@ -826,6 +832,10 @@ export class CsStory extends YpBaseElement {
         }
 
         li {
+          margin-bottom: 16px;
+        }
+
+        .extraBottom {
           margin-bottom: 16px;
         }
 
@@ -1018,6 +1028,7 @@ export class CsStory extends YpBaseElement {
           .areaLogo {
             width: 220px;
           }
+
           .bigHeader {
             font-size: 16px;
           }

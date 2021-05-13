@@ -153,7 +153,9 @@ export class CsStoryViewer extends YpBaseElement {
         position: absolute;
         top: calc(50% - 25px);
         height: 30px;
-        width: 30px;
+        width: 20px;
+        margin: 0;
+        padding: 0;
         cursor: pointer;
       }
     }
