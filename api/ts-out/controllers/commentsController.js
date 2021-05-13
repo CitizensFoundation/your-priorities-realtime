@@ -13,9 +13,17 @@ class CommentsController {
         this.vote = async (req, res) => {
             models_1.models.Comment.findOne({
                 where: {
-                    id: req.params.id
+                    id: req.params.id,
                 },
-            }).then(async (comment) => {
+                include: [
+                    {
+                        model: models_1.models.User,
+                        as: "User",
+                        attributes: ["id", "selectedAvatar", "selectedAvatarColor"],
+                    },
+                ],
+            })
+                .then(async (comment) => {
                 if (comment) {
                     if (req.body.value == 1) {
                         await comment.increment("counterUpVotes");
@@ -29,7 +37,8 @@ class CommentsController {
                 else {
                     res.sendStatus(404);
                 }
-            }).catch(error => {
+            })
+                .catch((error) => {
                 console.error(error);
                 res.send(error);
             });
