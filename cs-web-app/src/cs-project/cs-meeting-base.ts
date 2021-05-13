@@ -93,9 +93,7 @@ export class CsMeetingBase extends YpBaseElement {
   };
 
   _processState(state: StateAttributes) {
-    if (!this.isAdmin) {
-      this.isLive = state.isLive;
-    }
+    this.isLive = state.isLive;
   }
 
   setCommentInput() {
@@ -154,7 +152,9 @@ export class CsMeetingBase extends YpBaseElement {
 
     this.io.on('meetingState', (...args: any) => {
       //console.error(args);
-      if (!this.isAdmin) {
+      if (this.isAdmin) {
+        this.isLive = (args[0] as StateAttributes).isLive;
+      } else {
         this._processState(args[0] as StateAttributes);
       }
     });

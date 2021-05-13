@@ -39,8 +39,11 @@ export class CsStory extends YpBaseElement {
         ?isAdmin="${this.isAdmin}"
       >
         <cs-story-card style="background: white;color: black">
+          <div class="bigHeader">
+          Introduction to the Community Score Card
+          </div>
           <p>
-            Introduction to the Community Score Card. Please swipe to continue.
+            Please swipe to continue.
           </p>
         </cs-story-card>
 
