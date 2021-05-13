@@ -18,6 +18,9 @@ export class CsStoryViewer extends YpBaseElement {
   @property({ type: Boolean })
   isAdmin = false;
 
+  @property({ type: Boolean })
+  isiOs = false;
+
   @property() _panData: { isFinal?: boolean; deltaX?: number } = {};
 
   get index() {
