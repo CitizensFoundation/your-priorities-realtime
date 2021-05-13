@@ -179,7 +179,7 @@ exports.models.ProgressReport.belongsTo(exports.models.Action, {
 });
 // Rating
 exports.models.Rating.belongsTo(exports.models.Issue, { as: "Issue", foreignKey: "issueId" });
-const force = process.env.FORCE_DB_SYNC ? false : false;
+const force = process.env.FORCE_DB_SYNC ? true : false;
 if (force) {
     sequelize.sync({ force });
     setTimeout(() => {
