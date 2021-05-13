@@ -53,6 +53,7 @@ export class CsStory extends YpBaseElement {
         </cs-story-card>
 
         <cs-story-card style="background: white;color: black">
+          <p><img class="areaLogo" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"/></p>
           <p>Dear resident of <b>Simin Han,</b></p>
           <p>
             As a user of the Simin Han Health Centre, you are invited to join a
@@ -191,7 +192,7 @@ export class CsStory extends YpBaseElement {
             <tr>
               <td colspan="2" class="tableFooter standardsFooterBackground">
                 For more detail,
-                <a href="https://link" target="_blank"
+                <a href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf" target="_blank"
                   >click on this link to find a PDF of the full set of
                   standards, rights and responsibilities.</a
                 >
@@ -262,7 +263,7 @@ export class CsStory extends YpBaseElement {
             <tr>
               <td colspan="2" class="tableFooter rightsFooterBackground">
                 For more detail,
-                <a href="https://link" target="_blank"
+                <a href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf" target="_blank"
                   >click on this link to find a PDF of the full set of rights,
                   rights and responsibilities.</a
                 >
@@ -342,7 +343,7 @@ export class CsStory extends YpBaseElement {
                 class="tableFooter responsibilitiesFooterBackground"
               >
                 For more detail,
-                <a href="https://link" target="_blank"
+                <a href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf" target="_blank"
                   >click on this link to find a PDF of the full set of
                   responsibilities, responsibilities and responsibilities.</a
                 >
@@ -401,6 +402,7 @@ export class CsStory extends YpBaseElement {
           bottom: 48px;
           left: 0;
         }
+
         .bottom > * {
           margin: 0;
           text-align: center;
@@ -424,12 +426,12 @@ export class CsStory extends YpBaseElement {
 
         ol {
           color: black;
-          font-size: 16px;
+          font-size: 14px;
         }
 
         ul {
           color: black;
-          font-size: 16px;
+          font-size: 14px;
         }
 
         li {
@@ -580,24 +582,69 @@ export class CsStory extends YpBaseElement {
           margin-top: 8px;
         }
 
+        .areaLogo {
+          width: 300px;
+        }
+
         @media (max-width: 600px) {
           cs-story-viewer {
             overflow-y: scroll;
           }
 
+          .areaLogo {
+            width: 280px;
+          }
+
           p {
-            font-size: 18px;
+            font-size: 14px;
             margin-bottom: 16px;
           }
 
           ol {
-            font-size: 14px;
+            font-size: 12px;
           }
 
           ul {
-            font-size: 14px;
+            font-size: 12px;
+          }
+
+          .bigHeader {
+            font-size: 18px;
           }
         }
+
+        @media (max-width: 340px) {
+          .areaLogo {
+            width: 220px;
+          }
+          .bigHeader {
+            font-size: 16px;
+          }
+
+          p {
+            font-size: 12px;
+            margin-bottom: 16px;
+          }
+
+          ol {
+            font-size: 11px;
+          }
+
+          ul {
+            font-size: 11px;
+          }
+
+          .tableText {
+            font-size: 9px;
+          }
+
+          .featureImage {
+            width: 100px;
+            height: 56px;
+          }
+
+        }
+
       `,
     ];
   }

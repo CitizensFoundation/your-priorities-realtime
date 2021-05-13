@@ -40,13 +40,26 @@ export class CsStoryCard extends LitElement {
       right: 0;
       bottom: 0;
       left: 0;
-      padding: 48px;
+      padding: 42px;
       font-family: sans-serif;
       color: white;
       font-size: 24px;
     }
+
     #content > slot::slotted(*) {
       margin: 0;
+    }
+
+    @media (max-width: 600px) {
+      #content {
+        padding: 32px;
+      }
+    }
+
+    @media (max-width: 340px) {
+      #content {
+        padding: 16px;
+      }
     }
   `]
   }

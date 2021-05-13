@@ -32,7 +32,9 @@ export class CsStoryViewer extends YpBaseElement {
   constructor() {
     super();
     // Detect pans easily with Hammer.js
-    new Hammer(this).on('pan', this.processPanData.bind(this));
+    const hammer = new Hammer(this);
+    hammer.on('panleft', this.processPanData.bind(this));
+    hammer.on('panright', this.processPanData.bind(this));
     this.index = 0;
   }
 

@@ -696,6 +696,8 @@ export class CsApp extends YpBaseElement {
               id="meeting"
               role="main"
               number="3"
+              .isAdmin="${this.isAdmin}"
+              .isLive="${this.isLive}"
               .user="${this.user}"
               aria-label="${this.t('information')}"
               .subRoute="${this.subRoute}"

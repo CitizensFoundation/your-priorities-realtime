@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
             else {
                 console.log("Saving last meeting state");
                 console.log(meetingState);
-                redisClient.set(redisMeetingStateKey, JSON.stringify(meetingState), redis.print);
+                redisClient.setex(redisMeetingStateKey, 60 * 60 * 2, JSON.stringify(meetingState), redis.print);
             }
         });
         socket.on("newComment", (newComment) => {

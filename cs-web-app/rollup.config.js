@@ -29,16 +29,7 @@ export default merge(baseConfig, {
   // any <script type="module"> inside will be bundled by rollup
   input: './index.html',
   plugins: [
-    commonjs({
-      include: [
-        'node_modules/linkifyjs/**/*',
-        'node_modules/moment/**/*',
-        'node_modules/hammerjs/**/*',
-        'node_modules/chart.js/**/*',
-        '**/*/node_modules/linkifyjs/**/*',
-        '**/*/node_modules/i18next-http-backend/**/*'
-      ],
-    }),
+    commonjs(),
     copy({
       targets: [
         {
