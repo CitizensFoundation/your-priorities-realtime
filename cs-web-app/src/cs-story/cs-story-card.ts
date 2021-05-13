@@ -53,12 +53,13 @@ export class CsStoryCard extends LitElement {
     @media (max-width: 600px) {
       #content {
         padding: 34px;
+        padding-top: 20px;
       }
     }
 
     @media (max-width: 340px) {
       #content {
-        padding: 16px;
+        padding: 20px;
       }
     }
   `]

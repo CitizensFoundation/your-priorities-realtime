@@ -39,11 +39,11 @@ export class CsStory extends YpBaseElement {
         ?isAdmin="${this.isAdmin}"
       >
         <cs-story-card style="background: white;color: black">
-          <div class="bigHeader">
+          <div class="bigHeader introHeader">
           Introduction to the Community Score Card
           </div>
-          <p>
-            Please swipe to continue.
+          <p class="swipeText">
+            Please swipe to continue
           </p>
         </cs-story-card>
 
@@ -57,7 +57,9 @@ export class CsStory extends YpBaseElement {
         </cs-story-card>
 
         <cs-story-card style="background: white;color: black">
-          <p><img class="areaLogo" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"/></p>
+          <div class="layout vertical center-center">
+            <img class="areaLogo" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"/>
+          </div>
           <p>Dear resident of <b>Simin Han,</b></p>
           <p>
             As a user of the Simin Han Health Centre, you are invited to join a
@@ -101,18 +103,18 @@ export class CsStory extends YpBaseElement {
               health services
             </li>
             <li>The Community Score Card process</li>
-            <p>
-              Three of these standards/rights have been identified as
-              <b>national priorities for feedback</b> (called ‘core’). These are
-              highlighted with a (*) and will automatically be included in the
-              Score Card
-            </p>
-            <p>
-              In addition, you will be able to discuss and select
-              <b>three additional issues</b> that are most relevant to your
-              local experience.
-            </p>
           </ul>
+          <p>
+            Three of these standards/rights have been identified as
+            <b>national priorities for feedback</b> (called ‘core’). These are
+            highlighted with a (*) and will automatically be included in the
+            Score Card
+          </p>
+          <p>
+            In addition, you will be able to discuss and select
+            <b>three additional issues</b> that are most relevant to your
+            local experience.
+          </p>
         </cs-story-card>
 
         <cs-story-card style="background: white;color: black">
@@ -219,7 +221,7 @@ export class CsStory extends YpBaseElement {
                 Your Health Centre staff
               </td>
             </tr>
-            <tr class="featureTr">
+            <tr class="topFeatureTr">
               <td class="tableImages rightsContentBackground">
                 <img
                   class="featureImage"
@@ -294,7 +296,7 @@ export class CsStory extends YpBaseElement {
                 You should...
               </td>
             </tr>
-            <tr class="featureTr">
+            <tr class="topFeatureTr">
               <td class="tableImages responsibilitiesContentBackground">
                 <img
                   class="featureImage"
@@ -357,7 +359,7 @@ export class CsStory extends YpBaseElement {
         </cs-story-card>
 
         <cs-story-card style="background: white;color: black">
-          <div class="bigHeader">
+          <div class="smallHeader">
             If you have the time, here’s some more information about Community
             Score Card
           </div>
@@ -379,11 +381,11 @@ export class CsStory extends YpBaseElement {
             <b>Step 2</b> (Scorecard). Click on this link for a more detailed
             explanation.
           </p>
-          <p>
+          <div class="layout vertical center-center">
             <img class="cscoverview"
               src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
             />
-          </p>
+            </div>
         </cs-story-card>
       </cs-story-viewer>
     `
@@ -415,6 +417,16 @@ export class CsStory extends YpBaseElement {
 
         .bigHeader {
           font-size: 22px;
+          padding: 8px;
+          color: #000;
+          text-align: center;
+          padding-top: 0;
+          margin-top: 0;
+        }
+
+        .smallHeader {
+          font-size: 14px;
+          font-weight: bold;
           padding: 8px;
           color: #000;
           text-align: center;
@@ -473,6 +485,7 @@ export class CsStory extends YpBaseElement {
 
         .standardsTextColor {
           color: #c55a11;
+          font-weight: bold;
         }
 
         .standardsFooterBackground {
@@ -502,6 +515,7 @@ export class CsStory extends YpBaseElement {
 
         .rightsTextColor {
           color: #2f5496;
+          font-weight: bold;
         }
 
         .rightsFooterBackground {
@@ -531,6 +545,8 @@ export class CsStory extends YpBaseElement {
 
         .responsibilitiesTextColor {
           color: #548135;
+          font-weight: bold;
+
         }
 
         .responsibilitiesFooterBackground {
@@ -583,12 +599,18 @@ export class CsStory extends YpBaseElement {
         }
 
         .cscoverview {
-          width: 300px;
+          width: 250px;
           margin-top: 8px;
         }
 
         .areaLogo {
           width: 300px;
+        }
+
+        .swipeText {
+          font-size: 14px;
+          text-align: center;
+          margin-top: 128px;
         }
 
         @media (max-width: 600px) {
@@ -606,11 +628,11 @@ export class CsStory extends YpBaseElement {
           }
 
           ol {
-            font-size: 12px;
+            font-size: 14px;
           }
 
           ul {
-            font-size: 12px;
+            font-size: 14px;
           }
 
           .bigHeader {
@@ -628,24 +650,36 @@ export class CsStory extends YpBaseElement {
 
           p {
             font-size: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
           }
 
           ol {
-            font-size: 11px;
+            font-size: 12px;
           }
 
           ul {
-            font-size: 11px;
+            font-size: 12px;
           }
 
           .tableText {
             font-size: 9px;
           }
 
+          .tableHeader {
+            font-size: 12px;
+          }
+
+          .bigHeader {
+            padding-bottom: 4px;
+          }
+
+          .introHeader {
+            font-size: 18px;
+          }
+
           .featureImage {
-            width: 100px;
-            height: 56px;
+            width: 90px;
+            height: 51px;
           }
 
         }
