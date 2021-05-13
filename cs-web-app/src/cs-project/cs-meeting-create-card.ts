@@ -224,16 +224,22 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     `;
   }
 
-  async voteIssueUp() {
+  async voteIssueUp(event: CustomEvent) {
     const issue = this.participantsIssues![this.votingIssueIndex];
 
     await window.serverApi.voteIssue(issue.id, 1);
+
+    const el = event.target as HTMLInputElement;
+    el.blur();
   }
 
-  async voteIssueDown() {
+  async voteIssueDown(event: CustomEvent) {
     const issue = this.participantsIssues![this.votingIssueIndex];
 
     await window.serverApi.voteIssue(issue.id, -1);
+
+    const el = event.target as HTMLInputElement;
+    el.blur();
   }
 
   async issueSelectionChanged(checkbox: Checkbox, issueId: number) {

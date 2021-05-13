@@ -528,7 +528,7 @@ export class CsMeetingBase extends YpBaseElement {
 
     this.addCoreIssueComment(newComment);
 
-    //this.io.emit('newComment', newComment);
+    this.io.emit('newComment', newComment);
 
     (this.$$('#addCommentInput') as HTMLInputElement).value = '';
   }
@@ -554,9 +554,11 @@ export class CsMeetingBase extends YpBaseElement {
     this.updateState();
   }
 
-  async voteCommentUp(comment: CommentAttributes) {
+  async voteCommentUp(comment: CommentAttributes, event: CustomEvent) {
     const updatedComment = await window.serverApi.voteComment(comment.id, 1);
     this.io.emit('newVoteComment', updatedComment);
+    const el = event.target as HTMLInputElement;
+    el.blur();
     comment.counterUpVotes+=1;
     this.requestUpdate();
   }
@@ -730,7 +732,7 @@ export class CsMeetingBase extends YpBaseElement {
                     <mwc-icon-button
                       icon="arrow_upward"
                       ?disabled="${disableVoting}"
-                      @click="${() => this.voteCommentUp(comment)}"
+                      @click="${(event: any) => this.voteCommentUp(comment, event)}"
                       class="commentLikeButton"
                       .label="${this.t('voteDown')}"
                     ></mwc-icon-button>
