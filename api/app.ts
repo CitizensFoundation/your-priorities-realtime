@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
 
     socket.on("newVoteComment", (newVoteComment) => {
       console.error(newVoteComment);
-      socket.in(meetingId).emit("newComment", newVoteComment);
+      socket.in(meetingId).emit("newVoteComment", newVoteComment);
     });
 
     socket.on("newIssue", (newIssue) => {

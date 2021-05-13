@@ -178,7 +178,6 @@ export class CsMeetingBase extends YpBaseElement {
 
     this.io.on('newVoteComment', (...args: any) => {
       //console.error(args);
-      debugger;
       this._processNewCommentVote(args[0] as CommentAttributes);
     });
   }
@@ -201,7 +200,6 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _processNewCommentVote(comment: CommentAttributes) {
-    debugger;
     if (this.coreIssues) {
       loop1:
         for (let i=0;i<this.coreIssues.length;i++) {
