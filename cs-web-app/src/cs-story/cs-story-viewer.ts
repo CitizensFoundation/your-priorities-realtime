@@ -9,14 +9,14 @@ import { YpBaseElement } from '../@yrpri/yp-base-element';
 
 @customElement('cs-story-viewer')
 export class CsStoryViewer extends YpBaseElement {
-  @property({type: Number})
+  @property({ type: Number })
   _index = 0;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   isLive!: boolean;
 
-  @property({type: Boolean})
-  isAdmin = false
+  @property({ type: Boolean })
+  isAdmin = false;
 
   @property() _panData: { isFinal?: boolean; deltaX?: number } = {};
 
@@ -63,16 +63,18 @@ export class CsStoryViewer extends YpBaseElement {
     // We don't want the latent deltaX when releasing a pan.
     deltaX = isFinal ? 0 : deltaX;
 
-    (Array.from(this.children) as Array<HTMLElement>).forEach((el: HTMLElement, i) => {
-      const x = (i - this.index) * width + deltaX;
+    (Array.from(this.children) as Array<HTMLElement>).forEach(
+      (el: HTMLElement, i) => {
+        const x = (i - this.index) * width + deltaX;
 
-      // Piecewise scale(deltaX), looks like: __/\__
-      const u = deltaX / width + (i - this.index);
-      const v = -Math.abs(u * (1 - minScale)) + 1;
-      const scale = Math.max(v, minScale);
+        // Piecewise scale(deltaX), looks like: __/\__
+        const u = deltaX / width + (i - this.index);
+        const v = -Math.abs(u * (1 - minScale)) + 1;
+        const scale = Math.max(v, minScale);
 
-      el.style.transform = `translate3d(${x}px,0,0) scale(${scale})`;
-    });
+        el.style.transform = `translate3d(${x}px,0,0) scale(${scale})`;
+      }
+    );
 
     super.update(changedProperties);
   }
@@ -89,7 +91,7 @@ export class CsStoryViewer extends YpBaseElement {
     );
 
     if (this.index === this.children.length - 1) {
-      this.fire('cs-last-story-card')
+      this.fire('cs-last-story-card');
     }
   }
 
@@ -102,102 +104,104 @@ export class CsStoryViewer extends YpBaseElement {
   }
 
   static get styles() {
-    return [css`
-    :host {
-      display: block;
-      position: relative;
-      align-items: center;
-      width: 400px;
-      height: 711px;
-    }
+    return [
+      css`
+        :host {
+          display: block;
+          position: relative;
+          align-items: center;
+          width: 400px;
+          height: 711px;
+        }
 
-    @media (max-width: 600px) {
-      :host {
-        display: block;
-        position: absolute;
-        top: 48px;
-        left: 0;
-        width: 100vw;
-        height: calc(100vh - 48px);
-      }
-    }
+        @media (max-width: 600px) {
+          :host {
+            display: block;
+            position: absolute;
+            top: 48px;
+            left: 0;
+            width: 100vw;
+            height: calc(100vh - 48px);
+          }
+        }
 
-    ::slotted(*) {
-      position: absolute;
-      width: 100%;
-      height: calc(100% - 20px);
-      transition: transform 0.35s ease-out;
-    }
+        ::slotted(*) {
+          position: absolute;
+          width: 100%;
+          height: calc(100% - 20px);
+          transition: transform 0.35s ease-out;
+        }
 
-    svg {
-      position: absolute;
-      top: calc(50% - 16px);
-      height: 42px;
-      width: 42px;
-      cursor: pointer;
-    }
+        svg {
+          position: absolute;
+          top: calc(50% - 16px);
+          height: 42px;
+          width: 42px;
+          cursor: pointer;
+        }
 
-    @media (max-width: 600px) {
-      svg {
-        position: absolute;
-        top: calc(50% - 25px);
-        height: 32px;
-        width: 32px;
-        cursor: pointer;
-      }
-    }
+        @media (max-width: 600px) {
+          svg {
+            position: absolute;
+            top: calc(50% - 25px);
+            height: 32px;
+            width: 32px;
+            cursor: pointer;
+          }
+        }
 
-    @media (max-width: 340px) {
-      svg {
-        position: absolute;
-        top: calc(50% - 25px);
-        height: 30px;
-        width: 20px;
-        margin: 0;
-        padding: 0;
-        cursor: pointer;
-      }
-    }
+        @media (max-width: 340px) {
+          svg {
+            position: absolute;
+            top: calc(50% - 25px);
+            height: 30px;
+            width: 20px;
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+          }
+        }
 
-    #next {
-      right: 0;
-    }
+        #next {
+          right: 0;
+        }
 
-    #progress {
-      position: relative;
-      top: calc(100% - 20px);
-      height: 20px;
-      width: 50%;
-      margin: 0 auto;
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: 1fr;
-      grid-gap: 10px;
-      align-content: center;
-    }
-    #progress > div {
-      background: grey;
-      height: 4px;
-      transition: background 0.3s linear;
-      cursor: pointer;
-    }
-    #progress > div.watched {
-      background: white;
-    }
-    [hidden] {
-      display: none !important;
-    }
+        #progress {
+          position: relative;
+          top: calc(100% - 20px);
+          height: 20px;
+          width: 50%;
+          margin: 0 auto;
+          display: grid;
+          grid-auto-flow: column;
+          grid-auto-columns: 1fr;
+          grid-gap: 10px;
+          align-content: center;
+        }
+        #progress > div {
+          background: grey;
+          height: 4px;
+          transition: background 0.3s linear;
+          cursor: pointer;
+        }
+        #progress > div.watched {
+          background: white;
+        }
+        [hidden] {
+          display: none !important;
+        }
 
-    @media (max-width: 600px) {
-      #progress {
-        display: none !important;
-      }
+        @media (max-width: 600px) {
+          #progress {
+            display: none !important;
+          }
 
-      ::slotted(*) {
-        height: 100%;
-      }
-    }
- `];
+          ::slotted(*) {
+            height: 100%;
+          }
+        }
+      `,
+    ];
   }
 
   navClick(index: number) {
@@ -210,7 +214,7 @@ export class CsStoryViewer extends YpBaseElement {
   navClickPrevious() {
     debugger;
     if (!this.disableNav) {
-      this.previous()
+      this.previous();
     }
   }
 
@@ -222,18 +226,28 @@ export class CsStoryViewer extends YpBaseElement {
   }
 
   get disableNav() {
-    return (this.isLive && !this.isAdmin);
+    return this.isLive && !this.isAdmin;
   }
 
   render() {
     return html`
       <slot></slot>
 
-      <svg ?hidden="${this.disableNav || this.index==0}" id="prev" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickPrevious()}>
+      <svg
+        ?hidden="${this.disableNav || this.index == 0}"
+        id="prev"
+        viewBox="0 0 10 10"
+        @click=${(e: CustomEvent) => this.navClickPrevious()}
+      >
         <path d="M 6 2 L 4 5 L 6 8" stroke="#eee" fill="none" />
       </svg>
 
-      <svg ?hidden="${this.disableNav || this.index==this.children.length-1}" id="next" viewBox="0 0 10 10" @click=${(e: CustomEvent) => this.navClickNext()}>
+      <svg
+        ?hidden="${this.disableNav || this.index == this.children.length - 1}"
+        id="next"
+        viewBox="0 0 10 10"
+        @click=${(e: CustomEvent) => this.navClickNext()}
+      >
         <path d="M 4 2 L 6 5 L 4 8" stroke="#eee" fill="none" />
       </svg>
 
@@ -241,7 +255,7 @@ export class CsStoryViewer extends YpBaseElement {
         ${Array.from(this.children).map(
           (_, i) => html` <div
             class=${classMap({ watched: i <= this.index })}
-            @click=${() => this.navClick(i) }
+            @click=${() => this.navClick(i)}
           ></div>`
         )}
       </div>

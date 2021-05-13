@@ -26,11 +26,21 @@ export class CsStory extends YpBaseElement {
   @property({ type: Boolean })
   isAdmin = false;
 
+  @property({ type: Boolean })
+  isiOs: boolean;
+
   setIndex(index: number) {
     (this.$$('#viewer') as CsStoryViewer).setIndex(index);
   }
 
   haveSetVideoEndEvent = false
+
+  constructor() {
+    super();
+    this.isiOs =
+    /iPad|iPhone|iPod/.test(navigator.platform) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
@@ -65,6 +75,8 @@ export class CsStory extends YpBaseElement {
               slot="media"
               src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
               playsinline
+              ?muted="${this.isiOs}"
+              ?controls="${this.isiOs}"
             ></video>
           </cs-story-card>
 
