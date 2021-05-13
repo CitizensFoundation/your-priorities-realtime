@@ -69,7 +69,7 @@ export class CsMeetingOrientation extends CsMeetingBase {
   _processState(state: StateAttributes) {
     if (!this.isAdmin) {
       super._processState(state);
-      if (state.storyPageIndex) {
+      if (state.storyPageIndex != null && this.$$('#storyViewer')) {
         (this.$$("#storyViewer") as CsStory).setIndex(state.storyPageIndex);
       }
       this.selectedTab = state.tabIndex;
