@@ -34,7 +34,6 @@ export class CsStory extends YpBaseElement {
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
-
     if (this.$$("#videoPlayer") && !this.haveSetVideoEndEvent) {
       this.haveSetVideoEndEvent = true;
       const videoPlayer = this.$$("#videoPlayer") as HTMLVideoElement;
@@ -977,6 +976,14 @@ export class CsStory extends YpBaseElement {
           background-color: #fff !important;
         }
 
+        img {
+          -webkit-user-drag: none;
+          -khtml-user-drag: none;
+          -moz-user-drag: none;
+          -o-user-drag: none;
+          user-drag: none;
+        }
+
         a {
           color: #000;
         }
@@ -1076,7 +1083,7 @@ export class CsStory extends YpBaseElement {
   }
 
   renderStory() {
-    return this.renderStoryNumber(1 /*this.number*/);
+    return this.renderStoryNumber(this.number);
   }
 
   render() {

@@ -55,10 +55,9 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   @property({ type: String })
   currentAssignmentInput: string | undefined;
 
-
-
   constructor() {
     super();
+    this.storyNumber = 5;
   }
 
   connectedCallback() {

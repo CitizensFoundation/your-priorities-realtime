@@ -44,6 +44,7 @@ export class CsMeetingScoring extends CsMeetingBase {
 
   constructor() {
     super();
+    this.storyNumber = 4;
   }
 
   connectedCallback() {
