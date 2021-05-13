@@ -435,6 +435,9 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   _processNewComment(comment: CommentAttributes) {
     this.addCoreIssueComment(comment);
+    setTimeout(()=>{
+      this._getIssues();
+    }, 250);
   }
 
   async addCoreIssueCommentFromInput() {

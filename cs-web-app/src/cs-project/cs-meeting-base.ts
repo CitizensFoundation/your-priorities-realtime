@@ -176,7 +176,7 @@ export class CsMeetingBase extends YpBaseElement {
       this._processNewIssue(args[0] as IssueAttributes);
     });
 
-    this.io.on('newCommentVote', (...args: any) => {
+    this.io.on('newVoteComment', (...args: any) => {
       //console.error(args);
       debugger;
       this._processNewCommentVote(args[0] as CommentAttributes);
@@ -557,7 +557,7 @@ export class CsMeetingBase extends YpBaseElement {
   async voteCommentUp(comment: CommentAttributes) {
     await window.serverApi.voteComment(comment.id, 1);
     comment.counterUpVotes+=1;
-    this.io.emit('newCommentVote', comment);
+    this.io.emit('newVoteComment', comment);
   }
 
   _toggleCommentsForIssue(issueId: number, button: IconButton) {
@@ -696,7 +696,7 @@ export class CsMeetingBase extends YpBaseElement {
           class="layout vertical"
           ?hidden="${toggleCommentMode}"
         >
-          ${issue.Comments?.sort(c=>c.counterUpVotes).map(comment => {
+          ${this._sortComments(issue.Comments!).map(comment => {
             return html`
               <div class="comment">
                 <div class="innerContainer">
@@ -732,6 +732,36 @@ export class CsMeetingBase extends YpBaseElement {
     } else {
       return nothing;
     }
+  }
+
+  _sortComments(comments: Array<CommentAttributes>) {
+
+    const byTime = comments.sort( (a: CommentAttributes,b:CommentAttributes)=>{
+      //@ts-ignore
+      return new Date(b.createdAt!) - new Date(a.createdAt!);
+    })
+
+    const tenSeconds = Date.now() - (1000 * 10);
+
+    const newComments = [];
+    const oldComments = [];
+
+    for (let i=0;i<byTime.length;i++) {
+      const date = new Date(byTime[i].createdAt!);
+      //@ts-ignore
+      if (date > tenSeconds) {
+        newComments.push(byTime[i]);
+      } else {
+        oldComments.push(byTime[i]);
+      }
+    }
+
+    const oldByVotes = comments.sort( (a: CommentAttributes,b:CommentAttributes)=>{
+      //@ts-ignore
+      return b.counterUpVotes - a.counterUpVotes;
+    })
+
+    return [...newComments, ...oldByVotes];
   }
 
   renderStory() {
