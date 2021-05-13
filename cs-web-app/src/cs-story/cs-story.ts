@@ -75,7 +75,7 @@ export class CsStory extends YpBaseElement {
               id="videoPlayer"
               slot="media"
               src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
-              ?controls="${this.isiOs}"
+              ?controls="${true || this.isiOs}"
             ></video>
           </cs-story-card>
 
