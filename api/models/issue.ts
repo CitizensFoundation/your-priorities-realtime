@@ -30,6 +30,7 @@ export class Issue
   public standard!: string;
   public type!: number;
   public state!: number;
+  public imageUrl!: string;
   public selected!: boolean;
   public counterUpVotes!: number;
   public counterDownVotes!: number;
@@ -90,6 +91,10 @@ export const InitIssue = (sequelize: Sequelize) => {
       },
       description: {
         type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      imageUrl: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       standard: {

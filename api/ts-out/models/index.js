@@ -218,31 +218,25 @@ if (force) {
                     userId: user.id,
                 });
                 const coreIssues = [
-                    "Attitude of staff",
-                    "Affordability of services",
-                    "Availability of medicine",
-                    "Distance to health centre",
-                    "Equal access to health services for all community members",
-                    "Punctuality of staff",
-                    "Polite behavior",
-                    "Listening to patients' problems",
-                    "Honest and transparent staff (in terms of dealing with drugs, food, etc)",
+                    "Staff Punctuality",
+                    "Medicines supply",
+                    "Fee charges",
                 ];
                 const standards = [
-                    "Staff on duty (XX per population) during working hours to provide you with the care that meets your needs",
-                    "Staff attending the health center on time and being present all dayOut of hours standards: 24 hour standby duty for emergencies with publicly posted contact information and schedule",
-                    "Access to medicines: 12 drug deliveries per year to your health center ensure there is enough medicine for treatment",
-                    "Care for women: Pregnancy and newborn screening",
-                    "Care for the elderly",
-                    "Staff attending the health center on time and being present all dayOut of hours standards: 24 hour standby duty for emergencies with publicly posted contact information and schedule",
-                    "Access to medicines: 12 drug deliveries per year to your health center ensure there is enough medicine for treatment",
-                    "Care for women: Pregnancy and newborn screening",
-                    "Care for the elderly",
+                    "Staff attend the Centre on time, and are present all day.",
+                    "12 drug deliveries per year ensures that there is adequate medicine for treatment.",
+                    "Will charge you only listed fees.",
+                ];
+                const imageUrls = [
+                    "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png",
+                    "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png",
+                    "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
                 ];
                 for (let i = 0; i < coreIssues.length; i++) {
                     const issue = {
                         description: coreIssues[i],
                         standard: standards[i],
+                        imageUrl: imageUrls[i],
                         userId: 1,
                         type: 0,
                         state: 0,

@@ -75,6 +75,7 @@ export class CsStory extends YpBaseElement {
               id="videoPlayer"
               slot="media"
               src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
+              playsinline
               ?controls="${this.isiOs}"
             ></video>
           </cs-story-card>
@@ -184,8 +185,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Staff Punctuality:</b>Staff attend the Centre on time, and
-                  are present all day.
+                  <b><u>Staff Punctuality:</u></b>Staff attend the Centre on time, and
+                  are present all day. (*)
                 </td>
               </tr>
               <tr class="featureTr">
@@ -196,9 +197,9 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b><u>Emergency service:</u></b> Out of working hours ‘on
+                  <b>Emergency service:</b> Out of working hours ‘on
                   call’ duty medic, with publicly posted contact information and
-                  schedule. (*)
+                  schedule.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -296,7 +297,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Will charge you only <b>listed fees.</b>
+                  Will charge you only <b><u>listed fees.</u></b> (*)
                 </td>
               </tr>
               <tr>
@@ -363,8 +364,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Pay the <b>official listed fees</b> and you should not pay
-                  informal fees.
+                  Pay the <b><u>official listed fees</u></b> and you should not pay
+                  informal fees. (*)
                 </td>
               </tr>
               <tr>
@@ -539,8 +540,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>2. Staff Punctuality:</b>Staff attend the Centre on time, and
-                  are present all day.
+                  <b><u>2. Staff Punctuality</u>:</b>Staff attend the Centre on time, and
+                  are present all day. (*)
                 </td>
               </tr>
               <tr class="featureTr">
@@ -551,9 +552,9 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b><u>3. Emergency service:</u></b> Out of working hours ‘on
+                  <b>3. Emergency service:</b> Out of working hours ‘on
                   call’ duty medic, with publicly posted contact information and
-                  schedule. (*)
+                  schedule.
                 </td>
               </tr>
               <tr class="featureTr">

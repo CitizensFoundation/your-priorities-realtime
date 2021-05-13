@@ -138,6 +138,7 @@ interface IssueAttributes {
   type: number;
   state: number;
   standard: string;
+  imageUrl?: string;
   counterUpVotes: number;
   counterDownVotes: number;
   score: number;
