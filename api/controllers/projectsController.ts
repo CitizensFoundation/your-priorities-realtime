@@ -202,6 +202,7 @@ export class ProjectsController {
           }
         ]
       }).then(project => {
+        console.error(JSON.stringify(project))
         res.send(project);
       }).catch( error => {
         console.error(error);
@@ -226,6 +227,7 @@ export class ProjectsController {
           }
         ]
       }).then( project => {
+        console.error(JSON.stringify(project))
         res.send(project);
       }).catch( error => {
         console.error(error);

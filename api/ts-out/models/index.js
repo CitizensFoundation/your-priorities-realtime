@@ -189,6 +189,8 @@ if (force) {
                     name: "Robert Bjarnason",
                     email: "robert@citizens.is",
                     encrypedPassword: "dsDSDJWD)dw9jdw9d92",
+                    selectedAvatar: "mood",
+                    selectedAvatarColor: "#c93737",
                     language: "en",
                 });
                 const roleNames = ["users", "providers", "workingGroup", "facilitator"];

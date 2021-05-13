@@ -133,6 +133,13 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin: 32px;
           font-size: 24px;
         }
+
+        .coreImage {
+          width: 120px;
+          height: 68px;
+          margin-top: 16px;
+        }
+
         @media (max-width: 400px) {
           .issueForwardBack {
             display: none !important;
@@ -246,11 +253,21 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         class="issueCard shadow-elevation-2dp shadow-transition layout horizontal"
       >
         <div class="layout vertical otherContainer">
-          <div class="layout horizontal center-center">
-            <mwc-icon class="bookmarkIcon bookmarkIconStronger"
-              >${this.getIconForIssueType(issue)}</mwc-icon
-            >
-          </div>
+          ${ issue.imageUrl!=null ? html `
+            <div class="layout vertical center-center">
+              <img
+                class="coreImage"
+                src="${issue.imageUrl!}"
+              />
+            </div>
+          ` : html`
+            <div class="layout horizontal center-center">
+              <mwc-icon class="bookmarkIcon bookmarkIconStronger"
+                >${this.getIconForIssueType(issue)}</mwc-icon
+              >
+            </div>
+          `}
+
           <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
           <div class="issueStandard">${issue.standard}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
