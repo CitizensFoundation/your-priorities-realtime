@@ -698,8 +698,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Pay the <b>official listed fees</b> and you should not pay
-                  informal fees.
+                  Pay the <b><u>official listed fees</u></b> and you should not pay
+                  informal fees. (*)
                 </td>
               </tr>
               <tr>

@@ -48,7 +48,7 @@ const io = new socket_io_1.Server(httpServer, {});
 io.on("connection", (socket) => {
     const meetingId = socket.handshake.query.meetingId;
     if (meetingId) {
-        const redisMeetingStateKey = `meetingState${meetingId}`;
+        const redisMeetingStateKey = `meetingStateV2${meetingId}`;
         redisClient.get(redisMeetingStateKey, (error, reply) => {
             const parsedLatestMeetingState = JSON.parse(reply);
             console.log(parsedLatestMeetingState);
