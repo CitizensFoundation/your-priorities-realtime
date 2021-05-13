@@ -77,6 +77,7 @@ export class CsStory extends YpBaseElement {
               playsinline
               ?muted="${this.isiOs}"
               ?controls="${this.isiOs}"
+              ?autoplay="${!this.isiOs}"
             ></video>
           </cs-story-card>
 
