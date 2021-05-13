@@ -30,365 +30,739 @@ export class CsStory extends YpBaseElement {
     (this.$$('#viewer') as CsStoryViewer).setIndex(index);
   }
 
-  renderStoryNumber(id: number ) {
-    if (id==1) {
+  haveSetVideoEndEvent = false
+
+  updated(changedProperties: Map<string | number | symbol, unknown>) {
+    super.updated(changedProperties);
+
+    if (this.$$("#videoPlayer") && !this.haveSetVideoEndEvent) {
+      this.haveSetVideoEndEvent = true;
+      const videoPlayer = this.$$("#videoPlayer") as HTMLVideoElement;
+      videoPlayer.addEventListener('ended', (event: any) => {
+        event.preventDefault();
+        this.videoEnded();
+      })
+    }
+}
+
+  renderStoryNumber(id: number) {
+    if (id == 1) {
       return html`
-      <cs-story-viewer
-        id="viewer"
-        ?isLive="${this.isLive}"
-        ?isAdmin="${this.isAdmin}"
-      >
-        <cs-story-card style="background: white;color: black">
-          <div class="bigHeader introHeader">
-          Introduction to the Community Score Card
-          </div>
-          <p class="swipeText">
-            Please swipe to continue
-          </p>
-        </cs-story-card>
-
-        <cs-story-card style="background: white;color: black">
-          <video
-            slot="media"
-            src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
-            loop
-            playsinline
-          ></video>
-        </cs-story-card>
-
-        <cs-story-card style="background: white;color: black">
-          <div class="layout vertical center-center">
-            <img class="areaLogo" src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"/>
-          </div>
-          <p>Dear resident of <b>Simin Han,</b></p>
-          <p>
-            As a user of the Simin Han Health Centre, you are invited to join a
-            <b>Community Score Card process</b> – to design a tool for giving
-            feedback on your experience of using the health centre.
-          </p>
-          <p>
-            This is to help identify <b>priorities for improvement</b> which, in
-            discussion with health service providers, will lead to a joint
-            <b>action plan</b>.
-          </p>
-          <p>
-            Please <b>save the dates</b> – for which you will receive an
-            invitation link:
-          </p>
-          <ul>
-            <li>
-              <b>Thursday May 13th at 1400 BST</b> – for an Orientation on your
-              rights and responsibilities, and what standards you can expect
-            </li>
-            <li>
-              <b>Friday May 14th at 1400 BST</b> – to discuss and agree
-              priorities standards for inclusion in the
-              <b>Community Score Card.</b>
-            </li>
-          </ul>
-        </cs-story-card>
-
-        <cs-story-card style="background: white;color: black">
-          <div class="bigHeader">Find out more before Thursday…</div>
-
-          <p>Here’s some information about :</p>
-          <ul>
-            <li>
-              the <span class="standardsTextColor">Standards</span> you can
-              expect from your Simin Han Health Centre, and
-            </li>
-            <li>
-              Your <span class="rightsTextColor">Rights</span> and
-              <span class="rightsTextColor">Responsibilities</span> as a user of
-              health services
-            </li>
-            <li>The Community Score Card process</li>
-          </ul>
-          <p>
-            Three of these standards/rights have been identified as
-            <b>national priorities for feedback</b> (called ‘core’). These are
-            highlighted with a (*) and will automatically be included in the
-            Score Card
-          </p>
-          <p>
-            In addition, you will be able to discuss and select
-            <b>three additional issues</b> that are most relevant to your
-            local experience.
-          </p>
-        </cs-story-card>
-
-        <cs-story-card style="background: white;color: black">
-          <div class="bigHeader">
-            What <span class="standardsTextColor">standards</span> can you
-            expect?
-          </div>
-          <p>
-            Your Health Centre should perform to these National Standards set by
-            the Ministry of Health for all Health Centres.
-          </p>
-          <table>
-            <tr class="headerTr">
-              <td
-                colspan="2"
-                class="tableHeader standardsHeaderBackgroundColor"
-              >
-                Standards
-              </td>
-            </tr>
-            <tr class="topFeatureTr">
-              <td class="tableImages standardsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctors1.png"
-                />
-              </td>
-              <td class="tableText standardsContentBackground">
-                <b>Staff/pop ratio:</b> At Simin Han, 4.4 staff include 1
-                doctor, 2 nurses and a part-time medical assistant and
-                receptionist.
-              </td>
-            </tr>
-            <tr class="featureTr">
-              <td class="tableImages standardsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png"
-                />
-              </td>
-              <td class="tableText standardsHighlightBackground">
-                <b>Staff Punctuality:</b>Staff attend the Centre on time, and
-                are present all day.
-              </td>
-            </tr>
-            <tr class="featureTr">
-              <td class="tableImages standardsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/siren1.png"
-                />
-              </td>
-              <td class="tableText standardsHighlightBackground">
-                <b><u>Emergency service:</u></b> Out of working hours ‘on call’ duty
-                medic, with publicly posted contact information and schedule. (*)
-              </td>
-            </tr>
-            <tr class="featureTr">
-              <td class="tableImages standardsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/pregnant1.png"
-                />
-              </td>
-              <td class="tableText standardsContentBackground">
-                <b>Screening service:</b> for pregnant women and newborn babies.
-              </td>
-            </tr>
-            <tr class="featureTr">
-              <td class="tableImages standardsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png"
-                />
-              </td>
-              <td class="tableText standardsHighlightBackground">
-                <b><u>Medicines:</u></b> 12 drug deliveries per year ensures that there
-                is adequate medicine for treatment. (*)
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" class="tableFooter standardsFooterBackground">
-                For more detail,
-                <a href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf" target="_blank"
-                  >click on this link to find a PDF of the full set of
-                  standards, rights and responsibilities.</a
-                >
-              </td>
-            </tr>
-          </table>
-        </cs-story-card>
-
-        <cs-story-card style="background: white;color: black">
-          <div class="bigHeader">
-            What are your <span class="rightsTextColor">rights</span>?
-          </div>
-          <p>
-            In relation to your Health Centre and local health service, you have
-            the following rights:
-          </p>
-          <table>
-            <tr class="headerTr">
-              <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
-                Your Health Centre staff
-              </td>
-            </tr>
-            <tr class="topFeatureTr">
-              <td class="tableImages rightsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/docktors2.png"
-                />
-              </td>
-              <td class="tableText rightsContentBackground">
-                Should treat you equally and with <b>respect</b>.
-              </td>
-            </tr>
-            <tr class="featureTr">
-              <td class="tableImages rightsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctorinfo1.png"
-                />
-              </td>
-              <td class="tableText rightsContentBackground">
-                Will <b>display</b> service information about the Health Centre
-              </td>
-            </tr>
-            <tr class="featureTr">
-              <td class="tableImages rightsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustdoctor1.png"
-                />
-              </td>
-              <td class="tableText rightsHighlightBackground">
-                Will <b>help</b> you and your family understand your health
-                needs, and treat this information <b>confidentially</b>.
-              </td>
-            </tr>
-            <tr class="featureTr">
-              <td class="tableImages rightsContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
-                />
-              </td>
-              <td class="tableText rightsContentBackground">
-                Will charge you only <b>listed fees.</b>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" class="tableFooter rightsFooterBackground">
-                For more detail,
-                <a href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf" target="_blank"
-                  >click on this link to find a PDF of the full set of rights,
-                  rights and responsibilities.</a
-                >
-              </td>
-            </tr>
-          </table>
-        </cs-story-card>
-
-        <cs-story-card style="background: white;color: black">
-          <div class="bigHeader">
-            What are your
-            <span class="responsibilitiesTextColor">responsibilities</span>?
-          </div>
-          <p>
-            You have responsibilities as a user of the Health Centre to ensure
-            you receive good quality care and treatment.
-          </p>
-          <table>
-            <tr class="headerTr">
-              <td
-                colspan="2"
-                class="tableHeader responsibilitiesHeaderBackgroundColor"
-              >
-                You should...
-              </td>
-            </tr>
-            <tr class="topFeatureTr">
-              <td class="tableImages responsibilitiesContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthjustice.png"
-                />
-              </td>
-              <td class="tableText responsibilitiesContentBackground">
-                <b>Learn</b> about your rights, and ask for any clarifications
-                you may need
-              </td>
-            </tr>
-            <tr>
-              <td class="tableImages responsibilitiesContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/bosnia1.png"
-                />
-              </td>
-              <td class="tableText responsibilitiesContentBackground">
-                Always <b>participate</b> in sickness prevention and health
-                promotion activities run by your Health Centre
-              </td>
-            </tr>
-            <tr>
-              <td class="tableImages responsibilitiesContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
-                />
-              </td>
-              <td class="tableText responsibilitiesContentBackground">
-                Pay the <b>official listed fees</b> and you should not pay
-                informal fees.
-              </td>
-            </tr>
-            <tr>
-              <td class="tableImages responsibilitiesContentBackground">
-                <img
-                  class="featureImage"
-                  src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustInToctors.png"
-                />
-              </td>
-              <td class="tableText responsibilitiesContentBackground">
-                Treat the Health Centre staff with respect and courtesy.
-              </td>
-            </tr>
-            <tr>
-              <td
-                colspan="2"
-                class="tableFooter responsibilitiesFooterBackground"
-              >
-                For more detail,
-                <a href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf" target="_blank"
-                  >click on this link to find a PDF of the full set of
-                  responsibilities, responsibilities and responsibilities.</a
-                >
-              </td>
-            </tr>
-          </table>
-        </cs-story-card>
-
-        <cs-story-card style="background: white;color: black">
-          <div class="smallHeader">
-            If you have the time, here’s some more information about Community
-            Score Card
-          </div>
-          <p>
-            It’s a constructive <b>5-step process</b> that helps citizens give
-            feed-back to service providers on their experience of the service.
-          </p>
-          <p>
-            With support of a facilitator, a
-            <b>community of users develops a Score Card</b> of priority issues.
-          </p>
-          <p>
-            This is then used to <b>score performance</b> and to develop, with
-            service providers, an <b>Action Plan for improvement</b> – monitored
-            over time.
-          </p>
-          <p>
-            This week, we’re working on <b>Step 1</b> (Orientation) and
-            <b>Step 2</b> (Scorecard). Click on this link for a more detailed
-            explanation.
-          </p>
-          <div class="layout vertical center-center">
-            <img class="cscoverview"
-              src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
-            />
+        <cs-story-viewer
+          id="viewer"
+          ?isLive="${this.isLive}"
+          ?isAdmin="${this.isAdmin}"
+        >
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader introHeader">
+              Introduction to the Community Score Card
             </div>
-        </cs-story-card>
-      </cs-story-viewer>
-    `
+            <p class="swipeText">Please swipe to continue</p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <video
+              id="videoPlayer"
+              slot="media"
+              src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
+              playsinline
+            ></video>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="layout vertical center-center">
+              <img
+                class="areaLogo"
+                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"
+              />
+            </div>
+            <p>Dear resident of <b>Simin Han,</b></p>
+            <p>
+              As a user of the Simin Han Health Centre, you are invited to join
+              a
+              <b>Community Score Card process</b> – to design a tool for giving
+              feedback on your experience of using the health centre.
+            </p>
+            <p>
+              This is to help identify <b>priorities for improvement</b> which,
+              in discussion with health service providers, will lead to a joint
+              <b>action plan</b>.
+            </p>
+            <p>
+              Please <b>save the dates</b> – for which you will receive an
+              invitation link:
+            </p>
+            <ul>
+              <li>
+                <b>Thursday May 13th at 1400 BST</b> – for an Orientation on
+                your rights and responsibilities, and what standards you can
+                expect
+              </li>
+              <li>
+                <b>Friday May 14th at 1400 BST</b> – to discuss and agree
+                priorities standards for inclusion in the
+                <b>Community Score Card.</b>
+              </li>
+            </ul>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">Find out more before Thursday…</div>
+
+            <p>Here’s some information about :</p>
+            <ul>
+              <li>
+                the <span class="standardsTextColor">Standards</span> you can
+                expect from your Simin Han Health Centre, and
+              </li>
+              <li>
+                Your <span class="rightsTextColor">Rights</span> and
+                <span class="rightsTextColor">Responsibilities</span> as a user
+                of health services
+              </li>
+              <li>The Community Score Card process</li>
+            </ul>
+            <p>
+              Three of these standards/rights have been identified as
+              <b>national priorities for feedback</b> (called ‘core’). These are
+              highlighted with a (*) and will automatically be included in the
+              Score Card
+            </p>
+            <p>
+              In addition, you will be able to discuss and select
+              <b>three additional issues</b> that are most relevant to your
+              local experience.
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What <span class="standardsTextColor">standards</span> can you
+              expect?
+            </div>
+            <p>
+              Your Health Centre should perform to these National Standards set
+              by the Ministry of Health for all Health Centres.
+            </p>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader standardsHeaderBackgroundColor"
+                >
+                  Standards
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctors1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                  <b>Staff/pop ratio:</b> At Simin Han, 4.4 staff include 1
+                  doctor, 2 nurses and a part-time medical assistant and
+                  receptionist.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b>Staff Punctuality:</b>Staff attend the Centre on time, and
+                  are present all day.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/siren1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b><u>Emergency service:</u></b> Out of working hours ‘on
+                  call’ duty medic, with publicly posted contact information and
+                  schedule. (*)
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/pregnant1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                  <b>Screening service:</b> for pregnant women and newborn
+                  babies.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b><u>Medicines:</u></b> 12 drug deliveries per year ensures
+                  that there is adequate medicine for treatment. (*)
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="tableFooter standardsFooterBackground">
+                  For more detail,
+                  <a
+                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
+                    target="_blank"
+                    >click on this link to find a PDF of the full set of
+                    standards, rights and responsibilities.</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What are your <span class="rightsTextColor">rights</span>?
+            </div>
+            <p>
+              In relation to your Health Centre and local health service, you
+              have the following rights:
+            </p>
+            <table>
+              <tr class="headerTr">
+                <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
+                  Your Health Centre staff
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/docktors2.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Should treat you equally and with <b>respect</b>.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctorinfo1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Will <b>display</b> service information about the Health
+                  Centre
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustdoctor1.png"
+                  />
+                </td>
+                <td class="tableText rightsHighlightBackground">
+                  Will <b>help</b> you and your family understand your health
+                  needs, and treat this information <b>confidentially</b>.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Will charge you only <b>listed fees.</b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="tableFooter rightsFooterBackground">
+                  For more detail,
+                  <a
+                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
+                    target="_blank"
+                    >click on this link to find a PDF of the full set of rights,
+                    rights and responsibilities.</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What are your
+              <span class="responsibilitiesTextColor">responsibilities</span>?
+            </div>
+            <p>
+              You have responsibilities as a user of the Health Centre to ensure
+              you receive good quality care and treatment.
+            </p>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader responsibilitiesHeaderBackgroundColor"
+                >
+                  You should...
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthjustice.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  <b>Learn</b> about your rights, and ask for any clarifications
+                  you may need
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/bosnia1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Always <b>participate</b> in sickness prevention and health
+                  promotion activities run by your Health Centre
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Pay the <b>official listed fees</b> and you should not pay
+                  informal fees.
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustInToctors.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Treat the Health Centre staff with respect and courtesy.
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colspan="2"
+                  class="tableFooter responsibilitiesFooterBackground"
+                >
+                  For more detail,
+                  <a
+                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
+                    target="_blank"
+                    >click on this link to find a PDF of the full set of
+                    responsibilities, responsibilities and responsibilities.</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="smallHeader">
+              If you have the time, here’s some more information about Community
+              Score Card
+            </div>
+            <p>
+              It’s a constructive <b>5-step process</b> that helps citizens give
+              feed-back to service providers on their experience of the service.
+            </p>
+            <p>
+              With support of a facilitator, a
+              <b>community of users develops a Score Card</b> of priority
+              issues.
+            </p>
+            <p>
+              This is then used to <b>score performance</b> and to develop, with
+              service providers, an <b>Action Plan for improvement</b> –
+              monitored over time.
+            </p>
+            <p>
+              This week, we’re working on <b>Step 1</b> (Orientation) and
+              <b>Step 2</b> (Scorecard).
+            </p>
+            <div class="layout vertical center-center">
+              <img
+                class="cscoverview"
+                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
+              />
+            </div>
+          </cs-story-card>
+        </cs-story-viewer>
+      `;
+    } else if (id == 2) {
+      return html`
+        <cs-story-viewer
+          id="viewer"
+          ?isLive="${this.isLive}"
+          ?isAdmin="${this.isAdmin}"
+        >
+          <cs-story-card style="background: white;color: black">
+
+            <div class="bigHeader">
+              Welcome to Orientation!
+            </div>
+            <div class="layout vertical center-center">
+              <img
+                class="areaLogo"
+                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"
+              />
+            </div>
+
+            <p>
+              You’ve joined a meeting with other residents of Simin Han.
+            </p>
+            <p>
+              All of you are health service users.
+            </p>
+            <p>
+              The purpose of today is to review the service standards of your
+              Health Center, and to review your rights and responsibilities as users.
+            </p>
+            <p>
+            Your facilitator for today is <b>Bev Jones.</b> Bev is an independent facilitator
+            who has worked in NGOs for many years.
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">Find out more before Thursday…</div>
+
+            <p>Here’s some information about :</p>
+            <ul>
+              <li>
+                the <span class="standardsTextColor">Standards</span> you can
+                expect from your Simin Han Health Centre, and
+              </li>
+              <li>
+                Your <span class="rightsTextColor">Rights</span> and
+                <span class="rightsTextColor">Responsibilities</span> as a user
+                of health services
+              </li>
+              <li>The Community Score Card process</li>
+            </ul>
+            <p>
+              Three of these standards/rights have been identified as
+              <b>national priorities for feedback</b> (called ‘core’). These are
+              highlighted with a (*) and will automatically be included in the
+              Score Card
+            </p>
+            <p>
+              In addition, you will be able to discuss and select
+              <b>three additional issues</b> that are most relevant to your
+              local experience.
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What <span class="standardsTextColor">standards</span> can you
+              expect?
+            </div>
+            <p>
+              Your Health Centre should perform to these National Standards set
+              by the Ministry of Health for all Health Centres.
+            </p>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader standardsHeaderBackgroundColor"
+                >
+                  Standards
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctors1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                  <b>1. Staff/pop ratio:</b> At Simin Han, 4.4 staff include 1
+                  doctor, 2 nurses and a part-time medical assistant and
+                  receptionist.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b>2. Staff Punctuality:</b>Staff attend the Centre on time, and
+                  are present all day.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/siren1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b><u>3. Emergency service:</u></b> Out of working hours ‘on
+                  call’ duty medic, with publicly posted contact information and
+                  schedule. (*)
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/pregnant1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                  <b>4. Screening service:</b> for pregnant women and newborn
+                  babies.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b><u>5. Medicines:</u></b> 12 drug deliveries per year ensures
+                  that there is adequate medicine for treatment. (*)
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="tableFooter standardsFooterBackground">
+                  For more detail,
+                  <a
+                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
+                    target="_blank"
+                    >click on this link to find a PDF of the full set of
+                    standards, rights and responsibilities.</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What are your <span class="rightsTextColor">rights</span>?
+            </div>
+            <p>
+              In relation to your Health Centre and local health service, you
+              have the following rights:
+            </p>
+            <table>
+              <tr class="headerTr">
+                <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
+                  1. Your Health Centre staff
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/docktors2.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Should treat you equally and with <b>respect</b>.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctorinfo1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Will <b>display</b> service information about the Health
+                  Centre
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustdoctor1.png"
+                  />
+                </td>
+                <td class="tableText rightsHighlightBackground">
+                  Will <b>help</b> you and your family understand your health
+                  needs, and treat this information <b>confidentially</b>.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Will charge you only <b>listed fees.</b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="tableFooter rightsFooterBackground">
+                  For more detail,
+                  <a
+                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
+                    target="_blank"
+                    >click on this link to find a PDF of the full set of rights,
+                    rights and responsibilities.</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What are your
+              <span class="responsibilitiesTextColor">responsibilities</span>?
+            </div>
+            <p>
+              You have responsibilities as a user of the Health Centre to ensure
+              you receive good quality care and treatment.
+            </p>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader responsibilitiesHeaderBackgroundColor"
+                >
+                  You should...
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthjustice.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  <b>Learn</b> about your rights, and ask for any clarifications
+                  you may need
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/bosnia1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Always <b>participate</b> in sickness prevention and health
+                  promotion activities run by your Health Centre
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Pay the <b>official listed fees</b> and you should not pay
+                  informal fees.
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustInToctors.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Treat the Health Centre staff with respect and courtesy.
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colspan="2"
+                  class="tableFooter responsibilitiesFooterBackground"
+                >
+                  For more detail,
+                  <a
+                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
+                    target="_blank"
+                    >click on this link to find a PDF of the full set of
+                    responsibilities, responsibilities and responsibilities.</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="smallHeader">
+              If you have the time, here’s some more information about Community
+              Score Card
+            </div>
+            <p>
+              It’s a constructive <b>5-step process</b> that helps citizens give
+              feed-back to service providers on their experience of the service.
+            </p>
+            <p>
+              With support of a facilitator, a
+              <b>community of users develops a Score Card</b> of priority
+              issues.
+            </p>
+            <p>
+              This is then used to <b>score performance</b> and to develop, with
+              service providers, an <b>Action Plan for improvement</b> –
+              monitored over time.
+            </p>
+            <p>
+              This week, we’re working on <b>Step 1</b> (Orientation) and
+              <b>Step 2</b> (Scorecard).
+            </p>
+            <div class="layout vertical center-center">
+              <img
+                class="cscoverview"
+                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
+              />
+            </div>
+          </cs-story-card>
+        </cs-story-viewer>
+      `;
     }
   }
 
@@ -546,7 +920,6 @@ export class CsStory extends YpBaseElement {
         .responsibilitiesTextColor {
           color: #548135;
           font-weight: bold;
-
         }
 
         .responsibilitiesFooterBackground {
@@ -591,7 +964,7 @@ export class CsStory extends YpBaseElement {
           margin-top: 8px;
           text-align: center;
           color: #000 !important;
-          background-color: #FFF !important;
+          background-color: #fff !important;
         }
 
         a {
@@ -605,6 +978,7 @@ export class CsStory extends YpBaseElement {
 
         .areaLogo {
           width: 300px;
+          margin-bottom: 16px;
         }
 
         .swipeText {
@@ -681,11 +1055,13 @@ export class CsStory extends YpBaseElement {
             width: 90px;
             height: 51px;
           }
-
         }
-
       `,
     ];
+  }
+
+  videoEnded() {
+    (this.$$("#viewer") as CsStoryViewer).next();
   }
 
   renderStory() {
