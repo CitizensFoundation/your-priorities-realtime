@@ -95,7 +95,7 @@ export const InitIssue = (sequelize: Sequelize) => {
       },
       imageUrl: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       standard: {
         type: DataTypes.TEXT,

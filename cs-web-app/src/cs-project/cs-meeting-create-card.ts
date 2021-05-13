@@ -89,13 +89,13 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         projectId: 1, //TODO: FIX
       } as IssueAttributes;
 
-      await window.serverApi.postIssue(1, issue);
+      const newIssue = await window.serverApi.postIssue(1, issue);
 
-      this.participantsIssues?.unshift(issue);
+      this.participantsIssues?.unshift(newIssue);
 
       this.participantsIssues = [...this.participantsIssues!];
 
-      this.io.emit('newIssue', issue);
+      this.io.emit('newIssue', newIssue);
 
       (this.$$('#addIssueInput') as HTMLInputElement).value = '';
     }
@@ -680,8 +680,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       changedProperties.has('participantsIssues') &&
       this.participantsIssues
     ) {
-      this.orderedParticipantsIssues = this.participantsIssues.sort(item => {
-        return item.counterDownVotes - item.counterUpVotes;
+      this.orderedParticipantsIssues = this.participantsIssues.sort((a,b) => {
+        return (b.counterUpVotes - b.counterDownVotes) - (a.counterUpVotes - a.counterDownVotes);
       });
     }
   }

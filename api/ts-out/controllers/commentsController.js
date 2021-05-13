@@ -19,11 +19,11 @@ class CommentsController {
                 if (comment) {
                     if (req.body.value == 1) {
                         await comment.increment("counterUpVotes");
-                        res.sendStatus(200);
+                        res.send(comment);
                     }
                     else {
                         await comment.increment("counterDownVotes");
-                        res.sendStatus(200);
+                        res.send(comment);
                     }
                 }
                 else {

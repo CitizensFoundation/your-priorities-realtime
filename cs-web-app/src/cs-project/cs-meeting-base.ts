@@ -524,11 +524,11 @@ export class CsMeetingBase extends YpBaseElement {
       status: 0,
     } as CommentAttributes;
 
-    await window.serverApi.postIssueComment(issue.id, comment);
+    const newComment = await window.serverApi.postIssueComment(issue.id, comment);
 
-    this.addCoreIssueComment(comment);
+    this.addCoreIssueComment(newComment);
 
-    this.io.emit('newComment', comment);
+    this.io.emit('newComment', newComment);
 
     (this.$$('#addCommentInput') as HTMLInputElement).value = '';
   }
@@ -555,9 +555,10 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   async voteCommentUp(comment: CommentAttributes) {
-    await window.serverApi.voteComment(comment.id, 1);
+    const updatedComment = await window.serverApi.voteComment(comment.id, 1);
+    this.io.emit('newVoteComment', updatedComment);
     comment.counterUpVotes+=1;
-    this.io.emit('newVoteComment', comment);
+    this.requestUpdate();
   }
 
   _toggleCommentsForIssue(issueId: number, button: IconButton) {

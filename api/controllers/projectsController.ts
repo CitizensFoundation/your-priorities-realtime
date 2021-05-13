@@ -46,7 +46,6 @@ export class ProjectsController {
     })
   }
 
-
   addParticipants = async (
     req: express.Request,
     res: express.Response

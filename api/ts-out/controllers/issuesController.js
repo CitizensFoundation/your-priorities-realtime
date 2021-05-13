@@ -140,8 +140,17 @@ class IssuesController {
             }
             models_1.models.Comment.create(
             // @ts-ignore
-            { ...req.body, ...{ userId: req.session.user.id } }).then(project => {
-                res.send(project);
+            { ...req.body, ...{ userId: req.session.user.id } }).then(async (comment) => {
+                await comment.reload({
+                    include: [
+                        {
+                            model: models_1.models.User,
+                            as: "User",
+                            attributes: ["id", "selectedAvatar", "selectedAvatarColor"]
+                        }
+                    ]
+                });
+                res.send(comment);
             }).catch(error => {
                 console.error(error);
                 res.send(error);

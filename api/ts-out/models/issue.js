@@ -37,7 +37,7 @@ const InitIssue = (sequelize) => {
         },
         imageUrl: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         standard: {
             type: sequelize_1.DataTypes.TEXT,

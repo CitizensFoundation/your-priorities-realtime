@@ -188,7 +188,7 @@ if (force) {
                 const user = await exports.models.User.create({
                     name: "Robert Bjarnason",
                     email: "robert@citizens.is",
-                    encrypedPassword: "dsDSDJWD)dw9jdw9d92",
+                    encrypedPassword: "justfortesting",
                     selectedAvatar: "mood",
                     selectedAvatarColor: "#c93737",
                     language: "en",
