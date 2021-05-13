@@ -24,6 +24,12 @@ class StarsRating extends LitElement {
         type: Number,
         value: 0
       },
+
+      disableRating: {
+        type: Boolean,
+        value: false
+      },
+
       userRating: {
         type: Number,
         value: 0
@@ -176,7 +182,7 @@ class StarsRating extends LitElement {
   render() {
     let index = 1;
     return html`
-      <fieldset id="rating">
+      <fieldset id="rating" ?disabled="${this.disableRating}">
         ${(this.resetbtn && this.manual) ? html`<label class="resetbtn"><input @click="${this.reset}" type="radio" id="x" name="resetbtn" value="-1" /></label>  ` : html``}
         ${repeat(
           this._stars,

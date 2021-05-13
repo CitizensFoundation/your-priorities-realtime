@@ -596,9 +596,19 @@ export class CsMeetingBase extends YpBaseElement {
       >
         <div class="layout vertical otherContainer">
           <div class="layout horizontal center-center">
-            <mwc-icon class="bookmarkIcon bookmarkIconStronger"
-              >${this.getIconForIssueType(issue)}</mwc-icon
-            >
+          ${issue.imageUrl != null
+            ? html`
+                <div class="layout vertical center-center">
+                  <img class="coreImage" src="${issue.imageUrl!}" />
+                </div>
+              `
+            : html`
+                <div class="layout horizontal center-center">
+                  <mwc-icon class="bookmarkIcon bookmarkIconStronger"
+                    >${this.getIconForIssueType(issue)}</mwc-icon
+                  >
+                </div>
+              `}
           </div>
 
           <div class="issueName" ?has-standard="${issue.standard}">
@@ -612,6 +622,7 @@ export class CsMeetingBase extends YpBaseElement {
                 ?hidden="${hideRating}"
                 .rating="${issue.score}"
                 numstars="5"
+                disableRating="${true}"
                 manual
                 @rating-changed="${scoreIssueFunction}"
               ></stars-rating>

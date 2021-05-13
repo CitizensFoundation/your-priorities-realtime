@@ -30,12 +30,11 @@ export const CreateCardTabTypes: Record<string, number> = {
   CreateLocal: 2,
   Voting: 3,
   Review: 4,
-  Preview: 5
+  Preview: 5,
 };
 
 @customElement('cs-meeting-create-card')
 export class CsMeetingCreateCard extends CsMeetingBase {
-
   constructor() {
     super();
     this.storyNumber = 3;
@@ -253,22 +252,23 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         class="issueCard shadow-elevation-2dp shadow-transition layout horizontal"
       >
         <div class="layout vertical otherContainer">
-          ${ issue.imageUrl!=null ? html `
-            <div class="layout vertical center-center">
-              <img
-                class="coreImage"
-                src="${issue.imageUrl!}"
-              />
-            </div>
-          ` : html`
-            <div class="layout horizontal center-center">
-              <mwc-icon class="bookmarkIcon bookmarkIconStronger"
-                >${this.getIconForIssueType(issue)}</mwc-icon
-              >
-            </div>
-          `}
+          ${issue.imageUrl != null
+            ? html`
+                <div class="layout vertical center-center">
+                  <img class="coreImage" src="${issue.imageUrl!}" />
+                </div>
+              `
+            : html`
+                <div class="layout horizontal center-center">
+                  <mwc-icon class="bookmarkIcon bookmarkIconStronger"
+                    >${this.getIconForIssueType(issue)}</mwc-icon
+                  >
+                </div>
+              `}
 
-          <div class="issueName" ?has-standard="${issue.standard}">${issue.description}</div>
+          <div class="issueName" ?has-standard="${issue.standard}">
+            ${issue.description}
+          </div>
           <div class="issueStandard">${issue.standard}</div>
           <div class="layout horizontal" ?hidden="${!showVoting}">
             <div class="flex"></div>
@@ -332,7 +332,10 @@ export class CsMeetingCreateCard extends CsMeetingBase {
     if (this.selectedTab == CreateCardTabTypes.Voting) {
       issue = this.participantsIssues![index];
       showVoting = true;
-    } else if (this.selectedTab == CreateCardTabTypes.Review) {
+    } else if (
+      this.selectedTab == CreateCardTabTypes.Review ||
+      this.selectedTab == CreateCardTabTypes.Preview
+    ) {
       issue = this.orderedParticipantsIssues![index];
       showVoting = true;
       disableVoting = true;
@@ -435,7 +438,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   _processNewComment(comment: CommentAttributes) {
     this.addCoreIssueComment(comment);
-    setTimeout(()=>{
+    setTimeout(() => {
       this._getIssues();
     }, 250);
   }
@@ -566,14 +569,9 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       return html`
         <div class="layout vertical center-center">
           ${allIssues.map((issue, index) => {
-            return this.renderIssueHtml(
-              issue,
-              true,
-              true,
-              false,
-              false,
-              false
-            );;
+            if (issue.selected || issue.type==this.IssueTypes.CoreIssue) {
+              return this.renderIssueHtml(issue, true, true, false, false, false);
+            }
           })}
         </div>
       `;
@@ -584,50 +582,50 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
   renderTabs() {
     return html`
-    <div class="layout vertical center-center">
-      <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
-        <mwc-tab
-          ?hidden="${!this.isAdmin}"
-          .label="${this.t('information')}"
-          icon="info_outlined"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=1}"
-          .label="${this.t('reviewCoreIssues')}"
-          icon="center_focus_weak"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=2}"
-          .label="${this.meeting.forUsers
-            ? this.t('createScoreCard')
-            : this.t('createSelfAssessment')}"
-          icon="${this.meeting.forUsers ? 'face' : 'groups'}"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=3}"
-          .label="${this.t('voting')}"
-          icon="how_to_vote"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=4}"
-          .label="${this.t('review')}"
-          icon="checklist"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=4}"
-          .label="${this.t('preview')}"
-          icon="preview"
-          stacked
-        ></mwc-tab>
-      </mwc-tab-bar>
-    </div>
-  `;
-}
+      <div class="layout vertical center-center">
+        <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
+          <mwc-tab
+            ?hidden="${!this.isAdmin}"
+            .label="${this.t('information')}"
+            icon="info_outlined"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 1}"
+            .label="${this.t('reviewCoreIssues')}"
+            icon="center_focus_weak"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 2}"
+            .label="${this.meeting.forUsers
+              ? this.t('createScoreCard')
+              : this.t('createSelfAssessment')}"
+            icon="${this.meeting.forUsers ? 'face' : 'groups'}"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 3}"
+            .label="${this.t('voting')}"
+            icon="how_to_vote"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 4}"
+            .label="${this.t('review')}"
+            icon="checklist"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 5}"
+            .label="${this.t('preview')}"
+            icon="preview"
+            stacked
+          ></mwc-tab>
+        </mwc-tab-bar>
+      </div>
+    `;
+  }
 
   renderCurrentTabPage(): TemplateResult | undefined {
     let page: TemplateResult | undefined;
@@ -651,7 +649,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       case CreateCardTabTypes.Preview:
         page = this.renderPreview();
         break;
-      }
+    }
 
     return page;
   }
@@ -670,6 +668,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
       if (
         this.selectedTab == CreateCardTabTypes.Review ||
+        this.selectedTab == CreateCardTabTypes.Preview ||
         this.selectedTab == CreateCardTabTypes.Voting
       ) {
         this._getAnyParticipantsIssues();
@@ -680,8 +679,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
       changedProperties.has('participantsIssues') &&
       this.participantsIssues
     ) {
-      this.orderedParticipantsIssues = this.participantsIssues.sort((a,b) => {
-        return (b.counterUpVotes - b.counterDownVotes) - (a.counterUpVotes - a.counterDownVotes);
+      this.orderedParticipantsIssues = this.participantsIssues.sort((a, b) => {
+        return (
+          b.counterUpVotes -
+          b.counterDownVotes -
+          (a.counterUpVotes - a.counterDownVotes)
+        );
       });
     }
   }
