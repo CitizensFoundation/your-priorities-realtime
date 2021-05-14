@@ -133,12 +133,6 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           font-size: 24px;
         }
 
-        .coreImage {
-          width: 120px;
-          height: 68px;
-          margin-top: 16px;
-        }
-
         @media (max-width: 400px) {
           .issueForwardBack {
             display: none !important;
@@ -261,7 +255,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           ${issue.imageUrl != null
             ? html`
                 <div class="layout vertical center-center">
-                  <img class="coreImage" src="${issue.imageUrl!}" />
+                  <img class="issueImage" src="${issue.imageUrl!}" />
                 </div>
               `
             : html`

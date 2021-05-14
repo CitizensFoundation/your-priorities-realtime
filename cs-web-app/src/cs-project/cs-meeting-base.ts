@@ -508,6 +508,12 @@ export class CsMeetingBase extends YpBaseElement {
         mwc-textarea {
           --mdc-shape-small: 20px;
         }
+
+        .issueImage {
+          width: 120px;
+          height: 68px;
+          margin-top: 16px;
+        }
       `,
     ];
   }
@@ -599,7 +605,7 @@ export class CsMeetingBase extends YpBaseElement {
           ${issue.imageUrl != null
             ? html`
                 <div class="layout vertical center-center">
-                  <img class="coreImage" src="${issue.imageUrl!}" />
+                  <img class="issueImage" src="${issue.imageUrl!}" />
                 </div>
               `
             : html`
