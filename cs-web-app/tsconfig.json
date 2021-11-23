@@ -16,5 +16,6 @@
     "inlineSources": true,
     "rootDir": "./",
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts"],
+  "importHelpers": true,
 }

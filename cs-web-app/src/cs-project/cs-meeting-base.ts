@@ -1,3 +1,5 @@
+/* eslint-disable no-labels */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/camelcase */
 import { property, html, css, LitElement, customElement } from 'lit-element';
 import { nothing, TemplateResult } from 'lit-html';
@@ -753,7 +755,6 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _sortComments(comments: Array<CommentAttributes>) {
-
     const byTime = comments.sort( (a: CommentAttributes,b:CommentAttributes)=>{
       //@ts-ignore
       return new Date(b.createdAt!) - new Date(a.createdAt!);
