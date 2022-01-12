@@ -193,7 +193,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     await window.serverApi.voteIssue(issue.id, -1);
   }
 
-  renderIssue(index: number, hideRating = false) {
+  renderIssue(index: number, hideRating = false, ordered = false) {
     let issue: IssueAttributes;
     let showVoting = true;
     let showComments = false;
@@ -203,7 +203,12 @@ export class CsMeetingScoring extends CsMeetingBase {
     let toggleCommentsMode = false;
     let disableRating = false;
 
-    issue = this.allIssues![index];
+    if (ordered) {
+      issue = this.orderedAllIssues![index];
+    } else {
+      issue = this.allIssues![index];
+    }
+
     showComments = true;
 
     if (this.selectedTab == ScoringTabTypes.ReviewScoreCard) {
@@ -343,7 +348,7 @@ export class CsMeetingScoring extends CsMeetingBase {
       return html`
         <div class="layout vertical center-center">
           ${this.orderedAllIssues.map((issue, index) => {
-            return html`${this.renderIssue(index)}`;
+            return html`${this.renderIssue(index, false, true)}`;
           })}
         </div>
       `;
@@ -465,8 +470,13 @@ export class CsMeetingScoring extends CsMeetingBase {
       changedProperties.has('allIssues') &&
       this.allIssues
     ) {
-      this.orderedAllIssues = this.allIssues.sort(function(a, b){return a.score! - b.score!});
+      this._updateOrderedIssues();
     }
+  }
+
+  _updateOrderedIssues() {
+    this.orderedAllIssues = [...this.allIssues!];
+    this.orderedAllIssues = this.orderedAllIssues.sort(function(a, b){return a.score! - b.score!});
   }
 
   _selectTab(event: CustomEvent) {
