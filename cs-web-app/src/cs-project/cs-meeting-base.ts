@@ -596,7 +596,8 @@ export class CsMeetingBase extends YpBaseElement {
     hideRating: boolean,
     addCommentFunction: Function | undefined = undefined,
     scoreIssueFunction: Function | undefined = undefined,
-    toggleCommentsMode = false
+    toggleCommentsMode = false,
+    disableRating = true
   ) {
     return html` <div
         class="issueCard shadow-elevation-4dp shadow-transition layout horizontal"
@@ -630,7 +631,7 @@ export class CsMeetingBase extends YpBaseElement {
                 ?hidden="${hideRating}"
                 .rating="${issue.score}"
                 numstars="5"
-                disableRating="${true}"
+                .disableRating="${disableRating}"
                 manual
                 @rating-changed="${scoreIssueFunction}"
               ></stars-rating>

@@ -200,6 +200,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     let hideSubmitComment = false;
     let showNumbers = false;
     let toggleCommentsMode = false;
+    let disableRating = false;
 
     issue = this.allIssues![index];
     showComments = true;
@@ -211,6 +212,7 @@ export class CsMeetingScoring extends CsMeetingBase {
 
     if (this.selectedTab == ScoringTabTypes.Results) {
       hideSubmitComment = false;
+      disableRating = true;
     }
 
     if (this.selectedTab == ScoringTabTypes.ViewIssues) {
@@ -236,7 +238,8 @@ export class CsMeetingScoring extends CsMeetingBase {
       hideRating,
       this.addCoreIssueCommentFromInput,
       this._rateIssue,
-      toggleCommentsMode
+      toggleCommentsMode,
+      disableRating
     );
   }
 

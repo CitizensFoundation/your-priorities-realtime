@@ -93,15 +93,15 @@ class StarsRating extends LitElement {
           opacity:1;
         }
         .on0:before {
-          content: var(--start-unicode, "😟");
+          content: var(--start-unicode, "🙂");
         }
 
         .on1:before {
-          content: var(--start-unicode, "🙁");
+          content: var(--start-unicode, "🙂");
         }
 
         .on2:before {
-          content: var(--start-unicode, "😐");
+          content: var(--start-unicode, "🙂");
         }
 
         .on3:before {
@@ -109,7 +109,7 @@ class StarsRating extends LitElement {
         }
 
         .on4:before {
-          content: var(--start-unicode, "😊");
+          content: var(--start-unicode, "🙂");
         }
 
     `;
