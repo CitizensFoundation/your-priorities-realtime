@@ -126,8 +126,10 @@ export class CsMeetingBase extends YpBaseElement {
             (ratings[i] as any).avgRating
           );
 
-          if (this.user.id===ratings[i].Ratings[0].userId) {
-            this.allIssuesHash[ratings[i].id].userScore = ratings[i].Ratings[0].value;
+          for (let n=0; n < ratings[i].Ratings.length; n++) {
+            if (this.user.id===ratings[i].Ratings[n].userId) {
+              this.allIssuesHash[ratings[i].id].userScore = ratings[i].Ratings[n].value;
+            }
           }
         } else {
           console.error("Can't find ratings index: ");
