@@ -83,7 +83,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     if (element && element.value && element.value.length > 0) {
       const issue = {
         description: (this.$$('#addIssueInput') as HTMLInputElement).value,
-        userId: 1,
+        userId: this.user.id,
         type: this.meeting.forUsers
           ? this.IssueTypes.UserIssue
           : this.IssueTypes.ProviderIssue,
@@ -181,6 +181,7 @@ export class CsMeetingScoring extends CsMeetingBase {
 
     if (rating!=undefined) {
       await window.serverApi.rateIssue(issue.id, this.meeting.roundId, (event.currentTarget as any).rating);
+      this._getRatings();
     } else {
       console.error("No rating found from target")
     }
@@ -464,7 +465,7 @@ export class CsMeetingScoring extends CsMeetingBase {
       changedProperties.has('allIssues') &&
       this.allIssues
     ) {
-      this.orderedAllIssues = this.allIssues.sort(function(a, b){return a.score - b.score});
+      this.orderedAllIssues = this.allIssues.sort(function(a, b){return a.score! - b.score!});
     }
   }
 

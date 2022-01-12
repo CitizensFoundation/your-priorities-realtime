@@ -863,7 +863,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       }
 
       this.orderedAllIssues = this.allIssues.sort(function (a, b) {
-        return a.score - b.score;
+        return a.score! - b.score!;
       });
     }
 

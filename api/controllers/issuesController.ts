@@ -94,7 +94,7 @@ export class IssuesController {
     res: express.Response
   ) => {
     console.error(JSON.stringify(req.body));
-        // @ts-ignore
+    // @ts-ignore
     console.error(JSON.stringify(req.session.user));
     // @ts-ignore
     if (req.session.user) {

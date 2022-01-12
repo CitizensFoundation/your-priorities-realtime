@@ -117,7 +117,7 @@ export class CsMeetingBase extends YpBaseElement {
   async _getRatings() {
     const ratings = (await window.serverApi.getRatings(
       this.meeting.Round!.projectId
-    )) as Array<IssueAttributes> | undefined;
+    )) as Array<GetRatingsAttributes> | undefined;
 
     if (ratings && this.allIssuesHash) {
       for (let i = 0; i < ratings.length; i++) {
@@ -125,6 +125,10 @@ export class CsMeetingBase extends YpBaseElement {
           this.allIssuesHash[ratings[i].id].score = parseFloat(
             (ratings[i] as any).avgRating
           );
+
+          if (this.user.id===ratings[i].Ratings[0].userId) {
+            this.allIssuesHash[ratings[i].id].userScore = ratings[i].Ratings[0].value;
+          }
         } else {
           console.error("Can't find ratings index: ");
         }
@@ -629,7 +633,7 @@ export class CsMeetingBase extends YpBaseElement {
               <stars-rating
                 id="emoji"
                 ?hidden="${hideRating}"
-                .rating="${issue.score}"
+                .rating="${disableRating ? issue.score : issue.userScore}"
                 numstars="5"
                 .disableRating="${disableRating}"
                 manual

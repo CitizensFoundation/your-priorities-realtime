@@ -141,7 +141,8 @@ interface IssueAttributes {
   imageUrl?: string;
   counterUpVotes: number;
   counterDownVotes: number;
-  score: number;
+  score?: number;
+  userScore?: number;
   createdAt?: Date;
   updatedAt?: Date;
   Comments?: Array<CommentAttributes> | null;
@@ -255,4 +256,10 @@ interface RatingAttributes {
   issueId: number;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+interface GetRatingsAttributes {
+  avgRating: number;
+  id: number;
+  Ratings: Array<RatingAttributes>;
 }
