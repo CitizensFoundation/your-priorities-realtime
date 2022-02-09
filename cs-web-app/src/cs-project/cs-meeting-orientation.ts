@@ -25,7 +25,11 @@ export const OrientationTabTypes: Record<string, number> = {
 export class CsMeetingOrientation extends CsMeetingBase {
   constructor() {
     super();
-    this.storyNumber = 2;
+    if (this.meeting.forUsers) {
+      this.storyNumber = 1;
+    } else {
+      this.storyNumber = 2;
+    }
   }
 
   connectedCallback() {

@@ -181,156 +181,153 @@ exports.models.ProgressReport.belongsTo(exports.models.Action, {
 exports.models.Rating.belongsTo(exports.models.Issue, { as: "Issue", foreignKey: "issueId" });
 const force = process.env.FORCE_DB_SYNC ? true : false;
 if (force) {
-    sequelize.sync({ force });
-    setTimeout(() => {
-        (async () => {
-            try {
-                const user = await exports.models.User.create({
-                    name: "Robert Bjarnason",
-                    email: "robert@citizens.is",
-                    encrypedPassword: "justfortesting",
-                    selectedAvatar: "mood",
-                    selectedAvatarColor: "#c93737",
-                    language: "en",
+    sequelize.sync({ force }).then(async () => {
+        try {
+            const user = await exports.models.User.create({
+                name: "Robert Bjarnason",
+                email: "robert@citizens.is",
+                encrypedPassword: "justfortesting",
+                selectedAvatar: "mood",
+                selectedAvatarColor: "#c93737",
+                language: "en",
+            });
+            const roleNames = ["users", "providers", "workingGroup", "facilitator"];
+            const allRoles = [];
+            for (let i = 0; i < roleNames.length; i++) {
+                const role = await exports.models.Role.create({
+                    nameToken: roleNames[i],
                 });
-                const roleNames = ["users", "providers", "workingGroup", "facilitator"];
-                const allRoles = [];
-                for (let i = 0; i < roleNames.length; i++) {
-                    const role = await exports.models.Role.create({
-                        nameToken: roleNames[i],
-                    });
-                    allRoles.push(role);
-                }
-                await user.addRole(allRoles[3]);
-                const project = await exports.models.Project.create({
-                    name: "Test Project",
-                    description: "This is a test project",
-                    userId: user.id,
-                    language: "en",
-                    publicData: {
-                        service: "Health services",
-                        locations: "Bosnia",
-                        keyContacts: "somebody@somewhere.bi",
-                        languages: "Bosnian, Croatian, Serbian & English",
-                    },
-                });
-                await user.addProject(project);
-                const round = await exports.models.Round.create({
+                allRoles.push(role);
+            }
+            await user.addRole(allRoles[3]);
+            const project = await exports.models.Project.create({
+                name: "Test Project",
+                description: "This is a test project",
+                userId: user.id,
+                language: "en",
+                publicData: {
+                    service: "Health services",
+                    locations: "Bosnia",
+                    keyContacts: "somebody@somewhere.bi",
+                    languages: "Bosnian, Croatian, Serbian & English",
+                },
+            });
+            await user.addProject(project);
+            const round = await exports.models.Round.create({
+                projectId: project.id,
+                userId: user.id,
+            });
+            const coreIssues = [
+                "Staff Punctuality",
+                "Medicines supply",
+                "Fee charges",
+            ];
+            const standards = [
+                "Staff attend the Centre on time, and are present all day.",
+                "12 drug deliveries per year ensures that there is adequate medicine for treatment.",
+                "Will charge you only listed fees.",
+            ];
+            const imageUrls = [
+                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png",
+                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png",
+                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+            ];
+            for (let i = 0; i < coreIssues.length; i++) {
+                const issue = {
+                    description: coreIssues[i],
+                    standard: standards[i],
+                    imageUrl: imageUrls[i],
+                    userId: 1,
+                    type: 0,
+                    state: 0,
+                    roundId: round.id,
                     projectId: project.id,
-                    userId: user.id,
-                });
-                const coreIssues = [
-                    "Staff Punctuality",
-                    "Medicines supply",
-                    "Fee charges",
-                ];
-                const standards = [
-                    "Staff attend the Centre on time, and are present all day.",
-                    "12 drug deliveries per year ensures that there is adequate medicine for treatment.",
-                    "Will charge you only listed fees.",
-                ];
-                const imageUrls = [
-                    "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png",
-                    "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png",
-                    "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
-                ];
-                for (let i = 0; i < coreIssues.length; i++) {
-                    const issue = {
-                        description: coreIssues[i],
-                        standard: standards[i],
-                        imageUrl: imageUrls[i],
-                        userId: 1,
-                        type: 0,
-                        state: 0,
-                        roundId: round.id,
-                        projectId: project.id,
-                    };
-                    await exports.models.Issue.create(issue);
-                }
-                const roundPublicData = {
-                    meetings: {},
                 };
-                const userOrentationMeeting = await exports.models.Meeting.create({
-                    roundId: round.id,
-                    type: exports.models.Meeting.TypeOrientation,
-                    state: 0,
-                    subState: 0,
-                    forUsers: true,
-                    forServiceProviders: false,
-                    userId: user.id,
-                });
-                roundPublicData.meetings["userOrentationMeeting"] =
-                    userOrentationMeeting.id;
-                const providerOrentationMeeting = await exports.models.Meeting.create({
-                    roundId: round.id,
-                    type: exports.models.Meeting.TypeOrientation,
-                    state: 0,
-                    subState: 0,
-                    forUsers: false,
-                    forServiceProviders: true,
-                    userId: user.id,
-                });
-                roundPublicData.meetings["providerOrentationMeeting"] =
-                    providerOrentationMeeting.id;
-                const userCreateCardMeeting = await exports.models.Meeting.create({
-                    roundId: round.id,
-                    type: exports.models.Meeting.TypeCreateCard,
-                    state: 0,
-                    subState: 0,
-                    forUsers: true,
-                    forServiceProviders: false,
-                    userId: user.id,
-                });
-                roundPublicData.meetings["userCreateCardMeeting"] =
-                    userCreateCardMeeting.id;
-                const providerCreateCardMeeting = await exports.models.Meeting.create({
-                    roundId: round.id,
-                    type: exports.models.Meeting.TypeCreateCard,
-                    state: 0,
-                    subState: 0,
-                    forUsers: false,
-                    forServiceProviders: true,
-                    userId: user.id,
-                });
-                roundPublicData.meetings["providerCreateCardMeeting"] =
-                    providerCreateCardMeeting.id;
-                const userScoringMeeting = await exports.models.Meeting.create({
-                    roundId: round.id,
-                    type: exports.models.Meeting.TypeScoring,
-                    state: 0,
-                    subState: 0,
-                    forUsers: true,
-                    forServiceProviders: false,
-                    userId: user.id,
-                });
-                roundPublicData.meetings["userScoringMeeting"] = userScoringMeeting.id;
-                const providerScoringMeeting = await exports.models.Meeting.create({
-                    roundId: round.id,
-                    type: exports.models.Meeting.TypeScoring,
-                    state: 0,
-                    subState: 0,
-                    forUsers: false,
-                    forServiceProviders: true,
-                    userId: user.id,
-                });
-                roundPublicData.meetings["providerScoringMeeting"] =
-                    providerScoringMeeting.id;
-                const actionPlanMeeting = await exports.models.Meeting.create({
-                    roundId: round.id,
-                    type: exports.models.Meeting.TypeActionPlan,
-                    state: 0,
-                    subState: 0,
-                    forUsers: true,
-                    forServiceProviders: true,
-                    userId: user.id,
-                });
-                roundPublicData.meetings["actionPlanMeeting"] = actionPlanMeeting.id;
-                round.publicData = roundPublicData;
-                await round.save();
+                await exports.models.Issue.create(issue);
             }
-            catch (error) {
-                console.error(error);
-            }
-        })();
-    }, 900);
+            const roundPublicData = {
+                meetings: {},
+            };
+            const userOrentationMeeting = await exports.models.Meeting.create({
+                roundId: round.id,
+                type: exports.models.Meeting.TypeOrientation,
+                state: 0,
+                subState: 0,
+                forUsers: true,
+                forServiceProviders: false,
+                userId: user.id,
+            });
+            roundPublicData.meetings["userOrentationMeeting"] =
+                userOrentationMeeting.id;
+            const providerOrentationMeeting = await exports.models.Meeting.create({
+                roundId: round.id,
+                type: exports.models.Meeting.TypeOrientation,
+                state: 0,
+                subState: 0,
+                forUsers: false,
+                forServiceProviders: true,
+                userId: user.id,
+            });
+            roundPublicData.meetings["providerOrentationMeeting"] =
+                providerOrentationMeeting.id;
+            const userCreateCardMeeting = await exports.models.Meeting.create({
+                roundId: round.id,
+                type: exports.models.Meeting.TypeCreateCard,
+                state: 0,
+                subState: 0,
+                forUsers: true,
+                forServiceProviders: false,
+                userId: user.id,
+            });
+            roundPublicData.meetings["userCreateCardMeeting"] =
+                userCreateCardMeeting.id;
+            const providerCreateCardMeeting = await exports.models.Meeting.create({
+                roundId: round.id,
+                type: exports.models.Meeting.TypeCreateCard,
+                state: 0,
+                subState: 0,
+                forUsers: false,
+                forServiceProviders: true,
+                userId: user.id,
+            });
+            roundPublicData.meetings["providerCreateCardMeeting"] =
+                providerCreateCardMeeting.id;
+            const userScoringMeeting = await exports.models.Meeting.create({
+                roundId: round.id,
+                type: exports.models.Meeting.TypeScoring,
+                state: 0,
+                subState: 0,
+                forUsers: true,
+                forServiceProviders: false,
+                userId: user.id,
+            });
+            roundPublicData.meetings["userScoringMeeting"] = userScoringMeeting.id;
+            const providerScoringMeeting = await exports.models.Meeting.create({
+                roundId: round.id,
+                type: exports.models.Meeting.TypeScoring,
+                state: 0,
+                subState: 0,
+                forUsers: false,
+                forServiceProviders: true,
+                userId: user.id,
+            });
+            roundPublicData.meetings["providerScoringMeeting"] =
+                providerScoringMeeting.id;
+            const actionPlanMeeting = await exports.models.Meeting.create({
+                roundId: round.id,
+                type: exports.models.Meeting.TypeActionPlan,
+                state: 0,
+                subState: 0,
+                forUsers: true,
+                forServiceProviders: true,
+                userId: user.id,
+            });
+            roundPublicData.meetings["actionPlanMeeting"] = actionPlanMeeting.id;
+            round.publicData = roundPublicData;
+            await round.save();
+        }
+        catch (error) {
+            console.error(error);
+        }
+    });
 }
