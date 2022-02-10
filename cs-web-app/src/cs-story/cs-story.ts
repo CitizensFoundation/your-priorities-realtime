@@ -64,12 +64,301 @@ export class CsStory extends YpBaseElement {
           ?isAdmin="${this.isAdmin}"
         >
           <cs-story-card style="background: white;color: black">
-            <div class="bigHeader introHeader">
-              Introduction to the Community Score Card
-            </div>
-            <p class="swipeText">Please swipe to continue</p>
+            <video
+              id="videoPlayer"
+              slot="media"
+              src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
+              playsinline
+              ?controls="${this.isiOs}"
+            ></video>
           </cs-story-card>
 
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">
+              Your health service<br />
+              Your feedback!
+            </div>
+
+            <p>Dear Health Service User</p>
+            <p>
+              You are warmly invited to participate in a process of
+              <b>giving feedback</b> on your rural
+              <b>‘field ambulatory’ health service.</b>
+            </p>
+
+            <p>
+              This will be through <b>two on-line 2-hour meetings</b> taking
+              place from <b>1100 to 1300</b> tomorrow <b>(Tuesday 15th)</b> and
+              <b>Wednesday 16th February.</b> The link is here and at the end of
+              this presentation.
+            </p>
+            <p>
+              You will <b>meet with the health team</b> that provides you with
+              field level services. And, with them, you will have a chance to
+              discuss options for making some <b>priority improvements.</b>
+            </p>
+            <p>
+              Please <b>save the dates</b> and read on to
+              <b>find out more...</b>
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">
+              A bit more about the<br />
+              exercise...
+            </div>
+
+            <p>
+              You live in a rural community of 3,000 people, served by a field
+              health team. This team needs your feedback to know what it is
+              doing well, and where it could do better.
+            </p>
+
+            <p>
+              And the team also needs your help to make best use of the service.
+            </p>
+
+            <p>From Ministry of Health, here is more information about what you should expect, and what is expected of you:</p>
+
+            <p>
+              <ul>
+                <li>
+                  the <span class="standardsTextColor">Standards</span> the field ambulatory should meet
+                </li>
+                <li>
+                  Your <span class="rightsTextColor">Rights</span> and
+                  <span class="rightsTextColor">Responsibilities</span> as a user
+                  of health services
+                </li>
+              </ul>
+            </p>
+
+            <p></p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What <span class="standardsTextColor">standards</span> can you
+              expect from your field ambulatory?
+            </div>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader standardsHeaderBackgroundColor"
+                >
+                  Standards
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctors1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                <b>Health Team composition.</b> There is 1 full-time medical doctor; 1 full-time qualified nurse and 1 part-time contract cleaner.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b>Health Team availability.</b> Working hours are well-publicised and the Health Team is present and available during these hours.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/siren1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                <b>Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/pregnant1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                <b>Building and facilities.</b> A dedicated building with a separate consultation and treatment area which ensures patient privacy.  A clean toilet in working order. Patient  data stored securely.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                <b>Emergency service.</b> The Out of Hours emergency service (‘on call’ duty medic and referral facilities) is easy to access and up-to-date.
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What are your <span class="rightsTextColor">rights</span> when using the field ambulatory?
+            </div>
+            <table>
+              <tr class="headerTr">
+                <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
+                  Your Health Team
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/docktors2.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                Treats you equally and with <b>respect</b> and care for <b>your personal dignity</b>
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctorinfo1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                Understands that you have the right to <b>refuse treatment</b>
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustdoctor1.png"
+                  />
+                </td>
+                <td class="tableText rightsHighlightBackground">
+                <b>Helps</b> you and your family understand your health needs, and treats this information <b>confidentially.</b>
+
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                Understands that you have the right to a <b>second medical opinion</b> and helps you to access this.
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What are your
+              <span class="responsibilitiesTextColor">responsibilities</span> when using this service?
+            </div>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader responsibilitiesHeaderBackgroundColor"
+                >
+                It is your responsibility to...
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthjustice.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  <b>Learn</b> about your rights, and ask for any clarifications
+                  you may need
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/bosnia1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Always <b>participate</b> in sickness prevention and health
+                  promotion activities run by your Health service
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                Provide accurate and <b>complete information</b> about your health condition
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustInToctors.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                Treat the Health Team with <b>respect</b> and courtesy.
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">
+              Looking forward to<br> tomorrow...
+            </div>
+            <p>
+              You can find out more about these standards and rights
+              <a href="https://yrpri-eu-direct-assets.s3.eu-west-1.amazonaws.com/220207+A+NOTE+ON+SERVICE+STANDARDS+%26+RIGHTS.pdf">here</a>.
+            </p>
+            <p>
+              At <b>tomorrow’s meeting</b>, you are invited to share your experiences and to identify any other issues that matter to you and other health users. You will agree a list of priority areas and then go through an anonymous ranking exercise.
+            </p>
+            <p>
+            On <b>Wednesday’s meeting</b>, you will have the chance to meet your health team, to review the results of your ranking and to see how they assess their performance. Together you’ll look at what actions can be taken to make improvements.
+            </p>
+
+            <p>
+              Here’s the <a href="https://csc.citizens.is/meeting/3">link</a> to tomorrow’s meeting. We’ll resend it just before 11.00.
+            </p>
+          </cs-story-card>
+        </cs-story-viewer>
+      `;
+    } else if (id == 2) {
+      return html`
+        <cs-story-viewer
+          id="viewer"
+          ?isiOs="${this.isiOs}"
+          ?isLive="${this.isLive}"
+          ?isAdmin="${this.isAdmin}"
+        >
           <cs-story-card style="background: white;color: black">
             <video
               id="videoPlayer"
@@ -81,80 +370,70 @@ export class CsStory extends YpBaseElement {
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <div class="layout vertical center-center">
-              <img
-                class="areaLogo"
-                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"
-              />
+            <div class="blueHeader">
+              Your health service<br />
+              Your self-assessment!
             </div>
-            <p>Dear resident of <b>Simin Han,</b></p>
+
+            <p>Dear Health Service Provider</p>
             <p>
-              As a user of the Simin Han Health Centre, you are invited to join
-              a
-              <b>Community Score Card process</b> – to design a tool for giving
-              feedback on your experience of using the health centre.
+            You are warmly invited to participate in a process of <b>self-assessing</b> on rural <b>‘field ambulatory’ health service</b> that you provide.
+            </p>
+
+            <p>
+              This will be through <b>two on-line 2-hour meetings</b> taking
+              place from <b>1100 to 1300</b> tomorrow <b>(Tuesday 15th)</b> and
+              <b>Wednesday 16th February.</b> The link is here and at the end of
+              this presentation.
             </p>
             <p>
-              This is to help identify <b>priorities for improvement</b> which,
-              in discussion with health service providers, will lead to a joint
-              <b>action plan</b>.
+              You will also <b>meet with some of the health service users</b> from the community you serve. With them, you will discuss options for <b>priority improvements.</b>
             </p>
             <p>
-              Please <b>save the dates</b> – for which you will receive an
-              invitation link:
+              Please <b>save the dates</b> and read on to
+              <b>find out more...</b>
             </p>
-            <ul>
-              <li>
-                <b>Thursday May 13th at 1400 BST</b> – for an Orientation on
-                your rights and responsibilities, and what standards you can
-                expect
-              </li>
-              <li>
-                <b>Friday May 14th at 1400 BST</b> – to discuss and agree
-                priorities standards for inclusion in the
-                <b>Community Score Card.</b>
-              </li>
-            </ul>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">Find out more before Thursday…</div>
+            <div class="blueHeader">
+              A bit more about the<br />
+              exercise...
+            </div>
 
-            <p>Here’s some information about :</p>
-            <ul>
-              <li>
-                the <span class="standardsTextColor">Standards</span> you can
-                expect from your Simin Han Health Centre, and
-              </li>
-              <li>
-                Your <span class="rightsTextColor">Rights</span> and
-                <span class="rightsTextColor">Responsibilities</span> as a user
-                of health services
-              </li>
-              <li>The Community Score Card process</li>
-            </ul>
             <p>
-              Three of these standards/rights have been identified as
-              <b>national priorities for feedback</b> (called ‘core’). These are
-              <u>highlighted</u> with a (*) and will automatically be included
-              in the Score Card
+            You are part of the field ambulatory health team that serves a rural
+            community of 3,000 people. Receiving feedback on <b>what is going well</b>,
+            and <b>where the service could do better,</b> helps you to provide the best service you can.
+
             </p>
+
             <p>
-              In addition, you will be able to discuss and select
-              <b>three additional issues</b> that are most relevant to your
-              local experience.
+            This is also an opportunity to <b>remind health service users of their responsibilities and obligations</b> to make best use of the service that you provide.
             </p>
+
+            <p>From Ministry of Health, this is the information that service users have been given about <b>what they can expect</b> from your service, and <b>what is expected of them.</b> </p>
+            <p>
+              <ul>
+                <li>
+                  the <span class="standardsTextColor">Standards</span> the field ambulatory should meet
+                </li>
+                <li>
+                  Your <span class="rightsTextColor">Rights</span> and
+                  <span class="rightsTextColor">Responsibilities</span> as a user
+                  of health services
+                </li>
+              </ul>
+            </p>
+
+            <p></p>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
               What <span class="standardsTextColor">standards</span> can you
-              expect?
+              expect from your field ambulatory?
             </div>
-            <p>
-              Your Health Centre should perform to these National Standards set
-              by the Ministry of Health for all Health Centres.
-            </p>
             <table>
               <tr class="headerTr">
                 <td
@@ -172,9 +451,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>Staff/pop ratio:</b> At Simin Han, 4.4 staff include 1
-                  doctor, 2 nurses and a part-time medical assistant and
-                  receptionist.
+                <b>Health Team composition.</b> There is 1 full-time medical doctor; 1 full-time qualified nurse and 1 part-time contract cleaner.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -185,8 +462,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b><u>Staff Punctuality:</u></b
-                  >Staff attend the Centre on time, and are present all day. (*)
+                  <b>Health Team availability.</b> Working hours are well-publicised and the Health Team is present and available during these hours.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -197,8 +473,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Emergency service:</b> Out of working hours ‘on call’ duty
-                  medic, with publicly posted contact information and schedule.
+                <b>Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -209,8 +484,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>Screening service:</b> for pregnant women and newborn
-                  babies.
+                <b>Building and facilities.</b> A dedicated building with a separate consultation and treatment area which ensures patient privacy.  A clean toilet in working order. Patient  data stored securely.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -221,19 +495,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b><u>Medicines:</u></b> 12 drug deliveries per year ensures
-                  that there is adequate medicine for treatment. (*)
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="tableFooter standardsFooterBackground">
-                  For more detail,
-                  <a
-                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
-                    target="_blank"
-                    >click on this link to find a PDF of the full set of
-                    standards, rights and responsibilities.</a
-                  >
+                <b>Emergency service.</b> The Out of Hours emergency service (‘on call’ duty medic and referral facilities) is easy to access and up-to-date.
                 </td>
               </tr>
             </table>
@@ -241,16 +503,12 @@ export class CsStory extends YpBaseElement {
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
-              What are your <span class="rightsTextColor">rights</span>?
+              What are your <span class="rightsTextColor">rights</span> when using the field ambulatory?
             </div>
-            <p>
-              In relation to your Health Centre and local health service, you
-              have the following rights:
-            </p>
             <table>
               <tr class="headerTr">
                 <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
-                  Your Health Centre staff
+                  Your Health Team
                 </td>
               </tr>
               <tr class="topFeatureTr">
@@ -261,7 +519,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Should treat you equally and with <b>respect</b>.
+                Treats you equally and with <b>respect</b> and care for <b>your personal dignity</b>
                 </td>
               </tr>
               <tr class="featureTr">
@@ -272,8 +530,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Will <b>display</b> service information about the Health
-                  Centre
+                Understands that you have the right to <b>refuse treatment</b>
                 </td>
               </tr>
               <tr class="featureTr">
@@ -284,8 +541,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsHighlightBackground">
-                  Will <b>help</b> you and your family understand your health
-                  needs, and treat this information <b>confidentially</b>.
+                <b>Helps</b> you and your family understand your health needs, and treats this information <b>confidentially.</b>
+
                 </td>
               </tr>
               <tr class="featureTr">
@@ -296,18 +553,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Will charge you only <b><u>listed fees.</u></b> (*)
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="tableFooter rightsFooterBackground">
-                  For more detail,
-                  <a
-                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
-                    target="_blank"
-                    >click on this link to find a PDF of the full set of rights,
-                    rights and responsibilities.</a
-                  >
+                Understands that you have the right to a <b>second medical opinion</b> and helps you to access this.
                 </td>
               </tr>
             </table>
@@ -316,19 +562,15 @@ export class CsStory extends YpBaseElement {
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
               What are your
-              <span class="responsibilitiesTextColor">responsibilities</span>?
+              <span class="responsibilitiesTextColor">responsibilities</span> when using this service?
             </div>
-            <p>
-              You have responsibilities as a user of the Health Centre to ensure
-              you receive good quality care and treatment.
-            </p>
             <table>
               <tr class="headerTr">
                 <td
                   colspan="2"
                   class="tableHeader responsibilitiesHeaderBackgroundColor"
                 >
-                  You should...
+                It is your responsibility to...
                 </td>
               </tr>
               <tr class="topFeatureTr">
@@ -352,7 +594,7 @@ export class CsStory extends YpBaseElement {
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
                   Always <b>participate</b> in sickness prevention and health
-                  promotion activities run by your Health Centre
+                  promotion activities run by your Health service
                 </td>
               </tr>
               <tr>
@@ -363,8 +605,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Pay the <b><u>official listed fees</u></b> and you should not
-                  pay informal fees. (*)
+                Provide accurate and <b>complete information</b> about your health condition
                 </td>
               </tr>
               <tr>
@@ -375,400 +616,29 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Treat the Health Centre staff with respect and courtesy.
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colspan="2"
-                  class="tableFooter responsibilitiesFooterBackground"
-                >
-                  For more detail,
-                  <a
-                    href="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/220510+SERVICE+STANDARDS+BRIEFING+NOTE.pdf"
-                    target="_blank"
-                    >click on this link to find a PDF of the full set of
-                    responsibilities, responsibilities and responsibilities.</a
-                  >
+                Treat the Health Team with <b>respect</b> and courtesy.
                 </td>
               </tr>
             </table>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <div class="smallHeader">
-              If you have the time, here’s some more information about Community
-              Score Card
+            <div class="blueHeader">
+              Looking forward to<br> tomorrow...
             </div>
             <p>
-              It’s a constructive <b>5-step process</b> that helps citizens give
-              feed-back to service providers on their experience of the service.
+              You can find out more about these standards and rights
+              <a href="https://yrpri-eu-direct-assets.s3.eu-west-1.amazonaws.com/220207+A+NOTE+ON+SERVICE+STANDARDS+%26+RIGHTS.pdf">here</a>.
             </p>
             <p>
-              With support of a facilitator, a
-              <b>community of users develops a Score Card</b> of priority
-              issues.
+              At <b>tomorrow’s meeting</b>, you can share your experience of trying to provide services to these standards and rights. You will also be able to identify other issues that affect your work. With your team, you will agree a list of priority areas and then do a self-assessment.
             </p>
             <p>
-              This is then used to <b>score performance</b> and to develop, with
-              service providers, an <b>Action Plan for improvement</b> –
-              monitored over time.
-            </p>
-            <p>
-              This week, we’re working on <b>Step 1</b> (Orientation) and
-              <b>Step 2</b> (Scorecard).
-            </p>
-            <div class="layout vertical center-center">
-              <img
-                class="cscoverview"
-                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
-              />
-            </div>
-          </cs-story-card>
-        </cs-story-viewer>
-      `;
-    } else if (id == 2) {
-      return html`
-        <cs-story-viewer
-          id="viewer"
-          ?isLive="${this.isLive}"
-          ?isAdmin="${this.isAdmin}"
-        >
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader extraBottom">Welcome to Orientation!</div>
-            <div class="layout vertical center-center">
-              <img
-                class="areaLogo"
-                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"
-              />
-            </div>
-
-            <p>You’ve joined a meeting with other residents of Simin Han.</p>
-            <p>All of you are health service users.</p>
-            <p>
-              The purpose of today is to review the service standards of your
-              Health Center, and to review your rights and responsibilities as
-              users.
-            </p>
-            <p>
-              Your facilitator for today is <b>Bev Jones.</b> Bev is an
-              independent facilitator who has worked in NGOs for many years.
-            </p>
-          </cs-story-card>
-
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">
-              A quick reminder of what we’re doing today
-            </div>
-
-            <p>We’ll run through the information already provided:</p>
-            <ul>
-              <li>
-                the <span class="standardsTextColor">Standards</span> you can
-                expect from your Simin Han Health Centre, and
-              </li>
-              <li>
-                Your <span class="rightsTextColor">Rights</span> and
-                <span class="rightsTextColor">Responsibilities</span> as a user
-                of health services
-              </li>
-              <li>The Community Score Card process</li>
-            </ul>
-            <p>
-              Three of these standards/rights have been identified as
-              <b>national priorities for feedback</b> (called ‘core’). These
-              are:
-            </p>
-            <ol>
-              <li>Staff punctuality</li>
-              <li>Medicines supplies</li>
-              <li>Fee charges</li>
-            </ol>
-            <p>
-              These are <u>highlighted</u> with a (*) and will automatically be
-              included in the Score Card.
-            </p>
-            <p>
-              In addition, you will be able to discuss and select
-              <b>three additional issues</b> that are most relevant to your
-              local experience.
+            On <b>Wednesday’s meeting</b>, you will join health service users from the community you serve and compare notes from the assessment results. Together you’ll look at what actions can be taken to make improvements.
             </p>
 
             <p>
-              Let’s start with
-              <span class="standardsTextColor">Standards</span>.
-            </p>
-          </cs-story-card>
-
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">
-              Here are the <span class="standardsTextColor">standards</span> you
-              expect
-            </div>
-            <p>
-              - What more would you like to know about thee standards?<br />
-              - Why do you think #2 and #5 are core issues of interest at
-              national level?
-            </p>
-            <table>
-              <tr class="headerTr">
-                <td
-                  colspan="2"
-                  class="tableHeader standardsHeaderBackgroundColor"
-                >
-                  Standards
-                </td>
-              </tr>
-              <tr class="topFeatureTr">
-                <td class="tableImages standardsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctors1.png"
-                  />
-                </td>
-                <td class="tableText standardsContentBackground">
-                  <b>1. Staff/pop ratio:</b> At Simin Han, 4.4 staff include 1
-                  doctor, 2 nurses and a part-time medical assistant and
-                  receptionist.
-                </td>
-              </tr>
-              <tr class="featureTr">
-                <td class="tableImages standardsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png"
-                  />
-                </td>
-                <td class="tableText standardsHighlightBackground">
-                  <b><u>2. Staff Punctuality</u>:</b>Staff attend the Centre on
-                  time, and are present all day. (*)
-                </td>
-              </tr>
-              <tr class="featureTr">
-                <td class="tableImages standardsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/siren1.png"
-                  />
-                </td>
-                <td class="tableText standardsHighlightBackground">
-                  <b>3. Emergency service:</b> Out of working hours ‘on call’
-                  duty medic, with publicly posted contact information and
-                  schedule.
-                </td>
-              </tr>
-              <tr class="featureTr">
-                <td class="tableImages standardsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/pregnant1.png"
-                  />
-                </td>
-                <td class="tableText standardsContentBackground">
-                  <b>4. Screening service:</b> for pregnant women and newborn
-                  babies.
-                </td>
-              </tr>
-              <tr class="featureTr">
-                <td class="tableImages standardsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png"
-                  />
-                </td>
-                <td class="tableText standardsHighlightBackground">
-                  <b><u>5. Medicines:</u></b> 12 drug deliveries per year
-                  ensures that there is adequate medicine for treatment. (*)
-                </td>
-              </tr>
-            </table>
-          </cs-story-card>
-
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">
-              Here are your <span class="rightsTextColor">rights</span> as
-              users.
-            </div>
-            <p>
-              - What more would you like to know about these rights?<br />
-              - Why do you think #4 is of national interest?
-            </p>
-            <table>
-              <tr class="headerTr">
-                <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
-                  Your Health Centre staff
-                </td>
-              </tr>
-              <tr class="topFeatureTr">
-                <td class="tableImages rightsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/docktors2.png"
-                  />
-                </td>
-                <td class="tableText rightsContentBackground">
-                  1. Should treat you equally and with <b>respect</b>.
-                </td>
-              </tr>
-              <tr class="featureTr">
-                <td class="tableImages rightsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctorinfo1.png"
-                  />
-                </td>
-                <td class="tableText rightsContentBackground">
-                  2. Will <b>display</b> service information about the Health
-                  Centre
-                </td>
-              </tr>
-              <tr class="featureTr">
-                <td class="tableImages rightsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustdoctor1.png"
-                  />
-                </td>
-                <td class="tableText rightsHighlightBackground">
-                  3. Will <b>help</b> you and your family understand your health
-                  needs, and treat this information <b>confidentially</b>.
-                </td>
-              </tr>
-              <tr class="featureTr">
-                <td class="tableImages rightsContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
-                  />
-                </td>
-                <td class="tableText rightsContentBackground">
-                  4. Will charge you only <b><u>listed fees</u>.(*)</b>
-                </td>
-              </tr>
-            </table>
-          </cs-story-card>
-
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">
-              Here are your
-              <span class="responsibilitiesTextColor">responsibilities</span> as
-              users.
-            </div>
-            <p>
-              - What do you think of these responsibilities?<br />
-              - Which is the most important?<br />
-              - Which is the most challenging to do?<br />
-            </p>
-            <table>
-              <tr class="headerTr">
-                <td
-                  colspan="2"
-                  class="tableHeader responsibilitiesHeaderBackgroundColor"
-                >
-                  You should...
-                </td>
-              </tr>
-              <tr class="topFeatureTr">
-                <td class="tableImages responsibilitiesContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthjustice.png"
-                  />
-                </td>
-                <td class="tableText responsibilitiesContentBackground">
-                  <b>Learn</b> about your rights, and ask for any clarifications
-                  you may need
-                </td>
-              </tr>
-              <tr>
-                <td class="tableImages responsibilitiesContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/bosnia1.png"
-                  />
-                </td>
-                <td class="tableText responsibilitiesContentBackground">
-                  Always <b>participate</b> in sickness prevention and health
-                  promotion activities run by your Health Centre
-                </td>
-              </tr>
-              <tr>
-                <td class="tableImages responsibilitiesContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
-                  />
-                </td>
-                <td class="tableText responsibilitiesContentBackground">
-                  Pay the <b><u>official listed fees</u></b> and you should not
-                  pay informal fees. (*)
-                </td>
-              </tr>
-              <tr>
-                <td class="tableImages responsibilitiesContentBackground">
-                  <img
-                    class="featureImage"
-                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustInToctors.png"
-                  />
-                </td>
-                <td class="tableText responsibilitiesContentBackground">
-                  Treat the Health Centre staff with respect and courtesy.
-                </td>
-              </tr>
-            </table>
-          </cs-story-card>
-
-          <cs-story-card style="background: white;color: black">
-            <div class="smallHeader">More on the Score Card Process</div>
-            <p>
-              It’s a constructive <b>5-step process</b> that helps citizens give
-              feed-back to service providers on their experience of the service.
-            </p>
-            <p>
-              With support of a facilitator, a
-              <b>community of users develops a Score Card</b> of priority
-              issues.
-            </p>
-            <p>
-              This is then used to <b>score performance</b> and to develop, with
-              service providers, an <b>Action Plan for improvement</b> –
-              monitored over time.
-            </p>
-            <p>
-              This week, we’re working on <b>Step 1</b> (Orientation) and
-              <b>Step 2</b> (Scorecard).
-            </p>
-            <div class="layout vertical center-center">
-              <img
-                class="cscoverview"
-                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
-              />
-            </div>
-            <div class="moreQuestionsBox">
-              Do you have any questions about the process and how it works?
-            </div>
-          </cs-story-card>
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">For tomorrow</div>
-            <p>At our meeting tomorrow, we’ll be doing three things:</p>
-            <ol>
-              <li>
-                <b>Discussing your experience</b> of your local Health Center –
-                what works well, and what does not.
-              </li>
-              <li>
-                <b>Identifying the key issues</b> that matter to you locally
-                (including what you think about the three ‘core’ issues already
-                identified).
-              </li>
-              <li>
-                <b>Prioritising the three most important</b> ones for you (in
-                addition to the core ones).
-              </li>
-            </ol>
-            <p>
-              These will then be added to the Score Card so that there will be 5
-              areas of assessment in the next part of the process.
+              Here’s the <a href="https://csc.citizens.is/meeting/4">link</a> to tomorrow’s meeting. We’ll resend it just before 11.00.
             </p>
           </cs-story-card>
         </cs-story-viewer>
@@ -777,93 +647,123 @@ export class CsStory extends YpBaseElement {
       return html`
         <cs-story-viewer
           id="viewer"
+          ?isiOs="${this.isiOs}"
           ?isLive="${this.isLive}"
           ?isAdmin="${this.isAdmin}"
         >
           <cs-story-card style="background: white;color: black">
-            <div class="bigHeader extraBottom">
-              Welcome to The Score Card meeting!
-            </div>
-            <div class="layout vertical center-center">
-              <img
-                class="areaLogo"
-                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/siminHan.png"
-              />
+            <div class="blueHeader">
+              Your health service<br />
+              Feedback and Action
             </div>
 
+            <p style="text-align: center"><b>Welcome everyone!</b></p>
             <p>
-              You’ve joined the second Community Score Card meeting with other
-              residents of Simin Han.
+              You have joined <b>Day 1</b> of the Feedback process for your
+              rural field ambulatory health service.
             </p>
-            <p>All of you are health service users.</p>
             <p>
-              Having reviewed the standards of your Health Center yesterday (and
-              your rights and responsibilities as users), today we’re going to
-              use this knowledge to pull together a Community Score Card.
+              I’m <b>Bev Jones</b>, your facilitator for the next 2 hours, along
+              with <b>Pietro Fiorentini.</b> And <b>Robert Bjarnason</b>
+              is our producer.
             </p>
-            <p>Your facilitator, <b>Bev Jones</b>, will help you to do this.</p>
+
+            <p>
+              In the room we have the <b>health team</b> that provides services
+              to about 3,000 <b>members of this rural community.</b> And we have
+              members of that community here as well.
+            </p>
+
+            <p>
+              <b>Thank you</b> for coming today. We know you are all very busy
+              people.
+            </p>
+
+            <p>
+              Your feedback and your experience is really
+              <b>important for helping to improve services.</b>
+            </p>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">What we achieved yesterday</div>
+            <div class="blueHeader">The journey today</div>
+            <p>
+              For today, <b>most of our work will be in 2 separate groups</b> so
+              that we can discuss our experiences openly.
+            </p>
 
-            <p>You are now familiar with:</p>
+            <p>
+              Tomorrow we will come together to
+              <b>compare notes</b> and
+              <b>identify what actions can be taken jointly</b> to help achieve
+              the best service we can.
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">Ground rules</div>
+            <p>A few <b>ground rules</b> to help us.</p>
+
             <ul>
               <li>
-                the <span class="standardsTextColor">Standards</span> you can
-                expect from your Simin Han Health Centre, and
+                Please <b>keep on mute</b> when you are not speaking to improve
+                sound quality.
+              </li>
+              <li>
+                Please put <b>comments and questions in the chat</b> during
+                presentations or discussions and we’ll try to bring you in.
+              </li>
+              <li>
+                <b>Raise your hand</b> if you want to say something, and open
+                your mike when invited to speak.
+              </li>
+              <li>
+                Please <b>allow the facilitator to keep the process moving.</b>
+              </li>
+            </ul>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">1. Orientation</div>
+            <p>
+              We are now going to go through the information that we shared with
+              you yesterday.
+            </p>
+            <p>
+              This is a chance for you to raise questions of clarification. The
+              main discussion will come afterwards in separate groups when you
+              can also consider others issues that interest you.
+            </p>
+
+            <p>
+              From Ministry of Health, this is the information intended to
+              <b>guide the expectations and behaviours</b> of health service
+              users, and the performance of the health team:
+            </p>
+
+            <ul>
+              <li>
+                the <span class="standardsTextColor">Standards</span> the field
+                ambulatory should meet
               </li>
               <li>
                 Your <span class="rightsTextColor">Rights</span> and
                 <span class="rightsTextColor">Responsibilities</span> as a user
                 of health services
               </li>
-              <li>The Community Score Card process</li>
             </ul>
+
             <p>
-              Three of these standards/rights have been identified as
-              <b>national priorities for feedback</b> (called ‘core’). These
-              are:
-            </p>
-            <ol>
-              <li>Staff punctuality</li>
-              <li>Medicines supplies</li>
-              <li>Fee charges</li>
-            </ol>
-            <p>
-              Now it’s time to discuss and select <b>three additional issues</b>
-              that are most relevant to your local experience.
+              We’ll <b>familiarise ourselves</b> and then go into
+              <b> separate groups</b> to discuss.
             </p>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
-              But first – tell us about <u>your</u> experience
+              What <span class="standardsTextColor">standards</span> can you
+              expect from your field ambulatory?
             </div>
-
-            <p>
-              What do you think of the health services in Simin Han, and
-              especially the Health Center?
-            </p>
-            <p>Giving specific examples where you can, tell us:</p>
-            <ul>
-              <li>What you think the Health Center <b>does well</b>?</li>
-              <li>What you think the Health Center <b>does less well</b>?</li>
-              <li>
-                What are <b>your priorities</b> for a good local Health
-                Facility?
-              </li>
-            </ul>
-          </cs-story-card>
-
-          <cs-story-card style="background: white;color: black">
-            <p>
-              Looking first at the
-              <span class="standardsTextColor">standards</span>:<br />
-              - Which ones matter most (in addition to the core ones
-              identified)? <br />
-              - Is there anything missing?
-            </p>
             <table>
               <tr class="headerTr">
                 <td
@@ -881,9 +781,9 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>1. Staff/pop ratio:</b> At Simin Han, 4.4 staff include 1
-                  doctor, 2 nurses and a part-time medical assistant and
-                  receptionist.
+                  <b>Health Team composition.</b> There is 1 full-time medical
+                  doctor; 1 full-time qualified nurse and 1 part-time contract
+                  cleaner.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -894,8 +794,9 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b><u>2. Staff Punctuality</u>:</b>Staff attend the Centre on
-                  time, and are present all day. (*)
+                  <b>Health Team availability.</b> Working hours are
+                  well-publicised and the Health Team is present and available
+                  during these hours.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -906,9 +807,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>3. Emergency service:</b> Out of working hours ‘on call’
-                  duty medic, with publicly posted contact information and
-                  schedule.
+                  <b>Equipment.</b> The minimum list of basic health equipment
+                  is available, in working order and clean.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -919,8 +819,10 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>4. Screening service:</b> for pregnant women and newborn
-                  babies.
+                  <b>Building and facilities.</b> A dedicated building with a
+                  separate consultation and treatment area which ensures patient
+                  privacy. A clean toilet in working order. Patient data stored
+                  securely.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -931,25 +833,23 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b><u>5. Medicines:</u></b> 12 drug deliveries per year
-                  ensures that there is adequate medicine for treatment. (*)
+                  <b>Emergency service.</b> The Out of Hours emergency service
+                  (‘on call’ duty medic and referral facilities) is easy to
+                  access and up-to-date.
                 </td>
               </tr>
             </table>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <p>
-              Looking next at your
-              <span class="rightsTextColor">rights</span>:<br />
-              - Which ones matter most (in addition to the core one identified)?
-              <br />
-              - Is anything missing?
-            </p>
+            <div class="bigHeader">
+              What are your <span class="rightsTextColor">rights</span> when
+              using the field ambulatory?
+            </div>
             <table>
               <tr class="headerTr">
                 <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
-                  Your Health Centre staff
+                  Your Health Team
                 </td>
               </tr>
               <tr class="topFeatureTr">
@@ -960,7 +860,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  1. Should treat you equally and with <b>respect</b>.
+                  Treats you equally and with <b>respect</b> and care for
+                  <b>your personal dignity</b>
                 </td>
               </tr>
               <tr class="featureTr">
@@ -971,8 +872,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  2. Will <b>display</b> service information about the Health
-                  Centre
+                  Understands that you have the right to <b>refuse treatment</b>
                 </td>
               </tr>
               <tr class="featureTr">
@@ -983,8 +883,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsHighlightBackground">
-                  3. Will <b>help</b> you and your family understand your health
-                  needs, and treat this information <b>confidentially</b>.
+                  <b>Helps</b> you and your family understand your health needs,
+                  and treats this information <b>confidentially.</b>
                 </td>
               </tr>
               <tr class="featureTr">
@@ -995,26 +895,26 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  4. Will charge you only <b><u>listed fees</u>.(*)</b>
+                  Understands that you have the right to a
+                  <b>second medical opinion</b> and helps you to access this.
                 </td>
               </tr>
             </table>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <p>
-              Finally, looking at your
-              <span class="responsibilitiesTextColor">responsibilities</span> as
-              users: - Which of these are most important to you?<br />
-              - Is anything missing?
-            </p>
+            <div class="bigHeader">
+              What are your
+              <span class="responsibilitiesTextColor">responsibilities</span>
+              when using this service?
+            </div>
             <table>
               <tr class="headerTr">
                 <td
                   colspan="2"
                   class="tableHeader responsibilitiesHeaderBackgroundColor"
                 >
-                  You should...
+                  It is your responsibility to...
                 </td>
               </tr>
               <tr class="topFeatureTr">
@@ -1038,7 +938,7 @@ export class CsStory extends YpBaseElement {
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
                   Always <b>participate</b> in sickness prevention and health
-                  promotion activities run by your Health Centre
+                  promotion activities run by your Health service
                 </td>
               </tr>
               <tr>
@@ -1049,8 +949,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Pay the <b><u>official listed fees</u></b> and you should not
-                  pay informal fees. (*)
+                  Provide accurate and <b>complete information</b> about your
+                  health condition
                 </td>
               </tr>
               <tr>
@@ -1061,45 +961,503 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Treat the Health Centre staff with respect and courtesy.
+                  Treat the Health Team with <b>respect</b> and courtesy.
+                </td>
+              </tr>
+            </table>
+            <div class="blackBackground">
+              Together, these 13 standards, rights and responsibilities form a
+              Priority List for assessment - to which one further issue can be
+              added by each group through the discussion.
+            </div>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">2. Prioritization</div>
+            <p>
+              In a moment our producer will send you (virtually) into two
+              separate groups: health service users and providers.
+            </p>
+            <p>
+              With the help of a facilitator, each group will
+              <b
+                >discuss their experience of these standards, rights and
+                responsibilities from their own perspective.</b
+              >
+            </p>
+
+            <p>
+              They will also <b>identify other areas or issues of interest.</b>
+            </p>
+            <p>
+              They will then be asked to <b>vote for one more issue</b> to be
+              included in the list of Priorities for assessment.
+            </p>
+
+            <p>
+              Towards the end of the meeting, everyone will be asked to
+              <b>rank each of the Priority issues.</b>
+            </p>
+
+            <ul>
+              <li>Health service users will <b>assess their experience</b></li>
+
+              <li>
+                Health Service providers will
+                <b>assess their own performance</b>
+              </li>
+            </ul>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">3. Ranking/Assessment</div>
+            <p><b>Voting for one more issue</b></p>
+            <p>
+              Now that we have heard from people, it is time to vote for one
+              more issue to be added to the Priority List.
+            </p>
+
+            <p><b>Ranking the whole list</b></p>
+
+            <p>
+              <b>For Health service users:</b> now it is time to rank the extent
+              to which these standards and rights are being met in your field
+              ambulatory, and the extent to which you feel you are meeting your
+              responsibilities as users.
+            </p>
+
+            <p>
+              <b>For Health service providers:</b> now it is time to rank your
+              performance against the standards and rights, and to assess the
+              extent to which you feel patients are fulfilling their
+              responsibilities.
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">For tomorrow</div>
+            <p>
+              Tomorrow, at the same time,
+              <b>both groups will come together</b> again to
+              <b>share the results</b> from their assessment of standards,
+              rights and responsibilities.
+            </p>
+
+            <p>
+              Then we’ll review and discuss the results to see where there are
+              most
+              <b>strengths and most challenges</b>, and
+              <b>what improvements</b> can be made,
+              <b>and how.</b>
+            </p>
+
+            <p>
+              The aim of this exercise is to produce a
+              <b>concise Action Plan</b> for the year ahead.
+            </p>
+          </cs-story-card>
+        </cs-story-viewer>
+      `;
+    } else if (id == 5) {
+      return html`
+        <cs-story-viewer
+          id="viewer"
+          ?isiOs="${this.isiOs}"
+          ?isLive="${this.isLive}"
+          ?isAdmin="${this.isAdmin}"
+        >
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">
+              Your health service<br />
+              Feedback and Action
+            </div>
+
+            <p style="text-align: center"><b>Welcome everyone!</b></p>
+            <p>
+              You have joined <b>Day 1</b> of the Feedback process for your
+              rural field ambulatory health service.
+            </p>
+            <p>
+              A reminder that I’m <b>Bev Jones</b>, your facilitator for the
+              next 2 hours, along with <b>Pietro Fiorentini.</b> And
+              <b>Robert Bjarnason</b>
+              is our producer.
+            </p>
+
+            <p>
+              In the room we have the <b>health team</b> that provides services
+              to about 3,000 <b>members of this rural community.</b> And we have
+              members of that community here as well.
+            </p>
+
+            <p>
+              <b>Thank you</b> for coming back. We had some great discussions
+              yesterday. And your feedback and your experience is really
+              <b>important for helping to improve services.</b>
+            </p>
+
+            <p>
+              Your feedback and your experience is really
+              <b>important for helping to improve services.</b>
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">The journey today</div>
+            <p>
+              For today, we will continue from Step 4 (Results) and work
+              together, learning from the assessment and looking forward to
+              improvements.
+            </p>
+
+            <p>
+              Tomorrow we will come together to to step out of our roles and
+              reflect on what we have learned from the exercise.
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">Ground rules refresher</div>
+            <p>A few <b>ground rules</b> to help us.</p>
+
+            <ul>
+              <li>
+                Please <b>keep on mute</b> when you are not speaking to improve
+                sound quality.
+              </li>
+              <li>
+                Please put <b>comments and questions in the chat</b> during
+                presentations or discussions and we’ll try to bring you in.
+              </li>
+              <li>
+                <b>Raise your hand</b> if you want to say something, and open
+                your mike when invited to speak.
+              </li>
+              <li>
+                Please <b>allow the facilitator to keep the process moving.</b>
+              </li>
+            </ul>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">5. Review Results</div>
+            <p>
+              Here are the results from yesterday’s assessment exercise in
+              separate groups:
+            </p>
+
+            <ul>
+              <li>
+                the <span class="standardsTextColor">Standards</span> the field
+                ambulatory should meet
+                <ul>
+                  <li>From the community of users</li>
+                  <li>From the Health team</li>
+                </ul>
+              </li>
+              <li>
+                Your <span class="rightsTextColor">Rights</span> and
+                <span class="rightsTextColor">Responsibilities</span> as a user
+                of health services
+                <ul>
+                  <li>From the community of users</li>
+                  <li>From the Health team</li>
+                </ul>
+              </li>
+            </ul>
+
+            <p>And combined results.</p>
+
+            <p>
+              Let’s look at the results closely and then make sense of these.
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">6. Developing Action Plan</div>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader">
+              What <span class="standardsTextColor">standards</span> can you
+              expect from your field ambulatory?
+            </div>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader standardsHeaderBackgroundColor"
+                >
+                  Standards
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctors1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                  <b>Health Team composition.</b> There is 1 full-time medical
+                  doctor; 1 full-time qualified nurse and 1 part-time contract
+                  cleaner.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b>Health Team availability.</b> Working hours are
+                  well-publicised and the Health Team is present and available
+                  during these hours.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/siren1.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b>Equipment.</b> The minimum list of basic health equipment
+                  is available, in working order and clean.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/pregnant1.png"
+                  />
+                </td>
+                <td class="tableText standardsContentBackground">
+                  <b>Building and facilities.</b> A dedicated building with a
+                  separate consultation and treatment area which ensures patient
+                  privacy. A clean toilet in working order. Patient data stored
+                  securely.
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages standardsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png"
+                  />
+                </td>
+                <td class="tableText standardsHighlightBackground">
+                  <b>Emergency service.</b> The Out of Hours emergency service
+                  (‘on call’ duty medic and referral facilities) is easy to
+                  access and up-to-date.
                 </td>
               </tr>
             </table>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">Now what?</div>
-            <p>
-              To select the most important and relevant issues to include in the
-              Score Card, you’re now going to vote on your App.
-            </p>
-          </cs-story-card>
-
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">What happens next?</div>
-            <p>
-              Now that the Score Card is ready, the next step is to go into a
-              scoring process (Step 3).
-            </p>
-            <p>
-              You will score performance and, at the same time, the Health
-              Center staff will do a self-assessment. Then you and the Health .
-            </p>
-            <p>
-              Then you’ll meet together to review your separate scores and
-              discuss how improvements can be made – and who needs to take
-              action, by when.
-            </p>
-            <div class="layout vertical center-center">
-              <img
-                class="cscoverview"
-                src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/cscoverivew.png"
-              />
+            <div class="bigHeader">
+              What are your <span class="rightsTextColor">rights</span> when
+              using the field ambulatory?
             </div>
+            <table>
+              <tr class="headerTr">
+                <td colspan="2" class="tableHeader rightsHeaderBackgroundColor">
+                  Your Health Team
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/docktors2.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Treats you equally and with <b>respect</b> and care for
+                  <b>your personal dignity</b>
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/doctorinfo1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Understands that you have the right to <b>refuse treatment</b>
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustdoctor1.png"
+                  />
+                </td>
+                <td class="tableText rightsHighlightBackground">
+                  <b>Helps</b> you and your family understand your health needs,
+                  and treats this information <b>confidentially.</b>
+                </td>
+              </tr>
+              <tr class="featureTr">
+                <td class="tableImages rightsContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText rightsContentBackground">
+                  Understands that you have the right to a
+                  <b>second medical opinion</b> and helps you to access this.
+                </td>
+              </tr>
+            </table>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
-            <div class="bigHeader">THANK YOU!</div>
+            <div class="bigHeader">
+              What are your
+              <span class="responsibilitiesTextColor">responsibilities</span>
+              when using this service?
+            </div>
+            <table>
+              <tr class="headerTr">
+                <td
+                  colspan="2"
+                  class="tableHeader responsibilitiesHeaderBackgroundColor"
+                >
+                  It is your responsibility to...
+                </td>
+              </tr>
+              <tr class="topFeatureTr">
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthjustice.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  <b>Learn</b> about your rights, and ask for any clarifications
+                  you may need
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/bosnia1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Always <b>participate</b> in sickness prevention and health
+                  promotion activities run by your Health service
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Provide accurate and <b>complete information</b> about your
+                  health condition
+                </td>
+              </tr>
+              <tr>
+                <td class="tableImages responsibilitiesContentBackground">
+                  <img
+                    class="featureImage"
+                    src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustInToctors.png"
+                  />
+                </td>
+                <td class="tableText responsibilitiesContentBackground">
+                  Treat the Health Team with <b>respect</b> and courtesy.
+                </td>
+              </tr>
+            </table>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">7. Voting on priority actions</div>
+            <p>
+              Once each issue and potential actions have been discussed,
+              <b>a list of possible actions is assembled</b> the
+              facilitator/producer.
+            </p>
+            <p>
+              Participants then <b>vote for the actions</b> that they think are
+              most important or urgent.
+            </p>
+
+            <p>
+              The results are then
+              <b>incorporated into an Action Plan template,</b> ready for
+              further refinement and negotiation. (In some cases actions will be
+              for actors outside the immediate group.)
+            </p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">8. Action Plan & Follow-up</div>
+            <p>The meeting agrees ‘what next’ to:</p>
+
+            <ul>
+              <li>
+                <b>Finalise the plan</b>
+              </li>
+              <li>
+                <b>Share with relevant stakeholders</b>
+                (including wider community and authorities)
+              </li>
+              <li>
+                <b>Communicate proposed actions</b> to different stakeholders
+              </li>
+              <li>
+                Put in place <b>a joint monitoring group</b> to track progress
+                and launch the next update review
+              </li>
+
+              <p>
+                A <b>note of the agreements</b> reached by the end of the
+                meeting is made and circulated to all participants.
+              </p>
+
+              <p>
+                Thank you to everyone for their participation! Now it’s time to
+                step out of your roles.
+              </p>
+            </ul>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
+            <div class="blueHeader">For tomorrow</div>
+            <p>
+              We come together as <b>one group</b>
+              tomorrow as ourselves (no more roles). Our task is to spend some
+              time reflecting on the exercise:
+            </p>
+            <ul>
+              <li>
+                The
+                <b>blend of digital, virtual and other facilitation</b> methods
+              </li>
+              <li>
+                The <b>information content</b> of the feedback (standards,
+                rights and responsibilities)
+              </li>
+              <li>
+                The <b>feedback process</b>, from separate groups to analyse and
+                assess, then joint meeting and discussion for action planning.
+              </li>
+            </ul>
           </cs-story-card>
         </cs-story-viewer>
       `;
@@ -1110,6 +1468,24 @@ export class CsStory extends YpBaseElement {
     return [
       super.styles,
       css`
+        .blueHeader {
+          background-color: #daeaf5;
+          color: #222;
+          padding: 16px;
+          line-height: 1.35;
+          font-weight: bold;
+          margin-bottom: 8px;
+        }
+
+        .blackBackground {
+          background-color: #111;
+          color: #daeaf5;
+          padding: 12px;
+          line-height: 1.2;
+          font-size: 14px;
+          margin-top: 16px;
+        }
+
         cs-story-viewer {
           width: 400px;
           max-width: 100%;

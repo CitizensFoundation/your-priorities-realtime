@@ -25,11 +25,7 @@ export const OrientationTabTypes: Record<string, number> = {
 export class CsMeetingOrientation extends CsMeetingBase {
   constructor() {
     super();
-    if (this.meeting.forUsers) {
-      this.storyNumber = 1;
-    } else {
-      this.storyNumber = 2;
-    }
+
   }
 
   connectedCallback() {
@@ -60,6 +56,18 @@ export class CsMeetingOrientation extends CsMeetingBase {
         }
       `,
     ];
+  }
+
+  updated(changedProperties: Map<string | number | symbol, unknown>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('meeting') && this.meeting) {
+      if (this.meeting.forUsers) {
+        this.storyNumber = 1;
+      } else {
+        this.storyNumber = 2;
+      }
+    }
   }
 
   updateState() {
@@ -112,10 +120,6 @@ export class CsMeetingOrientation extends CsMeetingBase {
   }
 
   // EVENTS
-
-  updated(changedProperties: Map<string | number | symbol, unknown>) {
-    super.updated(changedProperties);
-  }
 
   _selectTab(event: CustomEvent) {
     this.selectedTab = event.detail?.index as number;
