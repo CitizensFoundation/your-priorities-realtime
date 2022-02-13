@@ -64,6 +64,13 @@ export class CsStory extends YpBaseElement {
           ?isAdmin="${this.isAdmin}"
         >
           <cs-story-card style="background: white;color: black">
+            <div class="bigHeader introHeader">
+              Introduction to the Community Priorities
+            </div>
+            <p class="swipeText">Please swipe to continue</p>
+          </cs-story-card>
+
+          <cs-story-card style="background: white;color: black">
             <video
               id="videoPlayer"
               slot="media"
@@ -359,6 +366,13 @@ export class CsStory extends YpBaseElement {
           ?isLive="${this.isLive}"
           ?isAdmin="${this.isAdmin}"
         >
+          <cs-story-card style="background: white;color: black">
+            <div class="bigHeader introHeader">
+              Introduction to the Community Priorities
+            </div>
+            <p class="swipeText">Please swipe to continue</p>
+          </cs-story-card>
+
           <cs-story-card style="background: white;color: black">
             <video
               id="videoPlayer"
