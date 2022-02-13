@@ -67,7 +67,7 @@ export class CsStory extends YpBaseElement {
             <video
               id="videoPlayer"
               slot="media"
-              src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
+              src="https://yrpri-eu-direct-assets.s3.eu-west-1.amazonaws.com/Bev2022.mp4"
               playsinline
               ?controls="${this.isiOs}"
             ></video>
@@ -363,7 +363,7 @@ export class CsStory extends YpBaseElement {
             <video
               id="videoPlayer"
               slot="media"
-              src="https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/b4839.mp4"
+              src="https://yrpri-eu-direct-assets.s3.eu-west-1.amazonaws.com/Bev2022.mp4"
               playsinline
               ?controls="${this.isiOs}"
             ></video>

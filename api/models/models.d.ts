@@ -253,6 +253,7 @@ interface RatingAttributes {
   value: number;
   userId: number;
   roundId: number;
+  userType: 1 | 2;
   issueId: number;
   createdAt?: Date;
   updatedAt?: Date;
@@ -262,4 +263,9 @@ interface GetRatingsAttributes {
   avgRating: number;
   id: number;
   Ratings: Array<RatingAttributes>;
+}
+
+interface LiveStatusAttributes {
+  isLive: boolean;
+  facilitatorName: string;
 }

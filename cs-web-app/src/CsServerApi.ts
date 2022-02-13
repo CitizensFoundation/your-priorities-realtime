@@ -177,14 +177,15 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
-  public login(userAvatar: string, userAvatarColor: string) {
+  public login(userAvatar: string, userAvatarColor: string, userName: string) {
     return this.fetchWrapper(
       this.baseUrlPath + `/users/login`,
       {
         method: 'POST',
         body: JSON.stringify({
           userAvatar,
-          userAvatarColor
+          userAvatarColor,
+          userName
         }),
       },
       false
@@ -235,14 +236,15 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
-  public rateIssue(issueId: number, roundId: number, value: number) {
+  public rateIssue(issueId: number, roundId: number, value: number, userType: 1 | 2) {
     return this.fetchWrapper(
       this.baseUrlPath + `/issues/${issueId}/rate`,
       {
         method: 'POST',
         body: JSON.stringify({
           value,
-          roundId
+          roundId,
+          userType
         }),
       },
       false

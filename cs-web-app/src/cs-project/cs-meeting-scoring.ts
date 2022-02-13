@@ -22,7 +22,6 @@ import { CsStory } from '../cs-story/cs-story.js';
 import { TextArea } from '@material/mwc-textarea';
 import { Snackbar } from '@material/mwc-snackbar';
 
-
 export const ScoringTabTypes: Record<string, number> = {
   Information: 0,
   ReviewScoreCard: 1,
@@ -150,10 +149,10 @@ export class CsMeetingScoring extends CsMeetingBase {
       } as StateAttributes);
     }
 
-    const rating = this.$$("#emoji") as any;
+    const rating = this.$$('#emoji') as any;
 
     if (rating) {
-//      rating.reset();
+      //      rating.reset();
     }
   }
 
@@ -179,11 +178,16 @@ export class CsMeetingScoring extends CsMeetingBase {
     const issue = this.allIssues![this.coreIssueIndex];
     const rating = event.detail;
 
-    if (rating!=undefined) {
-      await window.serverApi.rateIssue(issue.id, this.meeting.roundId, (event.currentTarget as any).rating);
+    if (rating != undefined) {
+      await window.serverApi.rateIssue(
+        issue.id,
+        this.meeting.roundId,
+        (event.currentTarget as any).rating,
+        this.meeting.forUsers ? 1 : 2
+      );
       this._getRatings();
     } else {
-      console.error("No rating found from target")
+      console.error('No rating found from target');
     }
   }
 
@@ -361,44 +365,44 @@ export class CsMeetingScoring extends CsMeetingBase {
     return html`
       <div class="layout vertical center-center">
         <mwc-tab-bar @MDCTabBar:activated="${this._selectTab}">
-        <mwc-tab
-          ?hidden="${!this.isAdmin}"
-          .label="${this.t('information')}"
-          icon="info_outlined"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=1}"
-          .label="${this.t('reviewScorecard')}"
-          icon="format_list_numbered"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=2}"
-          .label="${this.meeting.forUsers
-            ? this.t('viewIssues')
-            : this.t('viewIssues')}"
-          icon="how_to_vote"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=3}"
-          .label="${this.meeting.forUsers
-            ? this.t('scoreIssues')
-            : this.t('scoreIssues')}"
-          icon="rate_review_outline"
-          stacked
-        ></mwc-tab>
-        <mwc-tab
-          ?hidden="${!this.isAdmin && this.selectedTab!=4}"
-          .label="${this.t('results')}"
-          icon="checklist"
-          stacked
-        ></mwc-tab>
-      </mwc-tab-bar>
-    </div>
-  `;
-}
+          <mwc-tab
+            ?hidden="${!this.isAdmin}"
+            .label="${this.t('information')}"
+            icon="info_outlined"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 1}"
+            .label="${this.t('reviewScorecard')}"
+            icon="format_list_numbered"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 2}"
+            .label="${this.meeting.forUsers
+              ? this.t('viewIssues')
+              : this.t('viewIssues')}"
+            icon="how_to_vote"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 3}"
+            .label="${this.meeting.forUsers
+              ? this.t('scoreIssues')
+              : this.t('scoreIssues')}"
+            icon="rate_review_outline"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 4}"
+            .label="${this.t('results')}"
+            icon="checklist"
+            stacked
+          ></mwc-tab>
+        </mwc-tab-bar>
+      </div>
+    `;
+  }
 
   renderCurrentTabPage(): TemplateResult | {} | undefined {
     let page: TemplateResult | {} | undefined;
@@ -425,9 +429,7 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   render() {
-    return html`
-      ${this.renderTabs()} ${this.renderCurrentTabPage()}
-    `;
+    return html` ${this.renderTabs()} ${this.renderCurrentTabPage()} `;
   }
 
   // EVENTS
@@ -445,12 +447,11 @@ export class CsMeetingScoring extends CsMeetingBase {
       if (this.selectedTab == ScoringTabTypes.RateIssues) {
         this.coreIssueIndex = 0;
       }
-
     }
 
     if (changedProperties.has('allIssues') && this.allIssues) {
       this.allIssuesHash = {};
-      for (let i=0;i<this.allIssues.length;i++)  {
+      for (let i = 0; i < this.allIssues.length; i++) {
         this.allIssuesHash[this.allIssues[i].id] = this.allIssues[i];
       }
     }
@@ -465,18 +466,16 @@ export class CsMeetingScoring extends CsMeetingBase {
       this._getRatings();
     }
 
-
-    if (
-      changedProperties.has('allIssues') &&
-      this.allIssues
-    ) {
+    if (changedProperties.has('allIssues') && this.allIssues) {
       this._updateOrderedIssues();
     }
   }
 
   _updateOrderedIssues() {
     this.orderedAllIssues = [...this.allIssues!];
-    this.orderedAllIssues = this.orderedAllIssues.sort(function(a, b){return a.score! - b.score!});
+    this.orderedAllIssues = this.orderedAllIssues.sort(function (a, b) {
+      return a.score! - b.score!;
+    });
   }
 
   _selectTab(event: CustomEvent) {

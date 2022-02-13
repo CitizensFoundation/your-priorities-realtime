@@ -126,9 +126,6 @@ export class CsApp extends YpBaseElement {
   @property({ type: Boolean })
   showBackToPost = false;
 
-  @property({ type: Boolean })
-  isAdmin = false;
-
   @property({ type: String })
   goForwardPostName: string | undefined;
 
@@ -155,6 +152,9 @@ export class CsApp extends YpBaseElement {
 
   @property({ type: Boolean })
   hideAppBar = false;
+
+  @property({ type: String })
+  facilitatorName: string | undefined;
 
   anchor: HTMLElement | null = null;
 
@@ -205,10 +205,6 @@ export class CsApp extends YpBaseElement {
     console.info('yp-app is ready');
     this._setupSamlCallback();
     this.updateLocation();
-
-    if (window.appGlobals.originalQueryParameters.isAdmin) {
-      this.isAdmin = true;
-    }
 
     this._checkLogin();
   }
@@ -368,7 +364,8 @@ export class CsApp extends YpBaseElement {
   }
 
   _setLiveStatus(event: CustomEvent) {
-    this.isLive = event.detail;
+    this.isLive = (event.detail as LiveStatusAttributes).isLive;
+    this.facilitatorName = (event.detail as LiveStatusAttributes).facilitatorName;
   }
 
   updateLocation() {
@@ -504,7 +501,7 @@ export class CsApp extends YpBaseElement {
           ${this.renderLiveControls()}
           <div class="layout horizontal liveInfo" ?is-admin="${this.isAdmin}">
             <mwc-icon class="liveIcon">record_voice_over</mwc-icon>
-            <div class="facilitatorInfo">Facilitator: Bev Jones</div>
+            <div class="facilitatorInfo">Facilitator: ${this.facilitatorName || "Bev Jones"}</div>
           </div>
         </div>
       `;

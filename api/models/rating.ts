@@ -22,6 +22,7 @@ export class Rating
   public id!: number;
   public roundId!: number;
   public issueId!: number;
+  public userType!: 1 | 2;
   public userId!: number;
   public value!: number;
 
@@ -42,6 +43,10 @@ export const InitRating = (sequelize: Sequelize) => {
         allowNull: false,
       },
       issueId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      userType: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

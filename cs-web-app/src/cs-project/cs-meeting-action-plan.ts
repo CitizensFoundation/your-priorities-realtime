@@ -26,12 +26,13 @@ import '@material/mwc-formfield';
 
 export const ActionPlanTabTypes: Record<string, number> = {
   Information: 0,
-  ReviewScores: 1,
-  CreationActions: 2,
-  Voting: 3,
-  Confirm: 4,
-  AssignActions: 5,
-  FinalReview: 6,
+  ReviewUserScores: 1,
+  ReviewProviderScores: 2,
+  CreationActions: 3,
+  Voting: 4,
+  Confirm: 5,
+  AssignActions: 6,
+  FinalReview: 7,
 };
 
 @customElement('cs-meeting-action-plan')
@@ -50,7 +51,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
   @property({ type: Boolean })
   onlyShowSelected = false;
-
 
   @property({ type: String })
   currentAssignmentInput: string | undefined;
@@ -589,11 +589,12 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     }
   }
 
-  renderReviewScores() {
-    if (this.orderedAllIssues && this.orderedAllIssues.length > 0) {
+  renderReviewScores(users: boolean) {
+    const issues: Array<IssueAttributes> = users ? this.orderedUserIssues : this.orderedProviderIssues;
+    if (issues && issues.length > 0) {
       return html`
         <div class="layout vertical center-center">
-          ${this.orderedAllIssues?.map((issue, index) => {
+          ${issues?.map((issue, index) => {
             return html`${this.renderIssue(index)}`;
           })}
         </div>
@@ -698,7 +699,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     }
   }
 
-  renderReview() {
+  /*renderReview() {
     if (this.orderedAllIssues && this.orderedAllIssues!.length > 0) {
       return html`
         <div class="layout vertical center-center">
@@ -710,7 +711,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     } else {
       return html``;
     }
-  }
+  }*/
 
   renderTabs() {
     return html`
@@ -724,36 +725,42 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           ></mwc-tab>
           <mwc-tab
             ?hidden="${!this.isAdmin && this.selectedTab != 1}"
-            .label="${this.t('reviewScorecard')}"
+            .label="${this.t('reviewUserScorecard')}"
             icon="format_list_numbered"
             stacked
           ></mwc-tab>
           <mwc-tab
             ?hidden="${!this.isAdmin && this.selectedTab != 2}"
+            .label="${this.t('reviewProviderScorecard')}"
+            icon="format_list_numbered"
+            stacked
+          ></mwc-tab>
+          <mwc-tab
+            ?hidden="${!this.isAdmin && this.selectedTab != 3}"
             .label="${this.t('actionPlan')}"
             icon="create"
             stacked
           ></mwc-tab>
           <mwc-tab
-            ?hidden="${!this.isAdmin && this.selectedTab != 3}"
+            ?hidden="${!this.isAdmin && this.selectedTab != 4}"
             .label="${this.t('vote')}"
             icon="how_to_vote"
             stacked
           ></mwc-tab>
           <mwc-tab
-            ?hidden="${!this.isAdmin && this.selectedTab != 4}"
+            ?hidden="${!this.isAdmin && this.selectedTab != 5}"
             .label="${this.t('confirm')}"
             icon="check_circle_outline"
             stacked
           ></mwc-tab>
           <mwc-tab
-            ?hidden="${!this.isAdmin && this.selectedTab != 5}"
+            ?hidden="${!this.isAdmin && this.selectedTab != 6}"
             .label="${this.t('assign')}"
             icon="assignment_outline"
             stacked
           ></mwc-tab>
           <mwc-tab
-            ?hidden="${!this.isAdmin && this.selectedTab != 6}"
+            ?hidden="${!this.isAdmin && this.selectedTab != 7}"
             .label="${this.t('review')}"
             icon="checklist"
             stacked
@@ -770,8 +777,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       case ActionPlanTabTypes.Information:
         page = this.renderStory();
         break;
-      case ActionPlanTabTypes.ReviewScores:
-        page = this.renderReviewScores();
+      case ActionPlanTabTypes.ReviewUserScores:
+        page = this.renderReviewScores(true);
+        break;
+      case ActionPlanTabTypes.ReviewProviderScores:
+        page = this.renderReviewScores(false);
         break;
       case ActionPlanTabTypes.CreationActions:
         page = this.renderIssues(this.t('createActions'));

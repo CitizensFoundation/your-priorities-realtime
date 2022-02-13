@@ -112,6 +112,7 @@ export class IssuesController {
           rating = await models.Rating.create({
             issueId: parseInt(req.params.id!),
             roundId: req.body.roundId,
+            userType: req.body.userType,
             // @ts-ignore
             userId: req.session.user.id,
             value: req.body.value

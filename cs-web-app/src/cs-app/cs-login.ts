@@ -22,6 +22,7 @@ import { ShadowStyles } from '../@yrpri/ShadowStyles.js';
 import { YpNavHelpers } from '../@yrpri/YpNavHelpers.js';
 import { YpFormattingHelpers } from '../@yrpri/YpFormattingHelpers.js';
 import 'vanilla-colorful';
+import { TextField } from '@material/mwc-textfield';
 
 @customElement('cs-login')
 export class CsLogin extends YpBaseElement {
@@ -74,10 +75,17 @@ export class CsLogin extends YpBaseElement {
   }
 
   async login() {
+    let facilitatorName;
+
+    if (this.isAdmin) {
+      facilitatorName = (this.$$('#facilitatorName') as TextField).value;
+    }
+
     if (this.userAvatar && this.userAvatarColor) {
       this.user = (await window.serverApi.login(
         this.userAvatar,
-        this.userAvatarColor
+        this.userAvatarColor,
+        facilitatorName
       )) as UserAttributes | undefined;
 
       if (this.user) {
@@ -306,6 +314,16 @@ export class CsLogin extends YpBaseElement {
               >
             </mwc-button>
           </div>
+
+          ${this.isAdmin ? html`
+            <div class="layout vertical">
+              <mwc-textfield
+                id="facilitatorName"
+                maxLength="60"
+                .label="${this.t('facilitatorName')}"
+              ></mwc-textfield>
+            </div>
+          ` : nothing}
         </div>
       </div>
     `;
