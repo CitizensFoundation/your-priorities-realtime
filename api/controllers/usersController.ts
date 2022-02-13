@@ -33,7 +33,7 @@ export class UsersController {
 
   login = async (req: express.Request, res: express.Response) => {
     const user = {
-      name: "Anonymous",
+      name: req.body.userName || "Anonymous",
       selectedAvatar: req.body.userAvatar,
       selectedAvatarColor: req.body.userAvatarColor,
       language: req.body.language ? req.body.language : 'en'

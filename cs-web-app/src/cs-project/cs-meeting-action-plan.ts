@@ -55,6 +55,24 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   @property({ type: String })
   currentAssignmentInput: string | undefined;
 
+  @property({ type: Object })
+  allUserIssuesHash: Record<number, IssueAttributes> = {};
+
+  @property({ type: Array })
+  allUserIssues: Array<IssueAttributes> | undefined;
+
+  @property({ type: Object })
+  allProviderIssuesHash: Record<number, IssueAttributes> = {};
+
+  @property({ type: Array })
+  allProviderIssues: Array<IssueAttributes> | undefined;
+
+  @property({ type: Array })
+  orderedUserIssues: Array<IssueAttributes> | undefined;
+
+  @property({ type: Array })
+  orderedProviderIssues: Array<IssueAttributes> | undefined;
+
   constructor() {
     super();
     this.storyNumber = 5;
@@ -70,6 +88,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   async _getAllIssues() {
+    this.allUserIssues = [];
+    this.allProviderIssues = [];
     this.allIssues = undefined;
     this.allIssues = (await window.serverApi.getSelectedIssues(
       this.meeting.Round!.projectId,
@@ -77,17 +97,64 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     )) as Array<IssueAttributes> | undefined;
 
     if (this.allIssues) {
-      this._getRatings();
+      this.setupActions();
+      this.allIssuesHash = {};
+      for (let i = 0; i < this.allIssues.length; i++) {
+        this.allIssuesHash[this.allIssues[i].id] = this.allIssues[i];
+      }
+
+      await this._updateRatings(this.allIssues);
+
+      this.orderedAllIssues = this.allIssues.sort(function (a, b) {
+        return a.score! - b.score!;
+      });
+
+      for (let i = 0; i < this.allIssues.length; i++) {
+        if (this.allIssues[i].type == this.IssueTypes.UserIssue) {
+          this.allUserIssues.push({ ...this.allIssues[i] });
+        } else if (this.allIssues[i].type == this.IssueTypes.ProviderIssue) {
+          this.allProviderIssues.push({ ...this.allIssues[i] });
+        } else {
+          this.allUserIssues.push({ ...this.allIssues[i] });
+          this.allProviderIssues.push({ ...this.allIssues[i] });
+        }
+      }
+
+      this.allUserIssuesHash = {};
+      for (let i = 0; i < this.allUserIssues.length; i++) {
+        this.allUserIssuesHash[this.allUserIssues[i].id] = this.allUserIssues[
+          i
+        ];
+      }
+
+      this.allProviderIssuesHash = {};
+      for (let i = 0; i < this.allProviderIssues.length; i++) {
+        this.allProviderIssuesHash[
+          this.allProviderIssues[i].id
+        ] = this.allProviderIssues[i];
+      }
+
+      await this._updateRatings(this.allUserIssuesHash, 1);
+      await this._updateRatings(this.allProviderIssuesHash, 2);
+
+      this.orderedUserIssues = this.allUserIssues.sort(function (a, b) {
+        return a.score! - b.score!;
+      });
+
+      this.orderedProviderIssues = this.allProviderIssues.sort(function (a, b) {
+        return a.score! - b.score!;
+      });
     }
   }
-
 
   async saveAssignment(action: ActionAttributes) {
     const element = this.$$('#addAssignmentInput') as HTMLInputElement;
 
     if (element && element.value && element.value.length > 0) {
-
-      await window.serverApi.updateAssignmentForAction(action.id!, element.value);
+      await window.serverApi.updateAssignmentForAction(
+        action.id!,
+        element.value
+      );
 
       (this.$$('#addAssignmentInput') as HTMLInputElement).value = '';
     }
@@ -266,8 +333,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           margin-top: 8px;
           width: 258px;
         }
-
-
       `,
     ];
   }
@@ -302,12 +367,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     }
   }
 
-  async _scoreIssue(event: CustomEvent) {
-    const issue = this.allIssues![this.actionIssueIndex];
-
-    await window.serverApi.voteIssue(issue.id, 1);
-  }
-
   renderIssue(index: number, hideRating = false) {
     let issue: IssueAttributes;
     let showVoting = true;
@@ -318,6 +377,34 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     let toggleCommentMode = true;
 
     issue = this.orderedAllIssues![index];
+
+    return this.renderIssueHtml(
+      issue,
+      showVoting,
+      disableVoting,
+      showComments,
+      hideSubmitComment,
+      false,
+      undefined,
+      undefined,
+      toggleCommentMode
+    );
+  }
+
+  renderReviewIssue(
+    issues: Array<IssueAttributes>,
+    index: number,
+    hideRating = false
+  ) {
+    let issue: IssueAttributes;
+    let showVoting = true;
+    let showComments = true;
+    let disableVoting = true;
+    let hideSubmitComment = true;
+    let showNumbers = false;
+    let toggleCommentMode = true;
+
+    issue = issues[index];
 
     return this.renderIssueHtml(
       issue,
@@ -470,7 +557,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     ) as HTMLInputElement).value;
   }
 
-
   renderAction(
     index: number,
     showNumbers = false,
@@ -482,7 +568,9 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     const action = this.actions![index];
 
     return html`
-      <div class="action lessActionPadding layout vertical shadow-elevation-2dp shadow-transition">
+      <div
+        class="action lessActionPadding layout vertical shadow-elevation-2dp shadow-transition"
+      >
         <div class="layout horizontal actionHeader center-center">
           <div class="actionText">${this.t('action')}</div>
         </div>
@@ -511,8 +599,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
                   class="layout addNewIssueButton saveAssignment"
                   @click="${() => this.saveAssignment(action)}"
                   .label="${this.t('saveAssignment')}"
-                  ></mwc-button
-                >
+                ></mwc-button>
               </div>
             `
           : nothing}
@@ -590,12 +677,15 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   renderReviewScores(users: boolean) {
-    const issues: Array<IssueAttributes> = users ? this.orderedUserIssues : this.orderedProviderIssues;
+    const issues: Array<IssueAttributes> = users
+      ? this.orderedUserIssues!
+      : this.orderedProviderIssues!;
+
     if (issues && issues.length > 0) {
       return html`
         <div class="layout vertical center-center">
           ${issues?.map((issue, index) => {
-            return html`${this.renderIssue(index)}`;
+            return html`${this.renderReviewIssue(issues, index)}`;
           })}
         </div>
       `;
@@ -857,24 +947,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         this._getAllIssues();
       } else {
         this.onlyShowSelected = false;
-        this._getAllIssues();
       }
 
       if (this.selectedTab == ActionPlanTabTypes.AssignActions) {
         this.actionIssueIndex = 0;
       }
-    }
-
-    if (changedProperties.has('allIssues') && this.allIssues) {
-      this.setupActions();
-      this.allIssuesHash = {};
-      for (let i = 0; i < this.allIssues.length; i++) {
-        this.allIssuesHash[this.allIssues[i].id] = this.allIssues[i];
-      }
-
-      this.orderedAllIssues = this.allIssues.sort(function (a, b) {
-        return a.score! - b.score!;
-      });
     }
 
     if (changedProperties.has('actions') && this.actions) {

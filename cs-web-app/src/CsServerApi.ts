@@ -177,7 +177,7 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
-  public login(userAvatar: string, userAvatarColor: string, userName: string) {
+  public login(userAvatar: string, userAvatarColor: string, userName: string | undefined) {
     return this.fetchWrapper(
       this.baseUrlPath + `/users/login`,
       {

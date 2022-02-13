@@ -114,32 +114,38 @@ export class CsMeetingBase extends YpBaseElement {
     }
   }
 
-  async _getRatings() {
+  async _updateRatings(
+    allIssuesHash: Record<number, IssueAttributes>,
+    userType: 1 | 2 | undefined = undefined
+  ) {
     const ratings = (await window.serverApi.getRatings(
       this.meeting.Round!.projectId
     )) as Array<GetRatingsAttributes> | undefined;
 
-    if (ratings && this.allIssuesHash) {
+    if (ratings && allIssuesHash) {
       for (let i = 0; i < ratings.length; i++) {
-        if (this.allIssuesHash[ratings[i].id]) {
+        if (allIssuesHash[ratings[i].id]) {
           let count = 0;
           let totalRating = 0;
-          for (let n=0; n < ratings[i].Ratings.length; n++) {
-            count++;
-            totalRating += ratings[i].Ratings[n].value;
-            if (this.user.id===ratings[i].Ratings[n].userId) {
-              this.allIssuesHash[ratings[i].id].userScore = ratings[i].Ratings[n].value;
+          for (let n = 0; n < ratings[i].Ratings.length; n++) {
+            if (!userType || ratings[i].Ratings[n].userType == userType) {
+              count++;
+              totalRating += ratings[i].Ratings[n].value;
+              if (this.user.id === ratings[i].Ratings[n].userId) {
+                allIssuesHash[ratings[i].id].userScore =
+                  ratings[i].Ratings[n].value;
+              }
             }
           }
-          if (count>0 && totalRating>0) {
-            this.allIssuesHash[ratings[i].id].score = totalRating/count;
+          if (count > 0 && totalRating > 0) {
+            allIssuesHash[ratings[i].id].score = totalRating / count;
           } else {
-            this.allIssuesHash[ratings[i].id].score = 0;
+            allIssuesHash[ratings[i].id].score = 0;
           }
-        } else {
-          console.error("Can't find ratings index: ");
         }
       }
+    } else {
+      console.error("Can't find ratings index: ");
     }
 
     this.allIssues = [...this.allIssues!];
@@ -214,32 +220,34 @@ export class CsMeetingBase extends YpBaseElement {
 
   _processNewCommentVote(comment: CommentAttributes) {
     if (this.coreIssues) {
-      loop1:
-        for (let i=0;i<this.coreIssues.length;i++) {
-          if (this.coreIssues[i].Comments) {
-            for (let n=0;n<this.coreIssues[i].Comments!.length;n++) {
-              if (this.coreIssues[i].Comments![n].id==comment.id) {
-                this.coreIssues[i].Comments![n] = comment;
-                this.coreIssues = [...this.coreIssues];
-                break loop1;
-              }
+      loop1: for (let i = 0; i < this.coreIssues.length; i++) {
+        if (this.coreIssues[i].Comments) {
+          for (let n = 0; n < this.coreIssues[i].Comments!.length; n++) {
+            if (this.coreIssues[i].Comments![n].id == comment.id) {
+              this.coreIssues[i].Comments![n] = comment;
+              this.coreIssues = [...this.coreIssues];
+              break loop1;
             }
           }
         }
+      }
     }
     if (this.participantsIssues) {
-      loop2:
-        for (let i=0;i<this.participantsIssues.length;i++) {
-          if (this.participantsIssues[i].Comments) {
-            for (let n=0;i<this.participantsIssues[i].Comments!.length;n++) {
-              if (this.participantsIssues[i].Comments![n].id==comment.id) {
-                this.participantsIssues[i].Comments![n] = comment;
-                this.participantsIssues = [...this.participantsIssues];
-                break loop2;
-              }
+      loop2: for (let i = 0; i < this.participantsIssues.length; i++) {
+        if (this.participantsIssues[i].Comments) {
+          for (
+            let n = 0;
+            i < this.participantsIssues[i].Comments!.length;
+            n++
+          ) {
+            if (this.participantsIssues[i].Comments![n].id == comment.id) {
+              this.participantsIssues[i].Comments![n] = comment;
+              this.participantsIssues = [...this.participantsIssues];
+              break loop2;
             }
           }
         }
+      }
     }
   }
 
@@ -541,7 +549,10 @@ export class CsMeetingBase extends YpBaseElement {
       status: 0,
     } as CommentAttributes;
 
-    const newComment = await window.serverApi.postIssueComment(issue.id, comment);
+    const newComment = await window.serverApi.postIssueComment(
+      issue.id,
+      comment
+    );
 
     this.addCoreIssueComment(newComment);
 
@@ -576,7 +587,7 @@ export class CsMeetingBase extends YpBaseElement {
     this.io.emit('newVoteComment', updatedComment);
     const el = event.target as HTMLInputElement;
     el.blur();
-    comment.counterUpVotes+=1;
+    comment.counterUpVotes += 1;
     this.requestUpdate();
   }
 
@@ -616,19 +627,19 @@ export class CsMeetingBase extends YpBaseElement {
       >
         <div class="layout vertical otherContainer">
           <div class="layout horizontal center-center">
-          ${issue.imageUrl != null
-            ? html`
-                <div class="layout vertical center-center">
-                  <img class="issueImage" src="${issue.imageUrl!}" />
-                </div>
-              `
-            : html`
-                <div class="layout horizontal center-center">
-                  <mwc-icon class="bookmarkIcon bookmarkIconStronger"
-                    >${this.getIconForIssueType(issue)}</mwc-icon
-                  >
-                </div>
-              `}
+            ${issue.imageUrl != null
+              ? html`
+                  <div class="layout vertical center-center">
+                    <img class="issueImage" src="${issue.imageUrl!}" />
+                  </div>
+                `
+              : html`
+                  <div class="layout horizontal center-center">
+                    <mwc-icon class="bookmarkIcon bookmarkIconStronger"
+                      >${this.getIconForIssueType(issue)}</mwc-icon
+                    >
+                  </div>
+                `}
           </div>
 
           <div class="issueName" ?has-standard="${issue.standard}">
@@ -750,7 +761,8 @@ export class CsMeetingBase extends YpBaseElement {
                     <mwc-icon-button
                       icon="arrow_upward"
                       ?disabled="${disableVoting}"
-                      @click="${(event: any) => this.voteCommentUp(comment, event)}"
+                      @click="${(event: any) =>
+                        this.voteCommentUp(comment, event)}"
                       class="commentLikeButton"
                       .label="${this.t('voteDown')}"
                     ></mwc-icon-button>
@@ -767,17 +779,19 @@ export class CsMeetingBase extends YpBaseElement {
   }
 
   _sortComments(comments: Array<CommentAttributes>) {
-    const byTime = comments.sort( (a: CommentAttributes,b:CommentAttributes)=>{
-      //@ts-ignore
-      return new Date(b.createdAt!) - new Date(a.createdAt!);
-    })
+    const byTime = comments.sort(
+      (a: CommentAttributes, b: CommentAttributes) => {
+        //@ts-ignore
+        return new Date(b.createdAt!) - new Date(a.createdAt!);
+      }
+    );
 
-    const tenSeconds = Date.now() - (1000 * 10);
+    const tenSeconds = Date.now() - 1000 * 10;
 
     const newComments = [];
     const oldComments = [];
 
-    for (let i=0;i<byTime.length;i++) {
+    for (let i = 0; i < byTime.length; i++) {
       const date = new Date(byTime[i].updatedAt!);
       //@ts-ignore
       if (date > tenSeconds) {
@@ -787,10 +801,12 @@ export class CsMeetingBase extends YpBaseElement {
       }
     }
 
-    const oldByVotes = oldComments.sort( (a: CommentAttributes,b:CommentAttributes)=>{
-      //@ts-ignore
-      return b.counterUpVotes - a.counterUpVotes;
-    })
+    const oldByVotes = oldComments.sort(
+      (a: CommentAttributes, b: CommentAttributes) => {
+        //@ts-ignore
+        return b.counterUpVotes - a.counterUpVotes;
+      }
+    );
 
     return [...newComments, ...oldByVotes];
   }

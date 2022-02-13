@@ -20,6 +20,10 @@ const InitRating = (sequelize) => {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
+        userType: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: false,
+        },
         roundId: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,

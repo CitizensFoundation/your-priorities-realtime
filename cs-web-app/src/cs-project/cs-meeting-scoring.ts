@@ -177,15 +177,16 @@ export class CsMeetingScoring extends CsMeetingBase {
   async _rateIssue(event: CustomEvent) {
     const issue = this.allIssues![this.coreIssueIndex];
     const rating = event.detail;
+    const userType = this.meeting.forUsers ? 1 : 2;
 
     if (rating != undefined) {
       await window.serverApi.rateIssue(
         issue.id,
         this.meeting.roundId,
         (event.currentTarget as any).rating,
-        this.meeting.forUsers ? 1 : 2
+        userType
       );
-      this._getRatings();
+      this._updateRatings(this.allIssuesHash, userType);
     } else {
       console.error('No rating found from target');
     }
@@ -449,13 +450,6 @@ export class CsMeetingScoring extends CsMeetingBase {
       }
     }
 
-    if (changedProperties.has('allIssues') && this.allIssues) {
-      this.allIssuesHash = {};
-      for (let i = 0; i < this.allIssues.length; i++) {
-        this.allIssuesHash[this.allIssues[i].id] = this.allIssues[i];
-      }
-    }
-
     if (
       (changedProperties.has('participantsIssues') ||
         changedProperties.has('coreIssues')) &&
@@ -463,7 +457,11 @@ export class CsMeetingScoring extends CsMeetingBase {
       this.coreIssues
     ) {
       this.allIssues = this.coreIssues.concat(this.participantsIssues);
-      this._getRatings();
+      this.allIssuesHash = {};
+      for (let i = 0; i < this.allIssues.length; i++) {
+        this.allIssuesHash[this.allIssues[i].id] = this.allIssues[i];
+      }
+      this._updateRatings(this.allIssuesHash, this.meeting.forUsers ? 1 : 2);
     }
 
     if (changedProperties.has('allIssues') && this.allIssues) {
