@@ -140,12 +140,15 @@ export class CsMeetingScoring extends CsMeetingBase {
 
   updateState() {
     if (this.isAdmin) {
+      this.facilitatorName = this.user.name;
+
       this.sendState({
         tabIndex: this.selectedTab,
         isLive: this.isLive,
         storyPageIndex: this.storyPageIndex,
         votingIssueIndex: this.votingIssueIndex,
         coreIssueIndex: this.coreIssueIndex,
+        facilitatorName: this.facilitatorName
       } as StateAttributes);
     }
 
@@ -157,7 +160,7 @@ export class CsMeetingScoring extends CsMeetingBase {
   }
 
   _processState(state: StateAttributes) {
-    if (!this.isAdmin) {
+    if (!this.isAdmin || state.facilitatorName!=this.user.name) {
       super._processState(state);
       if (this.isLive) {
         if (state.storyPageIndex != null && this.$$('#storyViewer')) {

@@ -339,18 +339,21 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
   updateState() {
     if (this.isAdmin) {
+      this.facilitatorName = this.user.name;
+
       this.sendState({
         tabIndex: this.selectedTab,
         isLive: this.isLive,
         storyPageIndex: this.storyPageIndex,
         actionIssueIndex: this.actionIssueIndex,
         coreIssueIndex: this.coreIssueIndex,
+        facilitatorName: this.facilitatorName
       } as StateAttributes);
     }
   }
 
   _processState(state: StateAttributes) {
-    if (!this.isAdmin) {
+    if (!this.isAdmin || state.facilitatorName!=this.user.name) {
       super._processState(state);
       if (this.isLive) {
         if (state.storyPageIndex != null && this.$$('#storyViewer')) {
@@ -935,8 +938,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     super.updated(changedProperties);
 
     if (changedProperties.has('selectedTab')) {
-      this.updateState();
-
       if (
         [
           ActionPlanTabTypes.FinalReview,
@@ -961,5 +962,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
   _selectTab(event: CustomEvent) {
     this.selectedTab = event.detail?.index as number;
+    this.updateState();
   }
 }

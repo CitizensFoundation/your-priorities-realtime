@@ -39,6 +39,9 @@ export class CsMeetingBase extends YpBaseElement {
   @property({ type: Boolean })
   isLive = false;
 
+  @property({ type: String })
+  facilitatorName: string | undefined;
+
   @property({ type: Number })
   selectedTab = 0;
 
@@ -96,6 +99,7 @@ export class CsMeetingBase extends YpBaseElement {
 
   _processState(state: StateAttributes) {
     this.isLive = state.isLive;
+    this.facilitatorName = state.facilitatorName;
   }
 
   setCommentInput() {
@@ -158,10 +162,15 @@ export class CsMeetingBase extends YpBaseElement {
 
   //TODO: Fix storyPageIndex where you go live, then offline, move to another story page, go live and state doesn't update
   updateState() {
-    this.sendState({
-      tabIndex: this.selectedTab,
-      isLive: this.isLive,
-    } as StateAttributes);
+    if (this.isAdmin) {
+      this.facilitatorName = this.user.name;
+
+      this.sendState({
+        tabIndex: this.selectedTab,
+        isLive: this.isLive,
+        facilitatorName: this.facilitatorName
+      } as StateAttributes);
+    }
   }
 
   _setupSockets() {
@@ -173,8 +182,10 @@ export class CsMeetingBase extends YpBaseElement {
 
     this.io.on('meetingState', (...args: any) => {
       //console.error(args);
+      const state = (args[0] as StateAttributes);
       if (this.isAdmin) {
-        this.isLive = (args[0] as StateAttributes).isLive;
+        this.isLive = state.isLive;
+        this.facilitatorName = state.facilitatorName;
       } else {
         this._processState(args[0] as StateAttributes);
       }
@@ -572,8 +583,11 @@ export class CsMeetingBase extends YpBaseElement {
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('isLive')) {
-      this.fire('yp-set-live-status', this.isLive);
+    if (changedProperties.has('isLive') || changedProperties.has('facilitatorName')) {
+      this.fire('yp-set-live-status', {
+        isLive: this.isLive,
+        facilitatorName: this.facilitatorName
+      } as LiveStatusAttributes);
     }
   }
 

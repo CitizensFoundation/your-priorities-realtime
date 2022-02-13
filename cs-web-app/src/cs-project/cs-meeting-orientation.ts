@@ -71,15 +71,18 @@ export class CsMeetingOrientation extends CsMeetingBase {
   }
 
   updateState() {
+    this.facilitatorName = this.user.name;
+
     this.sendState({
       tabIndex: this.selectedTab,
       isLive: this.isLive,
-      storyPageIndex: this.storyPageIndex
+      storyPageIndex: this.storyPageIndex,
+      facilitatorName: this.facilitatorName
     } as StateAttributes)
   }
 
   _processState(state: StateAttributes) {
-    if (!this.isAdmin) {
+    if (!this.isAdmin || state.facilitatorName!=this.user.name) {
       super._processState(state);
       if (state.storyPageIndex != null && this.$$('#storyViewer')) {
         (this.$$("#storyViewer") as CsStory).setIndex(state.storyPageIndex);

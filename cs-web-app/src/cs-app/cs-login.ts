@@ -38,6 +38,9 @@ export class CsLogin extends YpBaseElement {
   @property({ type: String })
   returnToPage: string | undefined;
 
+  @property({ type: Boolean })
+  isAdmin = false;
+
   constructor() {
     super();
 
@@ -115,6 +118,12 @@ export class CsLogin extends YpBaseElement {
       super.styles,
       ShadowStyles,
       css`
+
+        mwc-textfield {
+          max-width: 300px;
+          margin-top: 32px;
+        }
+
         .avatarIcon {
           --mdc-icon-size: 38px;
           padding: 12px;
@@ -301,6 +310,17 @@ export class CsLogin extends YpBaseElement {
             </div>
           </div>
 
+          ${this.isAdmin ? html`
+            <div class="layout vertical center-center">
+              <mwc-textfield
+                id="facilitatorName"
+                maxLength="30"
+                .label="${this.t('facilitatorName')}"
+              ></mwc-textfield>
+            </div>
+          ` : nothing}
+
+
           <div class="layout horizontal center-center">
             <mwc-button
               @click="${this.login}"
@@ -314,16 +334,6 @@ export class CsLogin extends YpBaseElement {
               >
             </mwc-button>
           </div>
-
-          ${this.isAdmin ? html`
-            <div class="layout vertical">
-              <mwc-textfield
-                id="facilitatorName"
-                maxLength="60"
-                .label="${this.t('facilitatorName')}"
-              ></mwc-textfield>
-            </div>
-          ` : nothing}
         </div>
       </div>
     `;

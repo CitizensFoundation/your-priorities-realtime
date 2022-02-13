@@ -12,15 +12,8 @@ export class YpBaseElement extends LitElement {
   @property({ type: Boolean })
   rtl = false;
 
-  @property({ type: Boolean })
-  isAdmin = false;
-
   constructor() {
     super();
-
-    if (window.location.search.indexOf("isAdmin=1") > -1) {
-      this.isAdmin = true;
-    }
 
     this.addGlobalListener(
       'yp-language-loaded',

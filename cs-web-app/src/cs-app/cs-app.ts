@@ -153,6 +153,9 @@ export class CsApp extends YpBaseElement {
   @property({ type: Boolean })
   hideAppBar = false;
 
+  @property({ type: Boolean })
+  isAdmin = false;
+
   @property({ type: String })
   facilitatorName: string | undefined;
 
@@ -201,6 +204,11 @@ export class CsApp extends YpBaseElement {
 
   connectedCallback() {
     super.connectedCallback();
+
+    if (window.location.search.indexOf("isAdmin=") > -1) {
+      this.isAdmin = true;
+    }
+
     this._setupEventListeners();
     console.info('yp-app is ready');
     this._setupSamlCallback();
@@ -276,6 +284,7 @@ export class CsApp extends YpBaseElement {
     this.addListener('yp-set-home-link', this._setHomeLink, this);
     this.addListener('yp-set-next-post', this._setNextPost, this);
     this.addListener('yp-set-pages', this._setPages, this);
+    this.addListener('yp-set-facilitator', this._setFacilitator, this);
 
     window.addEventListener('locationchange', this.updateLocation.bind(this));
     window.addEventListener('location-changed', this.updateLocation.bind(this));
@@ -309,6 +318,7 @@ export class CsApp extends YpBaseElement {
     );
     this.removeListener('yp-open-login', this._login, this);
     this.removeListener('yp-set-live-status', this._setLiveStatus, this);
+    this.removeListener('yp-set-facilitator', this._setFacilitator, this);
     this.removeListener('yp-open-page', this._openPageFromEvent, this);
     this.removeListener('yp-open-toast', this._openToast, this);
     this.removeListener('yp-open-notify-dialog', this._openNotifyDialog, this);
@@ -361,6 +371,10 @@ export class CsApp extends YpBaseElement {
     }
 
     this.fireGlobal('cs-live', this.isLive);
+  }
+
+  _setFacilitator(event: CustomEvent) {
+    this.facilitatorName = event.detail;
   }
 
   _setLiveStatus(event: CustomEvent) {
@@ -652,6 +666,7 @@ export class CsApp extends YpBaseElement {
             <cs-login
               id="login"
               role="main"
+              .isAdmin=${this.isAdmin}
               aria-label="${this.t('login')}"
               .subRoute="${this.subRoute}"
             ></cs-login>

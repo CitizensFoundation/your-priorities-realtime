@@ -238,6 +238,7 @@ interface StateAttributes {
   votingIssueIndex?: number;
   actionIssueIndex?: number;
   isLive: boolean;
+  facilitatorName?: string;
 }
 
 interface TranslationCacheAttributes {
@@ -267,5 +268,5 @@ interface GetRatingsAttributes {
 
 interface LiveStatusAttributes {
   isLive: boolean;
-  facilitatorName: string;
+  facilitatorName: string | undefined;
 }
