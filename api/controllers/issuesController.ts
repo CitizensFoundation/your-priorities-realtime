@@ -103,6 +103,7 @@ export class IssuesController {
           where: {
             issueId: req.params.id,
             roundId: req.body.roundId,
+            userType: req.body.userType,
             // @ts-ignore
             userId: req.session.user ? req.session.user.id : -1
           }

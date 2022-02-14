@@ -138,10 +138,6 @@ class StarsRating extends LitElement {
     if (changedProperties.get('rating') !==  this.rating && this.rating!=this.setRating) {
       this._ratingChange();
     }
-
-    if (changedProperties.has('userRating') && this.userRating) {
-      this.dispatchEvent(new CustomEvent('rating-changed', { detail: this.userRating }));
-    }
   }
 
   _updateNumstars() {
@@ -176,6 +172,7 @@ class StarsRating extends LitElement {
     if (ev.target.nodeName === 'INPUT') {
       this.rating = parseInt(ev.target.value) + 1;
       this.userRating = this.rating;
+      this.dispatchEvent(new CustomEvent('rating-changed', { detail: this.userRating }));
     }
   }
 

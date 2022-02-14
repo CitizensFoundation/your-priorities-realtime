@@ -182,7 +182,7 @@ export class CsMeetingScoring extends CsMeetingBase {
     const rating = event.detail;
     const userType = this.meeting.forUsers ? 1 : 2;
 
-    issue.userScore = (event.currentTarget as any).rating;
+    //issue.userScore = (event.currentTarget as any).rating;
 
     if (rating != undefined) {
       await window.serverApi.rateIssue(
