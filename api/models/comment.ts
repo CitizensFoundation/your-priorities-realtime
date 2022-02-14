@@ -30,6 +30,7 @@ export class Comment
   public type!: number;
   public status!: number;
   public counterUpVotes!: number;
+  public userType!: 1 | 2;
   public counterDownVotes!: number;
   public publicData!: CommentPublicDataAttributes | null;
   public privateData!: CommentPrivateDataAttributes | null;
@@ -64,6 +65,10 @@ export const InitComment = (sequelize: Sequelize) => {
         allowNull: true,
       },
       issueId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      userType: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },

@@ -24,6 +24,10 @@ const InitComment = (sequelize) => {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: true,
         },
+        userType: {
+            type: sequelize_1.DataTypes.INTEGER,
+            allowNull: true,
+        },
         actionId: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: true,

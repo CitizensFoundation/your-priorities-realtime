@@ -448,7 +448,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
 
     const issue = this.coreIssues![this.coreIssueIndex];
 
-    this.completeAddingIssueComment(issue);
+    this.completeAddingIssueComment(issue, this.meeting.forUsers ? 1 : 2);
   }
 
   leftCoreIssueArrow() {

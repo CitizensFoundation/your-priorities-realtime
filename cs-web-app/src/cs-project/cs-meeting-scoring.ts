@@ -276,7 +276,7 @@ export class CsMeetingScoring extends CsMeetingBase {
 
     const issue = this.allIssues![this.coreIssueIndex];
 
-    this.completeAddingIssueComment(issue);
+    this.completeAddingIssueComment(issue, this.meeting.forUsers ? 1 : 2);
   }
 
   leftCoreIssueArrow() {

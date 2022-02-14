@@ -269,8 +269,8 @@ if (force) {
         "Health Team availability",
         "Building and facilities",
         "Emergency service",
-        "Respect for patients. ",
-        "Being informed"
+        "Being informed",
+        "Respect for patients. "
       ];
 
       const standards = [

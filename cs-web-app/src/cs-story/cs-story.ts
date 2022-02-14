@@ -1076,7 +1076,7 @@ export class CsStory extends YpBaseElement {
 
             <p style="text-align: center"><b>Welcome everyone!</b></p>
             <p>
-              You have joined <b>Day 1</b> of the Feedback process for your
+              You have joined <b>Day 2</b> of the Feedback process for your
               rural field ambulatory health service.
             </p>
             <p>

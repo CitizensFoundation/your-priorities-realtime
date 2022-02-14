@@ -358,7 +358,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
 
   updateState() {
     if (this.isAdmin) {
-      this.facilitatorName = this.user.name;
+      this.facilitatorName = this.user?.name;
 
       this.sendState({
         tabIndex: this.selectedTab,
@@ -640,7 +640,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           <div>${action.assignedTo}</div>
         </div>
 
-        ${showAssignment
+        ${(showAssignment && this.isAdmin)
           ? html`
               <mwc-textarea
                 id="addAssignmentInput"

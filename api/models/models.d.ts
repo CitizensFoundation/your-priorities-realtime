@@ -202,6 +202,7 @@ interface CommentAttributes {
   issueId: number;
   userId: number;
   type: number;
+  userType: 1 | 2;
   status: number;
   counterUpVotes: number;
   counterDownVotes: number;

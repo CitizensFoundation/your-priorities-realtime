@@ -221,8 +221,8 @@ if (force) {
                 "Health Team availability",
                 "Building and facilities",
                 "Emergency service",
-                "Respect for patients. ",
-                "Being informed"
+                "Being informed",
+                "Respect for patients. "
             ];
             const standards = [
                 "Working hours are well-publicised and the Health Team is present and available during these hours.",

@@ -553,11 +553,12 @@ export class CsMeetingBase extends YpBaseElement {
     ];
   }
 
-  async completeAddingIssueComment(issue: IssueAttributes) {
+  async completeAddingIssueComment(issue: IssueAttributes, userType: 1 | 2) {
     const comment = {
       content: (this.$$('#addCommentInput') as HTMLInputElement).value,
       userId: this.user!.id,
       issueId: issue.id,
+      userType: userType,
       User: this.user!,
       type: 0,
       status: 0,
@@ -808,13 +809,23 @@ export class CsMeetingBase extends YpBaseElement {
     const newComments = [];
     const oldComments = [];
 
+    let currentUserType: 1 | 2 | undefined;
+
+    if (this.meeting.forUsers && !this.meeting.forServiceProviders) {
+      currentUserType = 1;
+    } else if (this.meeting.forServiceProviders && !this.meeting.forUsers) {
+      currentUserType = 2;
+    }
+
     for (let i = 0; i < byTime.length; i++) {
       const date = new Date(byTime[i].updatedAt!);
-      //@ts-ignore
-      if (date > tenSeconds) {
-        newComments.push(byTime[i]);
-      } else {
-        oldComments.push(byTime[i]);
+      if (!currentUserType || currentUserType==byTime[i].userType) {
+        //@ts-ignore
+        if (date > tenSeconds) {
+          newComments.push(byTime[i]);
+        } else {
+          oldComments.push(byTime[i]);
+        }
       }
     }
 
