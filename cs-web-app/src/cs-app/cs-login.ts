@@ -329,7 +329,7 @@ export class CsLogin extends YpBaseElement {
             <mwc-button
               @click="${this.login}"
               class="loginButton"
-              ?disabled="${!this.userAvatar || !this.userAvatarColor || !this.facilitatorName}"
+              ?disabled="${!this.userAvatar || !this.userAvatarColor || (this.isAdmin && !this.facilitatorName)}"
               raised
               .label="${this.userAvatar ? this.t('loginAs') : this.t('login')}"
             >

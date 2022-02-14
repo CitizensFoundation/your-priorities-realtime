@@ -199,8 +199,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                <b>Building and facilities.</b>
-
+                  <b>Building and facilities.</b> There is a dedicated building with a separate consultation and treatment area which ensures patient privacy.  There is a clean toilet in working order. Patient  data is stored securely.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -235,7 +234,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                Treats you equally and with <b>respect</b> and care for <b>your personal dignity</b>
+                <b>Respect for patients.</b>  Patients have the right to be treated equally and with respect, with care for their personal dignity.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -246,7 +245,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                Understands that you have the right to <b>refuse treatment</b>
+                <b>Patient Consent.</b> Patients have the right to refuse treatment
                 </td>
               </tr>
               <tr class="featureTr">
@@ -257,7 +256,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsHighlightBackground">
-                <b>Helps</b> you and your family understand your health needs, and treats this information <b>confidentially.</b>
+                  <b>Help and confidentiality.</b>  Patients and their families have the right to help in understanding their health needs and that this information is treated confidentially.
 
                 </td>
               </tr>
@@ -269,7 +268,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                Understands that you have the right to a <b>second medical opinion</b> and helps you to access this.
+                  <b>Second opinion.</b> Patients have the right to a second medical opinion.
                 </td>
               </tr>
             </table>
@@ -297,8 +296,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  <b>Learn</b> about your rights, and ask for any clarifications
-                  you may need
+                <b>Being informed.</b> Health service users are responsible for seeking information about their rights and responsibilities, and the standards of health care they can expect, and to ask for clarifications.
                 </td>
               </tr>
               <tr>
@@ -309,8 +307,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Always <b>participate</b> in sickness prevention and health
-                  promotion activities run by your Health service
+                <b>Participation.</b> Health service users are responsible for taking part in sickness prevention and health promotion activities run by their health service.
+
                 </td>
               </tr>
               <tr>
@@ -321,7 +319,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                Provide accurate and <b>complete information</b> about your health condition
+                <b>Complete information.</b> Patients are responsible for providing accurate and complete information  about their health condition
+
                 </td>
               </tr>
               <tr>
@@ -332,7 +331,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                Treat the Health Team with <b>respect</b> and courtesy.
+                  <b>Respecting staff.</b> Patients are responsible for treating health service staff with respect and courtesy.
                 </td>
               </tr>
             </table>
@@ -489,7 +488,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                <b>Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
+                <b>Health Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -500,7 +499,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                <b>Building and facilities.</b> A dedicated building with a separate consultation and treatment area which ensures patient privacy.  A clean toilet in working order. Patient  data stored securely.
+                  <b>Building and facilities.</b> There is a dedicated building with a separate consultation and treatment area which ensures patient privacy.  There is a clean toilet in working order. Patient  data is stored securely.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -535,7 +534,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                Treats you equally and with <b>respect</b> and care for <b>your personal dignity</b>
+                <b>Respect for patients.</b>  Patients have the right to be treated equally and with respect, with care for their personal dignity.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -546,7 +545,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                Understands that you have the right to <b>refuse treatment</b>
+                <b>Patient Consent.</b> Patients have the right to refuse treatment
                 </td>
               </tr>
               <tr class="featureTr">
@@ -557,7 +556,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsHighlightBackground">
-                <b>Helps</b> you and your family understand your health needs, and treats this information <b>confidentially.</b>
+                  <b>Help and confidentiality.</b>  Patients and their families have the right to help in understanding their health needs and that this information is treated confidentially.
 
                 </td>
               </tr>
@@ -569,7 +568,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                Understands that you have the right to a <b>second medical opinion</b> and helps you to access this.
+                  <b>Second opinion.</b> Patients have the right to a second medical opinion.
                 </td>
               </tr>
             </table>
@@ -597,8 +596,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  <b>Learn</b> about your rights, and ask for any clarifications
-                  you may need
+                <b>Being informed.</b> Health service users are responsible for seeking information about their rights and responsibilities, and the standards of health care they can expect, and to ask for clarifications.
                 </td>
               </tr>
               <tr>
@@ -609,8 +607,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Always <b>participate</b> in sickness prevention and health
-                  promotion activities run by your Health service
+                <b>Participation.</b> Health service users are responsible for taking part in sickness prevention and health promotion activities run by their health service.
+
                 </td>
               </tr>
               <tr>
@@ -621,7 +619,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                Provide accurate and <b>complete information</b> about your health condition
+                <b>Complete information.</b> Patients are responsible for providing accurate and complete information  about their health condition
+
                 </td>
               </tr>
               <tr>
@@ -632,7 +631,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                Treat the Health Team with <b>respect</b> and courtesy.
+                  <b>Respecting staff.</b> Patients are responsible for treating health service staff with respect and courtesy.
                 </td>
               </tr>
             </table>
@@ -709,9 +708,11 @@ export class CsStory extends YpBaseElement {
             </p>
 
             <div class="layout horizontal center-center">
-             <img src="https://yrpri-eu-direct-assets.s3.eu-west-1.amazonaws.com/Screenshot+from+2022-02-14+02-26-08.png" style="width:100%;margin: 16px;"/>
+              <img
+                src="https://yrpri-eu-direct-assets.s3.eu-west-1.amazonaws.com/Screenshot+from+2022-02-14+02-26-08.png"
+                style="width:100%;margin: 16px;"
+              />
             </div>
-
 
             <p>
               Tomorrow we will come together to
@@ -802,9 +803,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>Health Team composition.</b> There is 1 full-time medical
-                  doctor; 1 full-time qualified nurse and 1 part-time contract
-                  cleaner.
+                <b>Health Team composition.</b> There is 1 full-time medical doctor; 1 full-time qualified nurse and 1 part-time contract cleaner.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -815,9 +814,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Health Team availability.</b> Working hours are
-                  well-publicised and the Health Team is present and available
-                  during these hours.
+                  <b>Health Team availability.</b> Working hours are well-publicised and the Health Team is present and available during these hours.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -828,8 +825,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Equipment.</b> The minimum list of basic health equipment
-                  is available, in working order and clean.
+                <b>Health Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -840,10 +836,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>Building and facilities.</b> A dedicated building with a
-                  separate consultation and treatment area which ensures patient
-                  privacy. A clean toilet in working order. Patient data stored
-                  securely.
+                  <b>Building and facilities.</b> There is a dedicated building with a separate consultation and treatment area which ensures patient privacy.  There is a clean toilet in working order. Patient  data is stored securely.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -854,9 +847,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Emergency service.</b> The Out of Hours emergency service
-                  (‘on call’ duty medic and referral facilities) is easy to
-                  access and up-to-date.
+                <b>Emergency service.</b> The Out of Hours emergency service (‘on call’ duty medic and referral facilities) is easy to access and up-to-date.
                 </td>
               </tr>
             </table>
@@ -864,8 +855,7 @@ export class CsStory extends YpBaseElement {
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
-              What are your <span class="rightsTextColor">rights</span> when
-              using the field ambulatory?
+              What are your <span class="rightsTextColor">rights</span> when using the field ambulatory?
             </div>
             <table>
               <tr class="headerTr">
@@ -881,8 +871,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Treats you equally and with <b>respect</b> and care for
-                  <b>your personal dignity</b>
+                <b>Respect for patients.</b>  Patients have the right to be treated equally and with respect, with care for their personal dignity.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -893,7 +882,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Understands that you have the right to <b>refuse treatment</b>
+                <b>Patient Consent.</b> Patients have the right to refuse treatment
                 </td>
               </tr>
               <tr class="featureTr">
@@ -904,8 +893,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsHighlightBackground">
-                  <b>Helps</b> you and your family understand your health needs,
-                  and treats this information <b>confidentially.</b>
+                  <b>Help and confidentiality.</b>  Patients and their families have the right to help in understanding their health needs and that this information is treated confidentially.
+
                 </td>
               </tr>
               <tr class="featureTr">
@@ -916,8 +905,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Understands that you have the right to a
-                  <b>second medical opinion</b> and helps you to access this.
+                  <b>Second opinion.</b> Patients have the right to a second medical opinion.
                 </td>
               </tr>
             </table>
@@ -926,8 +914,7 @@ export class CsStory extends YpBaseElement {
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
               What are your
-              <span class="responsibilitiesTextColor">responsibilities</span>
-              when using this service?
+              <span class="responsibilitiesTextColor">responsibilities</span> when using this service?
             </div>
             <table>
               <tr class="headerTr">
@@ -935,7 +922,7 @@ export class CsStory extends YpBaseElement {
                   colspan="2"
                   class="tableHeader responsibilitiesHeaderBackgroundColor"
                 >
-                  It is your responsibility to...
+                It is your responsibility to...
                 </td>
               </tr>
               <tr class="topFeatureTr">
@@ -946,8 +933,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  <b>Learn</b> about your rights, and ask for any clarifications
-                  you may need
+                <b>Being informed.</b> Health service users are responsible for seeking information about their rights and responsibilities, and the standards of health care they can expect, and to ask for clarifications.
                 </td>
               </tr>
               <tr>
@@ -958,8 +944,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Always <b>participate</b> in sickness prevention and health
-                  promotion activities run by your Health service
+                <b>Participation.</b> Health service users are responsible for taking part in sickness prevention and health promotion activities run by their health service.
+
                 </td>
               </tr>
               <tr>
@@ -970,8 +956,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Provide accurate and <b>complete information</b> about your
-                  health condition
+                <b>Complete information.</b> Patients are responsible for providing accurate and complete information  about their health condition
+
                 </td>
               </tr>
               <tr>
@@ -982,7 +968,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Treat the Health Team with <b>respect</b> and courtesy.
+                  <b>Respecting staff.</b> Patients are responsible for treating health service staff with respect and courtesy.
                 </td>
               </tr>
             </table>
@@ -1220,12 +1206,9 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>Health Team composition.</b> There is 1 full-time medical
-                  doctor; 1 full-time qualified nurse and 1 part-time contract
-                  cleaner.
+                <b>Health Team composition.</b> There is 1 full-time medical doctor; 1 full-time qualified nurse and 1 part-time contract cleaner.
                 </td>
               </tr>
-
               <tr class="featureTr">
                 <td class="tableImages standardsContentBackground">
                   <img
@@ -1234,9 +1217,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Health Team availability.</b> Working hours are
-                  well-publicised and the Health Team is present and available
-                  during these hours.
+                  <b>Health Team availability.</b> Working hours are well-publicised and the Health Team is present and available during these hours.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -1247,8 +1228,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Equipment.</b> The minimum list of basic health equipment
-                  is available, in working order and clean.
+                <b>Health Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -1259,10 +1239,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                  <b>Building and facilities.</b> A dedicated building with a
-                  separate consultation and treatment area which ensures patient
-                  privacy. A clean toilet in working order. Patient data stored
-                  securely.
+                  <b>Building and facilities.</b> There is a dedicated building with a separate consultation and treatment area which ensures patient privacy.  There is a clean toilet in working order. Patient  data is stored securely.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -1273,9 +1250,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                  <b>Emergency service.</b> The Out of Hours emergency service
-                  (‘on call’ duty medic and referral facilities) is easy to
-                  access and up-to-date.
+                <b>Emergency service.</b> The Out of Hours emergency service (‘on call’ duty medic and referral facilities) is easy to access and up-to-date.
                 </td>
               </tr>
             </table>
@@ -1283,8 +1258,7 @@ export class CsStory extends YpBaseElement {
 
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
-              What are your <span class="rightsTextColor">rights</span> when
-              using the field ambulatory?
+              What are your <span class="rightsTextColor">rights</span> when using the field ambulatory?
             </div>
             <table>
               <tr class="headerTr">
@@ -1300,8 +1274,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Treats you equally and with <b>respect</b> and care for
-                  <b>your personal dignity</b>
+                <b>Respect for patients.</b>  Patients have the right to be treated equally and with respect, with care for their personal dignity.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -1312,7 +1285,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Understands that you have the right to <b>refuse treatment</b>
+                <b>Patient Consent.</b> Patients have the right to refuse treatment
                 </td>
               </tr>
               <tr class="featureTr">
@@ -1323,8 +1296,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsHighlightBackground">
-                  <b>Helps</b> you and your family understand your health needs,
-                  and treats this information <b>confidentially.</b>
+                  <b>Help and confidentiality.</b>  Patients and their families have the right to help in understanding their health needs and that this information is treated confidentially.
+
                 </td>
               </tr>
               <tr class="featureTr">
@@ -1335,8 +1308,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText rightsContentBackground">
-                  Understands that you have the right to a
-                  <b>second medical opinion</b> and helps you to access this.
+                  <b>Second opinion.</b> Patients have the right to a second medical opinion.
                 </td>
               </tr>
             </table>
@@ -1345,8 +1317,7 @@ export class CsStory extends YpBaseElement {
           <cs-story-card style="background: white;color: black">
             <div class="bigHeader">
               What are your
-              <span class="responsibilitiesTextColor">responsibilities</span>
-              when using this service?
+              <span class="responsibilitiesTextColor">responsibilities</span> when using this service?
             </div>
             <table>
               <tr class="headerTr">
@@ -1354,7 +1325,7 @@ export class CsStory extends YpBaseElement {
                   colspan="2"
                   class="tableHeader responsibilitiesHeaderBackgroundColor"
                 >
-                  It is your responsibility to...
+                It is your responsibility to...
                 </td>
               </tr>
               <tr class="topFeatureTr">
@@ -1365,8 +1336,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  <b>Learn</b> about your rights, and ask for any clarifications
-                  you may need
+                <b>Being informed.</b> Health service users are responsible for seeking information about their rights and responsibilities, and the standards of health care they can expect, and to ask for clarifications.
                 </td>
               </tr>
               <tr>
@@ -1377,8 +1347,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Always <b>participate</b> in sickness prevention and health
-                  promotion activities run by your Health service
+                <b>Participation.</b> Health service users are responsible for taking part in sickness prevention and health promotion activities run by their health service.
+
                 </td>
               </tr>
               <tr>
@@ -1389,8 +1359,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Provide accurate and <b>complete information</b> about your
-                  health condition
+                <b>Complete information.</b> Patients are responsible for providing accurate and complete information  about their health condition
+
                 </td>
               </tr>
               <tr>
@@ -1401,7 +1371,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText responsibilitiesContentBackground">
-                  Treat the Health Team with <b>respect</b> and courtesy.
+                  <b>Respecting staff.</b> Patients are responsible for treating health service staff with respect and courtesy.
                 </td>
               </tr>
             </table>
@@ -1696,8 +1666,8 @@ export class CsStory extends YpBaseElement {
         }
 
         table {
-          border-collapse: collapse;
-          border-spacing: 0;
+          border-collapse: separate;
+          border-spacing: 8px 12px;
         }
 
         .featureTr {

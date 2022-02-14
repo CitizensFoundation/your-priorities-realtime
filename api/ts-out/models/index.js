@@ -218,19 +218,25 @@ if (force) {
                 userId: user.id,
             });
             const coreIssues = [
-                "Staff Punctuality",
-                "Medicines supply",
-                "Fee charges",
+                "Health Team availability",
+                "Building and facilities",
+                "Emergency service",
+                "Respect for patients. ",
+                "Being informed"
             ];
             const standards = [
-                "Staff attend the Centre on time, and are present all day.",
-                "12 drug deliveries per year ensures that there is adequate medicine for treatment.",
-                "Will charge you only listed fees.",
+                "Working hours are well-publicised and the Health Team is present and available during these hours.",
+                "There is a dedicated building with a separate consultation and treatment area which ensures patient privacy.  There is a clean toilet in working order. Patient  data is stored securely.",
+                "The Out of Hours emergency service (‘on call’ duty medic and referral facilities) is easy to access and up-to-date",
+                "Health service users are responsible for seeking information about their rights and responsibilities, and the standards of health care they can expect, and to ask for clarifications.",
+                "Patients have the right to be treated equally and with respect, with care for their personal dignity."
             ];
             const imageUrls = [
                 "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/clock1.png",
-                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/drugs2.png",
-                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthprices1.png"
+                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/docktors2.png",
+                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/siren1.png",
+                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/healthjustice.png",
+                "https://yrpri-eu-direct-assets.s3-eu-west-1.amazonaws.com/csc/trustInToctors.png"
             ];
             for (let i = 0; i < coreIssues.length; i++) {
                 const issue = {

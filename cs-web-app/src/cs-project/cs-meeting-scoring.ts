@@ -43,7 +43,7 @@ export class CsMeetingScoring extends CsMeetingBase {
 
   constructor() {
     super();
-    this.storyNumber = 4;
+    this.storyNumber = 3;
   }
 
   connectedCallback() {
@@ -379,7 +379,7 @@ export class CsMeetingScoring extends CsMeetingBase {
           ></mwc-tab>
           <mwc-tab
             ?hidden="${!this.isAdmin && this.selectedTab != 1}"
-            .label="${this.t('reviewScorecard')}"
+            .label="${this.t('review')}"
             icon="format_list_numbered"
             stacked
           ></mwc-tab>
