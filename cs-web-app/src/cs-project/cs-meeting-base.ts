@@ -148,7 +148,7 @@ export class CsMeetingBase extends YpBaseElement {
             allIssuesHash[ratings[i].id].score = 0;
           }
         } else {
-          console.error(`Issue ${ratings[i].id} not found`);
+          console.warn(`Issue ${ratings[i].id} not found`);
         }
       }
     } else {

@@ -948,6 +948,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         this._getAllIssues();
       } else {
         this.onlyShowSelected = false;
+        this._getAllIssues();
       }
 
       if (this.selectedTab == ActionPlanTabTypes.AssignActions) {
