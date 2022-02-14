@@ -73,6 +73,9 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   @property({ type: Array })
   orderedProviderIssues: Array<IssueAttributes> | undefined;
 
+  @property({ type: Object })
+  editActive: Record<number,boolean> = {}
+
   constructor() {
     super();
     this.storyNumber = 5;
@@ -81,6 +84,21 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   connectedCallback() {
     super.connectedCallback();
     this._getAllIssues();
+  }
+
+  openEdit(id: number) {
+    this.editActive[id] = true;
+    this.requestUpdate();
+  }
+
+  cancelEdit(id: number) {
+    delete this.editActive[id];
+    this.requestUpdate();
+  }
+
+  saveAction(id: number) {
+    delete this.editActive[id];
+    this.requestUpdate();
   }
 
   async actionSelectionChanged(checkbox: Checkbox, actionId: number) {

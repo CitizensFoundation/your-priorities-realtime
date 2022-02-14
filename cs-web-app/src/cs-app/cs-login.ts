@@ -41,6 +41,9 @@ export class CsLogin extends YpBaseElement {
   @property({ type: Boolean })
   isAdmin = false;
 
+  @property({ type: String })
+  facilitatorName: string | undefined;
+
   constructor() {
     super();
 
@@ -81,7 +84,7 @@ export class CsLogin extends YpBaseElement {
     let facilitatorName;
 
     if (this.isAdmin) {
-      facilitatorName = (this.$$('#facilitatorName') as TextField).value;
+      facilitatorName = this.facilitatorName;
     }
 
     if (this.userAvatar && this.userAvatarColor) {
@@ -315,6 +318,7 @@ export class CsLogin extends YpBaseElement {
               <mwc-textfield
                 id="facilitatorName"
                 maxLength="30"
+                @keyup="${this._nameChanged}"
                 .label="${this.t('facilitatorName')}"
               ></mwc-textfield>
             </div>
@@ -325,7 +329,7 @@ export class CsLogin extends YpBaseElement {
             <mwc-button
               @click="${this.login}"
               class="loginButton"
-              ?disabled="${!this.userAvatar || !this.userAvatarColor}"
+              ?disabled="${!this.userAvatar || !this.userAvatarColor || !this.facilitatorName}"
               raised
               .label="${this.userAvatar ? this.t('loginAs') : this.t('login')}"
             >
@@ -340,6 +344,10 @@ export class CsLogin extends YpBaseElement {
   }
 
   // EVENTS
+
+  _nameChanged(event: CustomEvent) {
+    this.facilitatorName = (this.$$('#facilitatorName') as TextField).value;
+  }
 
   gotoRound(event: CustomEvent) {
     event.preventDefault();
