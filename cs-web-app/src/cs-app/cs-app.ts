@@ -537,7 +537,8 @@ export class CsApp extends YpBaseElement {
       this._onUserChanged({ detail: this.user } as CustomEvent);
     } else if (
       window.location.href.indexOf('/info/') == -1 &&
-      window.location.href.indexOf('/meeting/1') == -1
+      window.location.href.indexOf('/meeting/1') == -1 &&
+      window.location.href.indexOf('/meeting/2') == -1
     ) {
       this.redirectAfterLoginPath = window.location.pathname;
       YpNavHelpers.redirectTo('/login');
