@@ -972,11 +972,6 @@ export class CsStory extends YpBaseElement {
                 </td>
               </tr>
             </table>
-            <div class="blackBackground">
-              Together, these 13 standards, rights and responsibilities form a
-              Priority List for assessment - to which one further issue can be
-              added by each group through the discussion.
-            </div>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
