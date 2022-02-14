@@ -103,7 +103,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         this.allIssuesHash[this.allIssues[i].id] = this.allIssues[i];
       }
 
-      await this._updateRatings(this.allIssues);
+      await this._updateRatings(this.allIssuesHash);
 
       this.orderedAllIssues = this.allIssues.sort(function (a, b) {
         return a.score! - b.score!;

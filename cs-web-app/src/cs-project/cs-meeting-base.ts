@@ -141,11 +141,14 @@ export class CsMeetingBase extends YpBaseElement {
               }
             }
           }
+
           if (count > 0 && totalRating > 0) {
             allIssuesHash[ratings[i].id].score = totalRating / count;
           } else {
             allIssuesHash[ratings[i].id].score = 0;
           }
+        } else {
+          console.error(`Issue ${ratings[i].id} not found`);
         }
       }
     } else {
