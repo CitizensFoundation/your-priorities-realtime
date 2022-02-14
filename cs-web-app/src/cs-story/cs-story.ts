@@ -63,11 +63,11 @@ export class CsStory extends YpBaseElement {
           ?isLive="${this.isLive}"
           ?isAdmin="${this.isAdmin}"
         >
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader introHeader">
-              Introduction to the Community Priorities
+        <cs-story-card style="background: white;color: black;text-align: center">
+            <div class="blueHeader">
+              Introduction to Community Priorities
             </div>
-            <p class="swipeText">Please swipe to continue</p>
+            <p class="swipeText"><b>Please swipe to continue</b></p>
           </cs-story-card>
 
           <cs-story-card style="background: white;color: black">
@@ -188,7 +188,7 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsHighlightBackground">
-                <b>Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
+                <b>Health Equipment.</b> The minimum list of basic health equipment is available, in working order and clean.
                 </td>
               </tr>
               <tr class="featureTr">
@@ -199,7 +199,8 @@ export class CsStory extends YpBaseElement {
                   />
                 </td>
                 <td class="tableText standardsContentBackground">
-                <b>Building and facilities.</b> A dedicated building with a separate consultation and treatment area which ensures patient privacy.  A clean toilet in working order. Patient  data stored securely.
+                <b>Building and facilities.</b>
+
                 </td>
               </tr>
               <tr class="featureTr">
@@ -366,12 +367,13 @@ export class CsStory extends YpBaseElement {
           ?isLive="${this.isLive}"
           ?isAdmin="${this.isAdmin}"
         >
-          <cs-story-card style="background: white;color: black">
-            <div class="bigHeader introHeader">
-              Introduction to the Community Priorities
+          <cs-story-card style="background: white;color: black;text-align: center">
+            <div class="blueHeader">
+              Introduction to Community Priorities
             </div>
-            <p class="swipeText">Please swipe to continue</p>
+            <p class="swipeText"><b>Please swipe to continue</b></p>
           </cs-story-card>
+
 
           <cs-story-card style="background: white;color: black">
             <video
@@ -673,7 +675,7 @@ export class CsStory extends YpBaseElement {
 
             <p style="text-align: center"><b>Welcome everyone!</b></p>
             <p>
-              You have joined <b>Day 1</b> of the Feedback process for your
+              You have joined <b>Day 2</b> of the Feedback process for your
               rural field ambulatory health service.
             </p>
             <p>
@@ -705,6 +707,11 @@ export class CsStory extends YpBaseElement {
               For today, <b>most of our work will be in 2 separate groups</b> so
               that we can discuss our experiences openly.
             </p>
+
+            <div class="layout horizontal center-center">
+             <img src="https://yrpri-eu-direct-assets.s3.eu-west-1.amazonaws.com/Screenshot+from+2022-02-14+02-26-08.png" style="width:100%;margin: 16px;"/>
+            </div>
+
 
             <p>
               Tomorrow we will come together to
@@ -1218,6 +1225,7 @@ export class CsStory extends YpBaseElement {
                   cleaner.
                 </td>
               </tr>
+
               <tr class="featureTr">
                 <td class="tableImages standardsContentBackground">
                   <img
@@ -1488,7 +1496,7 @@ export class CsStory extends YpBaseElement {
           padding: 16px;
           line-height: 1.35;
           font-weight: bold;
-          margin-bottom: 8px;
+          margin-bottom: 24px;
         }
 
         .blackBackground {
@@ -1735,6 +1743,12 @@ export class CsStory extends YpBaseElement {
           font-size: 14px;
           text-align: center;
           margin-top: 128px;
+        }
+
+        @media (min-width: 601px) {
+          p {
+            line-height: 1.3;
+          }
         }
 
         @media (max-width: 600px) {
