@@ -74,7 +74,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   orderedProviderIssues: Array<IssueAttributes> | undefined;
 
   @property({ type: Object })
-  editActive: Record<number,boolean> = {}
+  editActive: Record<number, boolean> = {};
 
   constructor() {
     super();
@@ -92,11 +92,6 @@ export class CsMeetingActionPlan extends CsMeetingBase {
   }
 
   cancelEdit(id: number) {
-    delete this.editActive[id];
-    this.requestUpdate();
-  }
-
-  saveAction(id: number) {
     delete this.editActive[id];
     this.requestUpdate();
   }
@@ -220,6 +215,12 @@ export class CsMeetingActionPlan extends CsMeetingBase {
       super.styles,
       ShadowStyles,
       css`
+        .editButtons {
+          --mdc-theme-primary: #000 !important;
+          color: #000 !important;
+          margin-bottom: 16px;
+        }
+
         .actionsHeader {
           font-size: 18px;
           margin-top: 20px;
@@ -365,13 +366,13 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         storyPageIndex: this.storyPageIndex,
         actionIssueIndex: this.actionIssueIndex,
         coreIssueIndex: this.coreIssueIndex,
-        facilitatorName: this.facilitatorName
+        facilitatorName: this.facilitatorName,
       } as StateAttributes);
     }
   }
 
   _processState(state: StateAttributes) {
-    if (!this.isAdmin || state.facilitatorName!=this.user.name) {
+    if (!this.isAdmin || state.facilitatorName != this.user.name) {
       super._processState(state);
       if (this.isLive) {
         if (state.storyPageIndex != null && this.$$('#storyViewer')) {
@@ -578,6 +579,40 @@ export class CsMeetingActionPlan extends CsMeetingBase {
     ) as HTMLInputElement).value;
   }
 
+  async saveItem(action: ActionAttributes) {
+    const newActionText = (this.$$(`#editFor${action.id}`) as TextArea).value;
+
+    action.description = newActionText;
+    await window.serverApi.updateAction(action);
+
+    this.cancelEdit(action.id!);
+  }
+
+  renderActionEdit(action: ActionAttributes) {
+    return html`<h1>ijiji</h1>
+      <mwc-textarea
+        rows="5"
+        id="editFor${action.id}"
+        maxLength="500"
+        charCounter
+        .label="${this.t('action')}"
+        .value="${action.description}"
+      >
+      </mwc-textarea>
+      <div class="layout horizontal endAligned">
+        <mwc-button
+          class="editButtons"
+          .label="${this.t('cancel')}"
+          @click="${() => this.cancelEdit(action.id!)}"
+        ></mwc-button>
+        <mwc-button
+          class="editButtons"
+          .label="${this.t('saveAction')}"
+          @click="${() => this.saveItem(action)}"
+        ></mwc-button>
+      </div> `;
+  }
+
   renderAction(
     index: number,
     showNumbers = false,
@@ -595,7 +630,11 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         <div class="layout horizontal actionHeader center-center">
           <div class="actionText">${this.t('action')}</div>
         </div>
-        <div class="actionDescription">${action.description}</div>
+
+        ${this.editActive[action.id!]
+          ? this.renderActionEdit(action)
+          : html` <div class="actionDescription">${action.description}</div>`}
+
         <div class="assignedTo layout vertical" ?hidden="${!action.assignedTo}">
           <div>${this.t('assignedTo')}</div>
           <div>${action.assignedTo}</div>
@@ -638,6 +677,15 @@ export class CsMeetingActionPlan extends CsMeetingBase {
             name="accessRadioButtons"
           >
           </mwc-checkbox>
+          <mwc-icon-button
+            icon="edit"
+            ?hidden="${!this.isAdmin ||
+            !showSelectionCheckbox ||
+            this.editActive[action.id!]}"
+            @click="${() => this.openEdit(action.id!)}"
+            class="voteButton"
+            .label="${this.t('edit')}"
+          ></mwc-icon-button>
           <div class="flex"></div>
           <mwc-icon-button
             icon="arrow_upward"

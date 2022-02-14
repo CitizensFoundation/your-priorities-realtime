@@ -102,6 +102,17 @@ export class CsServerApi extends YpServerApi {
     );
   }
 
+  public updateAction(action: ActionAttributes) {
+    return this.fetchWrapper(
+      this.baseUrlPath + `/issues/${action.id}/updateAction`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(action),
+      },
+      false
+    );
+  }
+
   public postIssueComment(issueId: number, body: object) {
     return this.fetchWrapper(
       this.baseUrlPath + `/issues/${issueId}/addComment`,

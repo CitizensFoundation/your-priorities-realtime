@@ -12,6 +12,7 @@ export class IssuesController {
   public intializeRoutes() {
     this.router.post(this.path + "/:id/addComment", this.addComment);
     this.router.post(this.path + "/:id/addAction", this.addAction);
+    this.router.put(this.path + "/:id/updateAction", this.updateAction);
     this.router.post(this.path + "/:id/vote", this.vote);
     this.router.post(this.path + "/:id/rate", this.rate);
     this.router.delete(this.path + "/:id/rate", this.deleteRating);
@@ -165,6 +166,30 @@ export class IssuesController {
       res.send(error);
     })
   }
+
+  updateAction = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    models.Action.findOne({
+      where: {
+        id: req.params.id
+      },
+    }).then( async action => {
+      console.error(req.body.description);
+      if (action) {
+        action.description = req.body.description;
+        await action.save();
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
+    }).catch( error => {
+      res.send(error);
+    })
+  }
+
+
 
   addComment = async (
     req: express.Request,

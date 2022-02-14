@@ -1,4 +1,7 @@
 {
+  "saveAction": "Save",
+  "edit": "Edit",
+  "cancel": "Cancel",
   "facilitatorName": "Facilitator name",
   "assignedTo":"Assigned to:",
   "welcomeToTheCommunityScoreCardApp": "Welcome to the Community Priorities App",
