@@ -123,6 +123,12 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           margin-bottom: 16px;
         }
 
+        @media (max-width: 1024px) {
+          mwc-tab-bar {
+            width: 100%;
+          }
+        }
+
         .header {
           height: 100px;
           font-size: var(--mdc-typegraphy-headline1-font-size, 24px);
@@ -487,8 +493,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         <div class="layout horizontal center-center sliderContainer">
           <div class="issueForwardBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.coreIssueIndex === 0}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${this.coreIssueIndex === 0 || (!this.isAdmin && this.isLive)}"
               icon="arrow_back"
               @click="${this.leftCoreIssueArrow}"
             ></mwc-icon-button>
@@ -498,8 +503,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           </div>
           <div class="issueForwardBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.coreIssueIndex >= this.coreIssues!.length - 1}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${(this.coreIssueIndex >= this.coreIssues!.length - 1) || (!this.isAdmin && this.isLive)}"
               icon="arrow_forward"
               @click="${this.rightCoreIssueArrow}"
             ></mwc-icon-button>
@@ -517,8 +521,7 @@ export class CsMeetingCreateCard extends CsMeetingBase {
         <div class="layout horizontal center-center sliderContainer">
           <div class="issueForwardBack issueVoting layout horizontal">
             <mwc-icon-button
-              ?hidden="${this.votingIssueIndex === 0}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${this.votingIssueIndex === 0 || (!this.isAdmin && this.isLive)}"
               icon="arrow_back"
               @click="${this.leftVotingIssueArrow}"
             ></mwc-icon-button>
@@ -528,9 +531,8 @@ export class CsMeetingCreateCard extends CsMeetingBase {
           </div>
           <div class="issueForwardBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.votingIssueIndex >=
-              this.participantsIssues!.length - 1}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${(this.votingIssueIndex >=
+              this.participantsIssues!.length - 1) || (!this.isAdmin && this.isLive)}"
               icon="arrow_forward"
               @click="${this.rightVotingIssueArrow}"
             ></mwc-icon-button>

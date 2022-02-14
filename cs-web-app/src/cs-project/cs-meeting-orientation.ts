@@ -50,6 +50,12 @@ export class CsMeetingOrientation extends CsMeetingBase {
           margin-bottom: 16px;
         }
 
+        @media (max-width: 1024px) {
+          mwc-tab-bar {
+            width: 100%;
+          }
+        }
+
         .header {
           height: 100px;
           font-size: var(--mdc-typegraphy-headline1-font-size, 24px);

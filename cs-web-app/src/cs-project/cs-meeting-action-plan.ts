@@ -237,6 +237,12 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           margin-bottom: 16px;
         }
 
+        @media (max-width: 1024px) {
+          mwc-tab-bar {
+            width: 100%;
+          }
+        }
+
         .header {
           height: 100px;
           font-size: var(--mdc-typegraphy-headline1-font-size, 24px);
@@ -502,8 +508,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.coreIssueIndex === 0}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${this.coreIssueIndex === 0 ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_back"
               @click="${this.leftCoreIssueArrow}"
             ></mwc-icon-button>
@@ -513,9 +519,9 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           </div>
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.coreIssueIndex >=
-              this.orderedAllIssues!.length - 1}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${(this.coreIssueIndex >=
+                this.orderedAllIssues!.length - 1) ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_forward"
               @click="${this.rightCoreIssueArrow}"
             ></mwc-icon-button>
@@ -640,7 +646,7 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           <div>${action.assignedTo}</div>
         </div>
 
-        ${(showAssignment && this.isAdmin)
+        ${showAssignment && this.isAdmin
           ? html`
               <mwc-textarea
                 id="addAssignmentInput"
@@ -721,8 +727,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.actionIssueIndex === 0}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${this.actionIssueIndex === 0 ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_back"
               @click="${this.leftActionArrow}"
             ></mwc-icon-button>
@@ -732,8 +738,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           </div>
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.actionIssueIndex >= this.actions!.length - 1}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${(this.actionIssueIndex >= this.actions!.length - 1) ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_forward"
               @click="${this.rightActionArrow}"
             ></mwc-icon-button>
@@ -797,8 +803,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.actionIssueIndex === 0}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${this.actionIssueIndex === 0 ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_back"
               @click="${this.leftActionArrow}"
             ></mwc-icon-button>
@@ -808,8 +814,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           </div>
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.actionIssueIndex >= this.actions!.length - 1}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${(this.actionIssueIndex >= this.actions!.length - 1) ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_forward"
               @click="${this.rightActionArrow}"
             ></mwc-icon-button>
@@ -827,8 +833,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
         <div class="layout horizontal center-center sliderContainer">
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.actionIssueIndex === 0}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${this.actionIssueIndex === 0 ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_back"
               @click="${this.leftActionArrow}"
             ></mwc-icon-button>
@@ -845,8 +851,8 @@ export class CsMeetingActionPlan extends CsMeetingBase {
           </div>
           <div class="issueBack issueVoting">
             <mwc-icon-button
-              ?hidden="${this.actionIssueIndex >= this.actions!.length - 1}"
-              ?disabled="${!this.isAdmin && this.isLive}"
+              ?hidden="${(this.actionIssueIndex >= this.actions!.length - 1) ||
+              (!this.isAdmin && this.isLive)}"
               icon="arrow_forward"
               @click="${this.rightActionArrow}"
             ></mwc-icon-button>
